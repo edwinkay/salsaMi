@@ -1,0 +1,112 @@
+
+
+.contenedor {
+  background-color: rgb(216, 11, 223);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* 100% de la altura de la ventana */
+  margin: 0;
+  padding: 0;
+}
+
+
+.box {
+  height: 80%;
+  width: 83%;
+  color: white;
+  font-size: 24px;
+  padding: 20px;
+  border: 1px solid white;
+  border-radius: 15px;
+  outline: solid #ffffff;
+  background-color: rgb(166, 73, 213);
+}
+
+.titulo{
+  padding: 10px;
+  font-size: 30px;
+  text-align: center;
+  background-color: rgb(126, 45, 167);
+  border-radius: 8px;
+}
+.welcome{
+  text-align: center;
+  color: aqua;
+  font-size: 33px;
+  padding: 10px;
+}
+.align{
+  padding: 12px;
+  text-align: center;
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+  border: 1px solid white;
+  color: white;
+}
+ul li{
+  padding: 3px;
+}
+
+
+ul li a{
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+}
+ul li a:hover{
+  color: aqua;
+}
+.msj{
+  color: #ffffff;
+  margin-bottom: 9px;
+}
+.pie{
+
+  position: relative;
+}
+.foo{
+  color: #ffffff;
+  text-decoration: none;
+}
+@media (max-width: 767px) {
+  .titulo{
+    font-size: 30px;
+  }
+  .welcome{
+  font-size: 27px;
+  padding: 3px;
+}
+.align{
+  margin-bottom: 15px;
+  font-size: 17px;
+}
+ul li{
+  padding: 7px;
+}
+ul li a{
+  color: white;
+  text-decoration: none;
+  font-size: 24px;
+}
+.msj{
+  font-size: 20px;
+}
+.pie{
+  font-size: 20px;
+}
+}
+@media (max-width: 479px) {
+  .titulo{
+    font-size: 18px;
+  }
+}
+@media (max-width: 348px) {
+  .titulo{
+    font-size: 23px;
+  }
+  .align{
+  padding: 4px;
+}
+
+}
