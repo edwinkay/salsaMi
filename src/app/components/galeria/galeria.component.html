@@ -1,18 +1,62 @@
 <!-- <div>
   <input (change)="subirArchivo($event)" type="file">
-</div>
-<div *ngFor="let image of images">
-  <img [src]="image" alt="">
 </div> -->
+
 <div class="contenedor">
   <div class="box">
     <div class="caja">
-        <nav>
-            <a class="nav-link" routerLink="/main">INICIO</a>
-            <a class="nav-link" routerLink="/galeria">IMAGENES</a>
-            <a class="nav-link" routerLink="/videos">VIDEOS</a>
-            <a class="nav-link" routerLink="/musica">MUSICA</a>
-        </nav>
+      <nav>
+        <a class="nav-link" routerLink="/main">INICIO</a>
+        <a class="nav-link" routerLink="/galeria">IMAGENES</a>
+        <a class="nav-link" routerLink="/videos">VIDEOS</a>
+        <a class="nav-link" routerLink="/musica">MUSICA</a>
+      </nav>
+    </div>
+    <div class="gallery-lightbox-container">
+      <div class="gallery">
+        <div *ngFor="let image of images; let i = index" class="gallery-img">
+          <img (mouseenter)="onMouseEnter(i)" (mouseleave)="onMouseLeave(i)" class="zoomable-image" (click)="onPreviewImage(i)" [src]="image" alt="imagen" />
+        </div>
+      </div>
+      <div *ngIf="showMask" class="lightbox">
+        <span *ngIf="showCount" class="count">
+          {{ currentIndex + 1 }}/{{ totalImageCount }}
+        </span>
+        <button
+          *ngIf="previewImage"
+          class="close-btn"
+          (click)="onClosePreview()"
+        >
+          <i class="far fa-times"></i>
+        </button>
+        <button
+          *ngIf="controls"
+          class="btn-lightbox-carousel btn-prev"
+          (click)="prev()"
+        >
+          <i
+            class="fas fa-arrow-circle-left icon-lightbox-carousel icon-prev"
+          ></i>
+        </button>
+        <button
+          *ngIf="controls"
+          class="btn-lightbox-carousel btn-next"
+          (click)="next()"
+        >
+          <i
+            class="fas fa-arrow-circle-right icon-lightbox-carousel icon-next"
+          ></i>
+        </button>
+
+        <div
+          *ngIf="previewImage"
+        >
+          <img
+            [src]="currentLightboxImage"
+            alt="imagen"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </div>
