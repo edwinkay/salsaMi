@@ -12,10 +12,13 @@
 
 
 .box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   height: 80%;
   width: 83%;
   color: white;
-  font-size: 24px;
+  font-size: 20px;
   padding: 20px;
   border: 1px solid white;
   border-radius: 15px;
@@ -35,6 +38,7 @@
   color: aqua;
   font-size: 33px;
   padding: 10px;
+
 }
 .align{
   padding: 12px;
@@ -71,12 +75,14 @@ ul li a:hover{
 }
 @media (max-width: 767px) {
   .titulo{
-    font-size: 30px;
+    font-size: 22px;
   }
-  .welcome{
-  font-size: 27px;
-  padding: 3px;
+     .welcome{
+  font-size: 20px;
+  padding: 0px;
+  margin: 0;
 }
+
 .align{
   margin-bottom: 15px;
   font-size: 17px;
@@ -96,14 +102,24 @@ ul li a{
   font-size: 20px;
 }
 }
-@media (max-width: 479px) {
-  .titulo{
-    font-size: 18px;
-  }
+@media (max-width: 433px) {
+
+  ul li{
+  padding: 0;
+}
+ul li a{
+  font-size: 20px;
+}
+.msj{
+  font-size: 13px;
+}
+.pie{
+  font-size: 16px;
+}
 }
 @media (max-width: 348px) {
   .titulo{
-    font-size: 23px;
+    font-size: 16px;
   }
   .align{
   padding: 4px;

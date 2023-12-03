@@ -1,0 +1,48 @@
+.contenedor {
+  background-color: rgb(216, 11, 223);
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+  height: 100vh; /* 100% de la altura de la ventana */
+  margin: 0;
+  padding: 0;
+}
+nav{
+  display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.box {
+  color: white;
+  font-size: 24px;
+  padding: 20px;
+  width: 100%;
+}
+.caja{
+  padding: 20px;
+  border-radius: 15px;
+  outline: solid rgb(245, 246, 248);
+  text-align: center;
+}
+nav {
+
+  }
+.nav-link{
+  text-decoration: none;
+  color: #f4f4f4;
+}
+.nav-link:hover{
+  color: rgb(255, 230, 0);
+  text-decoration: underline;
+}
+@media (max-width: 767px){
+  .caja{
+    font-size: 15px;
+  }
+}
+@media (max-width: 350px){
+  .caja{
+    font-size: 12px;
+  }
+}
