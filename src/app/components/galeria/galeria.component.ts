@@ -64,11 +64,12 @@ export class GaleriaComponent implements OnInit {
     this.showCount = true;
     this.currentLightboxImage = this.images[index];
     this.totalImageCount = this.images.length;
-    console.log(this.totalImageCount);
+    document.body.style.overflow = 'hidden';
   }
   onClosePreview() {
     this.previewImage = false;
     this.showMask = false;
+    document.body.style.overflow = '';
   }
   next(): void {
     this.currentIndex = this.currentIndex + 1;

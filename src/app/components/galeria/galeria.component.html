@@ -1,7 +1,3 @@
-<!-- <div>
-  <input (change)="subirArchivo($event)" type="file">
-</div> -->
-
 <div class="contenedor">
   <div class="box">
     <div class="caja">
@@ -12,13 +8,33 @@
         <a class="nav-link" routerLink="/musica">MUSICA</a>
       </nav>
     </div>
+    <div class="con-input">
+      <div class="input-file-container">
+        <input id="file-input" (change)="subirArchivo($event)" type="file" />
+        <label for="file-input" class="file-label">
+          <i class="fas fa-plus"></i>
+          Agregar nueva imagen
+        </label>
+      </div>
+    </div>
     <div class="gallery-lightbox-container">
       <div class="gallery">
         <div *ngFor="let image of images; let i = index" class="gallery-img">
-          <img (mouseenter)="onMouseEnter(i)" (mouseleave)="onMouseLeave(i)" class="zoomable-image" (click)="onPreviewImage(i)" [src]="image" alt="imagen" />
+          <img
+            (mouseenter)="onMouseEnter(i)"
+            (mouseleave)="onMouseLeave(i)"
+            class="zoomable-image"
+            (click)="onPreviewImage(i)"
+            [src]="image"
+            alt="imagen"
+          />
         </div>
       </div>
-      <div *ngIf="showMask" class="lightbox">
+      <div
+        *ngIf="showMask"
+        class="lightbox"
+        [ngClass]="{ active: previewImage }"
+      >
         <span *ngIf="showCount" class="count">
           {{ currentIndex + 1 }}/{{ totalImageCount }}
         </span>
@@ -48,12 +64,11 @@
           ></i>
         </button>
 
-        <div
-          *ngIf="previewImage"
-        >
+        <div *ngIf="previewImage" class="lightbox-img">
           <img
             [src]="currentLightboxImage"
             alt="imagen"
+            [class.zoom-in]="previewImage"
           />
         </div>
       </div>
