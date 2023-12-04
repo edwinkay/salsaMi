@@ -1,12 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Storage, ref, uploadBytes, listAll, getDownloadURL } from '@angular/fire/storage'
-import {
-  animate,
-  style,
-  transition,
-  trigger,
-  AnimationEvent,
-} from '@angular/animations';
 
 @Component({
   selector: 'app-galeria',
@@ -43,7 +36,7 @@ export class GaleriaComponent implements OnInit {
   }
   getImages() {
     const imagesRef = ref(this.storage, 'images');
-
+    console.log(imagesRef)
     listAll(imagesRef)
       .then(async (images) => {
         this.images = [];

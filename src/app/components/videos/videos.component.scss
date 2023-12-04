@@ -36,10 +36,75 @@ nav {
   color: rgb(255, 230, 0);
   text-decoration: underline;
 }
-@media (max-width: 767px){
+// boton upload
+.con-input {
+    position: relative;
+    padding: 32px 0 49px 0;
+}
+
+.input-file-container {
+  position: absolute;
+  right: 0;
+  overflow: hidden;
+  display: inline-block;
+}
+
+#file-input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.file-label {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.video-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 25px;
+}
+
+.video{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 30px;
+  row-gap: 30px;
+}
+
+.gallery-video video {
+  width: 100%;
+  height: 300px;
+  border-radius: 0.35rem;
+  margin-bottom: 30px;
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.21);
+}
+
+
+
+@media (max-width: 900px){
   .caja{
     font-size: 15px;
   }
+  .video{
+  grid-template-columns: repeat(2, 1fr);
+}
+}
+@media (max-width: 580px){
+  .video{
+  grid-template-columns: repeat(1, 1fr);
+}
 }
 @media (max-width: 350px){
   .caja{
