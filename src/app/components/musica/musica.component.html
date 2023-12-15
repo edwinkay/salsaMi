@@ -1,12 +1,29 @@
 <div class="contenedor">
   <div class="box">
     <div class="caja">
-        <nav>
-            <a class="nav-link" routerLink="/main">INICIO</a>
-            <a class="nav-link" routerLink="/galeria">IMAGENES</a>
-            <a class="nav-link" routerLink="/videos">VIDEOS</a>
-            <a class="nav-link" routerLink="/musica">MUSICA</a>
-        </nav>
+      <nav>
+        <a class="nav-link" routerLink="/main">INICIO</a>
+        <a class="nav-link" routerLink="/galeria">IMAGENES</a>
+        <a class="nav-link" routerLink="/videos">VIDEOS</a>
+        <a class="nav-link" routerLink="/musica">MUSICA</a>
+      </nav>
+    </div>
+    <!-- <div class="con-input">
+      <div class="input-file-container">
+        <input id="file-input" (change)="subirArchivo($event)" type="file" />
+        <label for="file-input" class="file-label">
+          <i class="fas fa-plus"></i>
+          Agregar musica
+        </label>
+      </div>
+    </div> -->
+    <div class="musica-container">
+      <div *ngFor="let music of musica" class="musica">
+        <p style="margin-bottom: 10px;">{{ music.title }}</p>
+        <audio controls>
+          <source [src]="music.url" type="audio/mp3" />
+        </audio>
+      </div>
     </div>
   </div>
 </div>

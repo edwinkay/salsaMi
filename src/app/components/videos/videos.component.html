@@ -8,7 +8,7 @@
         <a class="nav-link" routerLink="/musica">MUSICA</a>
       </nav>
     </div>
-    <div class="con-input">
+    <!-- <div class="con-input">
       <div class="input-file-container">
         <input id="file-input" (change)="subirArchivo($event)" type="file" />
         <label for="file-input" class="file-label">
@@ -16,13 +16,21 @@
           Agregar nuevo video
         </label>
       </div>
-    </div>
+    </div> -->
     <div class="video-container">
       <div class="video">
-        <div width="320" height="240"  class="gallery-video" *ngFor="let video of videos">
+        <div
+          width="320"
+          height="240"
+          class="gallery-video"
+          *ngFor="let video of videos"
+        >
           <video controls>
-            <source [src]="video" type="video/mp4" />
+            <source [src]="video.url" type="video/mp4" />
           </video>
+          <p style="position: relative;
+    bottom: 12px;
+    margin: 0;">{{ video.title }}</p>
         </div>
       </div>
     </div>

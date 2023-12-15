@@ -25,9 +25,51 @@ nav{
   outline: solid rgb(245, 246, 248);
   text-align: center;
 }
-nav {
 
-  }
+.input-file-container {
+  position: absolute;
+  right: 0;
+  overflow: hidden;
+  display: inline-block;
+}
+// boton upload
+.con-input {
+    position: relative;
+    padding: 32px 0 49px 0;
+}
+
+.input-file-container {
+  position: absolute;
+  right: 0;
+  overflow: hidden;
+  display: inline-block;
+}
+
+#file-input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.file-label {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+}
+.musica-container {
+    margin-top: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
 .nav-link{
   text-decoration: none;
   color: #f4f4f4;
