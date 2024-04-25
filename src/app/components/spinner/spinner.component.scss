@@ -1,0 +1,25 @@
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1); /* color del borde */
+  border-left-color: #3498db; /* color de la parte izquierda del borde */
+  border-radius: 50%; /* para hacerlo circular */
+  width: 40px; /* ancho del spinner */
+  height: 40px; /* altura del spinner */
+  animation: spin 1s linear infinite; /* animación */
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg); /* rotación completa */
+  }
+}
+
+.visually-hidden {
+  position: absolute; /* para sacar el texto del flujo de la página */
+  width: 1px; /* ancho mínimo */
+  height: 1px; /* altura mínima */
+  padding: 0; /* sin espaciado */
+  margin: -1px; /* margen negativo para ocultarlo completamente */
+  overflow: hidden; /* ocultar cualquier contenido adicional */
+  clip: rect(0, 0, 0, 0); /* recortar cualquier contenido adicional */
+  border: 0; /* sin borde */
+}

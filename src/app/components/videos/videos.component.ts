@@ -41,7 +41,7 @@ export class VideosComponent implements OnInit {
   constructor(private storage: Storage) {}
 
   ngOnInit(): void {
-    this.getVideos();
+    // this.getVideos();
   }
 
   subirArchivo($event: any) {

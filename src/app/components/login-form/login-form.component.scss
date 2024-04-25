@@ -1,0 +1,95 @@
+.login-form {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="email"],
+input[type="password"] {
+  display: block;
+  width: 94%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.submit-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: rgb(216, 11, 223);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.submit-button:hover {
+  background-color: blueviolet;
+  color: rgb(255, 254, 254);
+}
+
+.form-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.forgot-password,
+.register-link {
+  font-size: 14px;
+  text-decoration: none;
+  color: #007bff;
+  transition: color 0.3s ease-in-out;
+}
+
+.forgot-password:hover,
+.register-link:hover {
+  color: #0056b3;
+}
+.elH2 {
+  font-size: 36px;
+  font-family: "Arial", sans-serif;
+  color: rgb(216, 11, 223);
+  text-align: center;
+  text-shadow: 2px 2px #000;
+}
+.container-login {
+  margin-top: 8%;
+  width: 30%;
+}
+.logo{
+  position: absolute;
+}
+@media screen and (max-width: 600px) {
+  .container-login {
+    margin-top: 19%;
+    width: 87%;
+  }
+  .logo{
+    display: none;
+  }
+}

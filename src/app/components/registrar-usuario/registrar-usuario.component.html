@@ -1,0 +1,80 @@
+<div>
+  <div *ngIf="!loading" style="margin-top: 8%">
+    <form class="login-form" (ngSubmit)="registrar()" #loginForm="ngForm" [formGroup]="registrarUsuario">
+      <h2 class="elH2">Asi Somos Asi Bailamos</h2>
+      <h2 class="form-title">REGISTRARSE</h2>
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Correo electrónico"
+          formControlName="email"
+        />
+        <span
+          *ngIf="
+            registrarUsuario.get('email')?.hasError('required') &&
+            registrarUsuario.get('email')?.touched
+          "
+          class="text-danger errorLabel"
+          >El <strong>correo </strong>es requerido</span
+        >
+        <span
+          *ngIf="
+            registrarUsuario.get('email')?.hasError('email') &&
+            registrarUsuario.get('email')?.touched
+          "
+          class="text-danger errorLabel"
+          >El <strong>correo </strong>es invalido</span
+        >
+      </div>
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input
+          type="password"
+          name="password"
+          placeholder="Contraseña"
+          formControlName="password"
+        />
+        <span
+          *ngIf="
+            registrarUsuario.get('password')?.hasError('required') &&
+            registrarUsuario.get('password')?.touched
+          "
+          class="text-danger errorLabel"
+          >La <strong>contraseña </strong>debe contener mas de 6
+          caracteres</span
+        >
+      </div>
+      <div class="form-group">
+        <input
+          type="password"
+          name="password"
+          placeholder="Repetir contraseña"
+          formControlName="repetirPassword"
+        />
+      </div>
+      <div style="display: flex; gap: 2px">
+        <button
+          style="background-color: blue"
+          type="button"
+          routerLink="/login"
+          class="submit-button"
+        >
+          Volver
+        </button>
+        <button [disabled]="registrarUsuario.invalid" type="submit" class="submit-button">Registrar</button>
+      </div>
+    </form>
+  </div>
+  <div *ngIf="loading" style="display: flex;
+    position: absolute;
+    left: 44%;
+    top: 42%;
+    flex-direction: column;
+    align-items: center;">
+    <h2 class="elH2">LAsi Somos Asi Bailamos</h2>
+    <span style="margin-bottom: 18px">Registrando...</span>
+    <app-spinner ></app-spinner>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div>
+  <div *ngIf="!loading" style="margin-top: 8%">
+    <form class="login-form" (ngSubmit)="recuperar()" [formGroup]="recuperarUsuario">
+      <h2 class="elH2">Asi Somos Asi Bailamos</h2>
+      <h2 class="form-title">RECUPERAR CUENTA</h2>
+      <div class="form-group">
+        <input
+          type="email"
+          name="email"
+          placeholder="Correo electrónico"
+          formControlName="email"
+        />
+        <span
+          *ngIf="
+            recuperarUsuario.get('email')?.hasError('required') &&
+            recuperarUsuario.get('email')?.touched
+          "
+          class="text-danger errorLabel"
+          >El <strong>correo </strong>es requerido</span
+        >
+        <span
+          *ngIf="
+            recuperarUsuario.get('email')?.hasError('email') &&
+            recuperarUsuario.get('email')?.touched
+          "
+          class="text-danger errorLabel"
+          >El <strong>correo </strong>es invalido</span
+        >
+      </div>
+      <div style="display: flex; gap: 2px">
+        <button
+          style="background-color: blue"
+          type="button"
+          routerLink="/login"
+          class="submit-button"
+        >
+          Volver
+        </button>
+        <button [disabled]="recuperarUsuario.invalid" type="submit" class="submit-button">Aceptar</button>
+      </div>
+    </form>
+  </div>
+  <div *ngIf="loading" style="display: flex;
+    position: absolute;
+    left: 44%;
+    top: 42%;
+    flex-direction: column;
+    align-items: center;">
+    <h2 class="elH2">Asi Somos Asi Bailamos</h2>
+    <span style="margin-bottom: 18px">Enviando peticion...</span>
+    <app-spinner ></app-spinner>
+  </div>
+</div>
