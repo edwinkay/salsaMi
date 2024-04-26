@@ -6,9 +6,10 @@ import {
   listAll,
   getDownloadURL,
 } from '@angular/fire/storage';
+import { GetVideosService } from 'src/app/services/get-videos.service';
 
 interface Video {
-  title: string;
+  nombre: string;
   url: string;
 }
 
@@ -38,37 +39,48 @@ export class VideosComponent implements OnInit {
     'Algun lugar',
   ];
 
-  constructor(private storage: Storage) {}
+  constructor(private storage: Storage, private _videosService: GetVideosService) {}
 
   ngOnInit(): void {
-    // this.getVideos();
+    this.getVideos();
   }
-
-  subirArchivo($event: any) {
-    const file = $event.target.files[0];
-
-    const videoRef = ref(this.storage, `videos/${file.name}`);
-    uploadBytes(videoRef, file)
-      .then(() => {
-        this.getVideos();
-      })
-      .catch((error) => console.log(error));
+  getVideos(){
+    this._videosService.getVideos().subscribe((data) => {
+      this.videos = []
+      data.forEach((element: any) => {
+        this.videos.push({
+          id: element.payload.doc.id,
+          ...element.payload.doc.data(),
+        });
+      });
+      console.log(this.videos)
+    })
   }
+  // subirArchivo($event: any) {
+  //   const file = $event.target.files[0];
 
-  async getVideos() {
-    const videosRef = ref(this.storage, 'videos');
+  //   const videoRef = ref(this.storage, `videos/${file.name}`);
+  //   uploadBytes(videoRef, file)
+  //     .then(() => {
+  //       this.getVideos();
+  //     })
+  //     .catch((error) => console.log(error));
+  // }
 
-    try {
-      const videoList = await listAll(videosRef);
-      this.videos = await Promise.all(
-        videoList.items.map(async (video, index) => {
-          const url = await getDownloadURL(video);
-          const title = this.titulos[index] || `Video ${index + 1}`;
-          return { title, url };
-        })
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async getVideos() {
+  //   const videosRef = ref(this.storage, 'videos');
+
+  //   try {
+  //     const videoList = await listAll(videosRef);
+  //     this.videos = await Promise.all(
+  //       videoList.items.map(async (video, index) => {
+  //         const url = await getDownloadURL(video);
+  //         const title = this.titulos[index] || `Video ${index + 1}`;
+  //         return { title, url };
+  //       })
+  //     );
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 }

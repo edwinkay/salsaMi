@@ -130,7 +130,7 @@ export class MusicaComponent implements OnInit {
   constructor(private storage: Storage) {}
 
   ngOnInit(): void {
-    // this.getMusica();
+    this.getMusica();
   }
 
   subirArchivo($event: any) {

@@ -8,13 +8,18 @@
   height: 100vh; /* 100% de la altura de la ventana */
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 .log{
   display: flex;
-    justify-content: space-between;
+  justify-content: space-between;
+  animation: moveText 0.8s ease-in;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .logout:hover{
   color: red;
+  cursor: pointer;
 }
 
 .box {
@@ -42,13 +47,7 @@
   text-align: center;
   background-color: rgb(126, 45, 167);
   border-radius: 8px;
-}
-.welcome{
-  text-align: center;
-  color: aqua;
-  font-size: 33px;
-  padding: 10px;
-
+  animation: moveText 0.5s linear;
 }
 .align{
   padding: 12px;
@@ -96,6 +95,23 @@ ul li a:hover{
 .align{
   margin-bottom: 15px;
   font-size: 17px;
+  animation: moveText 1s linear;
+  overflow: hidden;
+}
+.t1{
+  animation: moveText 1.2s linear;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.t2{
+  animation: moveText 1.4s linear;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.t3{
+  animation: moveText 1.6s linear;
+  white-space: nowrap;
+  overflow: hidden;
 }
 ul li{
   padding: 7px;
@@ -122,9 +138,11 @@ ul li a{
 }
 .msj{
   font-size: 13px;
+  animation: apearText 2s linear;
 }
 .pie{
   font-size: 16px;
+  animation: apearText 2.3s linear;
 }
 }
 @media (max-width: 348px) {
@@ -135,4 +153,28 @@ ul li a{
   padding: 4px;
 }
 
+}
+@keyframes moveText {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+@keyframes apearText {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }

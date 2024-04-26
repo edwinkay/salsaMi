@@ -23,7 +23,7 @@ export class MainComponent implements OnInit {
       if (user && user.displayName) {
         this.usuarioActual = user.displayName;
       } else {
-        this.usuarioActual = 'invitado';
+        this.usuarioActual = 'Invitado';
       }
     });
   }

@@ -28,11 +28,24 @@
           <video controls>
             <source [src]="video.url" type="video/mp4" />
           </video>
-          <p style="position: relative;
-    bottom: 12px;
-    margin: 0;">{{ video.title }}</p>
+          <p style="position: relative; bottom: 12px; margin: 0">
+            {{ video.nombre }}
+          </p>
         </div>
       </div>
     </div>
+    <!-- <div class="video-container">
+      <div class="video">
+        <div width="320" height="240" class="gallery-video">
+          <video
+            controls
+            src="https://edwinkay.github.io/asi-somos-asi-bailamos/video/video.mp4"
+            poster="posterimage.jpg"
+          >
+            Tu navegador no admite el elemento <code>video</code>.
+          </video>
+        </div>
+      </div>
+    </div> -->
   </div>
 </div>

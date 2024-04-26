@@ -21,7 +21,7 @@ export class GaleriaComponent implements OnInit {
   constructor(private storage: Storage, private el: ElementRef) {}
 
   ngOnInit(): void {
-    // this.getImages();
+    this.getImages();
   }
 
   subirArchivo($event: any) {
