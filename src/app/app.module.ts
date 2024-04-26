@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +10,9 @@ import { GaleriaComponent } from './components/galeria/galeria.component';
 import { VideosComponent } from './components/videos/videos.component';
 import { MusicaComponent } from './components/musica/musica.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
+
+//toastr
+import { ToastrModule } from 'ngx-toastr';
 
 //firebase
 import { environment } from 'src/environments/environment';
@@ -37,10 +41,16 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideStorage(() => getStorage()),
     AngularFireAuthModule,
+    ToastrModule.forRoot({
+      timeOut: 4000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FirebaseErrorService } from 'src/app/services/firebase-error.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login-form',
@@ -15,7 +17,9 @@ export class LoginFormComponent implements OnInit {
   message: string = '';
 
   constructor(
+    private toastr: ToastrService,
     private fb: FormBuilder,
+    private firebaseError: FirebaseErrorService,
     private afAuth: AngularFireAuth,
     private router: Router
   ) {
@@ -25,23 +29,38 @@ export class LoginFormComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   login() {
     const email = this.loginUsuario.value.email;
     const password = this.loginUsuario.value.password;
-
     this.loading = true;
+
     this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
         this.router.navigate(['/main']);
         console.log(user);
+        this.loading = false;
       })
       .catch((error) => {
         this.loading = false;
-        // console.log(error)
+        this.verificar = true;
+        this.firebaseError.errorFirebase(error.code);
+        this.message = this.firebaseError.mensaje(error.code);
+        setTimeout(() => {
+          this.message = '';
+        }, 2000);
       });
+  }
+  loginAsGuest() {
+    this.loading = true
+    this.afAuth.signInAnonymously().then(() => {
+      this.loading = false
+      this.router.navigate(['/main']);
+    }).catch((error) => {
+      this.loading = false;
+      console.error('Error al iniciar sesión anónimamente:', error);
+    });
   }
 }

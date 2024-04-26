@@ -27,9 +27,7 @@
               "src/favicon.ico",
               "src/assets"
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss", "node_modules/toastr/build/toastr.min.css"],
             "scripts": []
           },
           "configurations": {

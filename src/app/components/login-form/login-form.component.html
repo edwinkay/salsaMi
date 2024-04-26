@@ -1,8 +1,11 @@
-<div style="display: flex;
-    justify-content: center;">
+<div style="display: flex; justify-content: center">
   <div class="container-login" *ngIf="!loading">
-    <form class="login-form" (ngSubmit)="login()" [formGroup]="loginUsuario"
-      class="form-contenedor">
+    <form
+      class="login-form"
+      (ngSubmit)="login()"
+      [formGroup]="loginUsuario"
+      class="form-contenedor"
+    >
       <div>
         <h2 class="elH2">Asi Somos Asi Bailamos</h2>
       </div>
@@ -59,18 +62,28 @@
           >Registrarse</a
         >
       </div>
-      <button type="submit" class="submit-button" [disabled]="loginUsuario.invalid" >Iniciar sesión</button>
-      <span style="color: rgb(216, 11, 223);" *ngIf="verificar">{{message}}</span>
+      <button type="submit" class="submit-button">Iniciar sesión</button>
+      <div style="text-align: center; margin-top: 14px">
+        <a (click)="loginAsGuest()" class="register-link"
+          >Iniciar sesión como invitado</a
+        >
+      </div>
+
+      <!-- <span style="color: red;" *ngIf="verificar">{{message}}</span> -->
     </form>
   </div>
-  <div *ngIf="loading" style="    display: flex;
-    position: absolute;
-    top: 42%;
-    flex-direction: column;
-    align-items: center;">
+  <div
+    *ngIf="loading"
+    style="
+      display: flex;
+      position: absolute;
+      top: 42%;
+      flex-direction: column;
+      align-items: center;
+    "
+  >
     <h2 class="elH2">Asi Somos Asi Bailamos</h2>
     <span style="margin-bottom: 18px">Iniciando sesion...</span>
-    <app-spinner ></app-spinner>
+    <app-spinner></app-spinner>
   </div>
 </div>
-

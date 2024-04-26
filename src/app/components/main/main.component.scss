@@ -9,7 +9,13 @@
   margin: 0;
   padding: 0;
 }
-
+.log{
+  display: flex;
+    justify-content: space-between;
+}
+.logout:hover{
+  color: red;
+}
 
 .box {
   display: flex;
