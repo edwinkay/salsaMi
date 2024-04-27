@@ -15,12 +15,10 @@ const routes: Routes = [
   {
     path: 'registrar',
     component: RegistrarUsuarioComponent,
-    canActivate: [AuthGuard],
   },
   {
     path: 'recuperar',
     component: RecuperarContrasenaComponent,
-    canActivate: [AuthGuard],
   },
   { path: 'main', component: MainComponent, canActivate: [AuthGuard] },
   { path: 'galeria', component: GaleriaComponent, canActivate: [AuthGuard] },

@@ -1,4 +1,4 @@
-<div *ngIf="!loading" style="margin-top: 8%">
+<div *ngIf="!loading" class="content">
   <form class="login-form" (ngSubmit)="registrar()" #loginForm="ngForm" [formGroup]="registrarUsuario">
     <h2 class="elH2">Asi Somos Asi Bailamos</h2>
     <h2 class="form-title">REGISTRARSE</h2>
@@ -76,7 +76,7 @@
         style="background-color: blue"
         type="button"
         routerLink="/login"
-        class="submit-button"
+        class="submit"
       >
         Volver
       </button>
