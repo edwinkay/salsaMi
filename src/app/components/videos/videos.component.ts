@@ -21,7 +21,7 @@ import { Router } from '@angular/router';
 export class VideosComponent implements OnInit {
   videos: Users[] = [];
   currentUser: any | null;
-  esInvitado: boolean | undefined;
+  esInvitado = false;
   modal = false;
 
   constructor(
@@ -37,7 +37,10 @@ export class VideosComponent implements OnInit {
     this.getVideos();
     this.afAuth.authState.subscribe((user) => {
       this.currentUser = user;
-      this.esInvitado = user?.isAnonymous;
+      const comprobar = user?.uid;
+      if (comprobar == 'rm01jawdLvYSObMPDc8BTBasbJp2') {
+        this.esInvitado = true
+      }
       console.log(user);
       // if (user) {
       //   this.loadUserLikes(user.uid);
@@ -54,8 +57,9 @@ export class VideosComponent implements OnInit {
           ...videoData,
           likesCountVideo: videoData.likesCountVideo || 0,
           likedByVideo: videoData.likedByVideo || [],
+          userVideoLikes: videoData.userVideoLikes || [],
         });
-        // console.log(this.videos);
+        console.log(this.videos);
       });
     });
   }
@@ -66,15 +70,22 @@ export class VideosComponent implements OnInit {
     if (user && !this.esInvitado) {
       // Verificar si el usuario ya ha dado like
       const userId = user.uid;
+
+      const usuario = user.displayName;
+      const correo = user.email;
+
       const index = video.likedByVideo.indexOf(userId);
+
       if (index !== -1) {
         // Si ya ha dado like, quitar el like
         video.likedByVideo.splice(index, 1);
+        video.userVideoLikes.splice(index, 1)
         video.likesCountVideo--;
       } else {
         // Si no ha dado like, agregar el like
         video.likedByVideo.push(userId);
         video.likesCountVideo++;
+        video.userVideoLikes.push({usuario, correo})
       }
 
       // Actualizar los likes en Firestore
@@ -82,6 +93,7 @@ export class VideosComponent implements OnInit {
       const videox: any = {
         likesCountVideo: video.likesCountVideo,
         likedByVideo: video.likedByVideo,
+        userVideoLikes: video.userVideoLikes
       };
       await this._videosService.updateVideo(id, videox);
       console.log(video);

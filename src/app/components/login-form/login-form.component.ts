@@ -54,13 +54,31 @@ export class LoginFormComponent implements OnInit {
       });
   }
   loginAsGuest() {
-    this.loading = true
-    this.afAuth.signInAnonymously().then(() => {
-      this.loading = false
-      this.router.navigate(['/main']);
-    }).catch((error) => {
-      this.loading = false;
-      console.error('Error al iniciar sesión anónimamente:', error);
-    });
+      const email = 'soyinvitado@gmail.com';
+      const password = '123456';
+      this.loading = true;
+
+      // Autenticar al usuario con las credenciales proporcionadas
+      this.afAuth
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          this.loading = false;
+          this.router.navigate(['/main']);
+        })
+        .catch((error) => {
+          this.loading = false;
+          console.error('Error al iniciar sesión con invitado:', error);
+        });
+
   }
+  // loginAsGuest() {
+  //   this.loading = true
+  //   this.afAuth.signInAnonymously().then(() => {
+  //     this.loading = false
+  //     this.router.navigate(['/main']);
+  //   }).catch((error) => {
+  //     this.loading = false;
+  //     console.error('Error al iniciar sesión anónimamente:', error);
+  //   });
+  // }
 }

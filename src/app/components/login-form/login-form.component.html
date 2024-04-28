@@ -10,9 +10,9 @@
       <div>
         <h2 class="elH2" style="user-select: none;">Asi Somos Asi Bailamos</h2>
       </div>
-      <h2 class="form-title">Iniciar sesión</h2>
+      <h2 style="user-select: none;" class="form-title">Iniciar sesión</h2>
       <div class="form-group">
-        <label for="email">Correo electrónico</label>
+        <label style="user-select: none;" for="email">Correo electrónico</label>
         <input
           type="email"
           name="email"
@@ -37,7 +37,7 @@
         >
       </div>
       <div class="form-group">
-        <label for="password">Contraseña</label>
+        <label style="user-select: none;" for="password">Contraseña</label>
         <input
           type="password"
           id="password"
@@ -56,16 +56,16 @@
         >
       </div>
       <div class="form-group form-links">
-        <a class="forgot-password" routerLink="/recuperar"
+        <a style="user-select: none;" class="forgot-password" routerLink="/recuperar"
           >¿Olvidaste tu contraseña?</a
         >
-        <a class="register-link" routerLink="/registrar"
+        <a style="user-select: none;" class="register-link" routerLink="/registrar"
           >Registrarse</a
         >
       </div>
       <button type="submit" class="submit-button">Iniciar sesión</button>
       <div style="text-align: center; margin-top: 14px">
-        <a (click)="loginAsGuest()" class="register-link"
+        <a style="user-select: none; cursor: pointer;" (click)="loginAsGuest()" class="register-link"
           >Iniciar sesión como invitado</a
         >
       </div>

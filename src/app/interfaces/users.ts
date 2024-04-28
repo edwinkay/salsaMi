@@ -3,5 +3,6 @@ export interface Users {
   nombre: string;
   url: string;
   likesCountVideo: number;
-  likedByVideo: string[];
+  likedByVideo: any[];
+  userVideoLikes: any[];
 }

@@ -31,7 +31,8 @@ export class RegistrarUsuarioComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   registrar() {
     const username = this.registrarUsuario.value.username;
