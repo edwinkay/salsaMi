@@ -1,0 +1,7 @@
+export interface Users {
+  id: string;
+  nombre: string;
+  url: string;
+  likesCountVideo: number;
+  likedByVideo: string[];
+}

@@ -28,24 +28,37 @@
           <video controls>
             <source [src]="video.url" type="video/mp4" />
           </video>
-          <p style="position: relative; bottom: 12px; margin: 0">
-            {{ video.nombre }}
-          </p>
+          <div class="section">
+            <div class="title">
+              <p style="margin: 0">
+                {{ video.nombre }}
+              </p>
+            </div>
+            <div class="likes">
+              <i
+                style="cursor: pointer"
+                class="far fa-thumbs-up"
+                (click)="likeVideo(video)"
+              ></i>
+              <span>{{ video.likesCountVideo }}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <!-- <div class="video-container">
-      <div class="video">
-        <div width="320" height="240" class="gallery-video">
-          <video
-            controls
-            src="https://edwinkay.github.io/asi-somos-asi-bailamos/video/video.mp4"
-            poster="posterimage.jpg"
-          >
-            Tu navegador no admite el elemento <code>video</code>.
-          </video>
-        </div>
+  </div>
+</div>
+<div>
+  <div class="modal" *ngIf="modal">
+    <div class="modal-con">
+      <span (click)="close()" class="fas fa-times lax"></span>
+      <div style="text-align: center;">
+        <p>
+          Primero debes
+          <a class="iniciar" (click)="salir()">Iniciar Sesion</a> o
+          <a class="registrar" routerLink="/registrar">Registrate</a>
+        </p>
       </div>
-    </div> -->
+    </div>
   </div>
 </div>

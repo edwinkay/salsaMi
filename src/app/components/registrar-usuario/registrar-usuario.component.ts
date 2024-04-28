@@ -4,6 +4,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { FirebaseErrorService } from 'src/app/services/firebase-error.service';
 import { ToastrService } from 'ngx-toastr';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-registrar-usuario',
@@ -19,7 +20,8 @@ export class RegistrarUsuarioComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private router: Router,
     private firebaseError: FirebaseErrorService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private location: Location
   ) {
     this.registrarUsuario = this.fb.group({
       username: ['', Validators.required],
@@ -29,8 +31,7 @@ export class RegistrarUsuarioComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   registrar() {
     const username = this.registrarUsuario.value.username;
@@ -47,8 +48,8 @@ export class RegistrarUsuarioComponent implements OnInit {
       .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         return userCredential.user?.updateProfile({
-          displayName: username
-        })
+          displayName: username,
+        });
       })
       .then((user) => {
         this.router.navigate(['/login']);
@@ -62,5 +63,8 @@ export class RegistrarUsuarioComponent implements OnInit {
         console.log(error);
         this.firebaseError.errorFirebase(error.code);
       });
+  }
+  goBack() {
+    this.location.back();
   }
 }

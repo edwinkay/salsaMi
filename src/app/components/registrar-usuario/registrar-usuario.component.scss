@@ -40,7 +40,7 @@ input[type="password"] {
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  background: linear-gradient(to right, #E44D42, #001eff);;
+  background: linear-gradient(to right, #e44d42, #001eff);
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -60,7 +60,7 @@ input[type="password"] {
 }
 
 .submit-button:hover {
-  background-color:rgb(0, 26, 255);
+  background-color: rgb(0, 26, 255);
 }
 .submit:hover {
   background-color: rgb(13, 96, 219);
@@ -83,7 +83,7 @@ input[type="password"] {
 .register-link:hover {
   color: #0056b3;
 }
-.elH2{
+.elH2 {
   font-size: 36px;
   font-family: "Arial", sans-serif;
   text-align: center;
@@ -93,3 +93,10 @@ input[type="password"] {
   background-clip: text;
   color: transparent;
 }
+// @media (max-width: 767px) {
+//   input[type="text"],
+//   input[type="email"],
+//   input[type="password"] {
+//     width: 94%;
+//   }
+// }
