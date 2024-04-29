@@ -152,18 +152,28 @@ export class VideosComponent implements OnInit {
   async abrirCom(video: Users) {
     this.dataVideoId = video;
     const user = await this.afAuth.currentUser;
+
     if (user && !this.esInvitado) {
+      const username = user.displayName;
       this.modalcom = true;
+
     } else {
       this.modal = true;
     }
   }
-  deleteModal(comentario: any) {
-    this.modalDelete = true;
+
+  async deleteModal(comentario: any) {
+    const user = await this.afAuth.currentUser;
+
+    if (user?.email === comentario.correo || user?.email == 'administrador.sistema@gmail.com'){
+      this.modalDelete = true;
+      this.ocultarx = false;
+    }
     this.comentarioDel = comentario;
-    this.ocultarx = false;
+
   }
   borrarComentario() {
+
     // Encuentra el índice del comentario en el array commentsVideo
     const index = this.dataVideoId.commentsVideo.indexOf(this.comentarioDel);
 
@@ -191,11 +201,14 @@ export class VideosComponent implements OnInit {
       console.error('Índice de comentario no válido');
     }
   }
-  abrirEditar(comentario: any) {
-    this.modalEditar = true;
+  async abrirEditar(comentario: any) {
+    const user = await this.afAuth.currentUser;
+    if (user?.email === comentario.correo){
+      this.modalEditar = true;
+      this.ocultarx = false;
+    }
     this.comentarioDel = comentario;
     this.esteComentario = comentario.comentario;
-    this.ocultarx = false;
   }
   editarComentario() {
     // Obtén el comentario modificado desde el formulario
@@ -258,7 +271,6 @@ export class VideosComponent implements OnInit {
         comment.likesCountComment = (comment.likesCountComment || 0) + 1; // Incrementar el contador
       }
 
-
       // Actualizar los likes del comentario en Firestore
       const videoId = this.dataVideoId.id;
       const commentIndex = this.dataVideoId.commentsVideo.findIndex(
@@ -269,7 +281,7 @@ export class VideosComponent implements OnInit {
           commentsVideo: this.dataVideoId.commentsVideo,
         };
         await this._videosService.updateVideo(videoId, videox);
-        console.log(videox)
+        console.log(videox);
       }
     } else {
       this.modal = true;

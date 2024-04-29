@@ -47,6 +47,7 @@
                 <i
                   style="cursor: pointer"
                   class="far fa-thumbs-up"
+                  [class.liked]="video.likedByVideo.includes(currentUser.uid)"
                   (click)="likeVideo(video)"
                 ></i>
                 <span>{{ video.likesCountVideo }}</span>
@@ -93,6 +94,7 @@
                 <i
                   style="cursor: pointer"
                   class="far fa-thumbs-up"
+                  [class.liked]="comment.likedByComment.includes(currentUser.uid)"
                   (click)="likeComment(comment)"
                 ></i>
                 <span>{{ comment.likesCountComment }}</span>

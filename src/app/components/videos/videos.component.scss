@@ -221,6 +221,10 @@ nav {
 .lax2:hover{
   color: red;
 }
+.liked {
+  color: #10e208; /* Cambia el color del ícono cuando está activo (liked) */
+}
+
 .comment-input textarea {
   width: calc(100% - 90px); /* Ajustar el ancho del textarea para dejar espacio para el botón */
   margin-bottom: 5px;
@@ -228,6 +232,7 @@ nav {
 textarea#comentario {
     border-radius: 6px;
     padding: 9px;
+    width: 93%;
 }
 .comment-input button {
   width: 80px;
