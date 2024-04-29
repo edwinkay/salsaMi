@@ -231,6 +231,18 @@ export class VideosComponent implements OnInit {
   async likeComment(comment: any) {
     const user = await this.afAuth.currentUser;
     if (user && !this.esInvitado) {
+      // Verificar si el comentario está definido
+      if (!comment) {
+        console.error('El comentario no está definido');
+        return;
+      }
+
+      // Verificar si el comentario tiene la propiedad likedByComment
+      if (!comment.likedByComment) {
+        // Si no tiene la propiedad, crearla como un array vacío
+        comment.likedByComment = [];
+      }
+
       // Verificar si el usuario ya ha dado like
       const userId = user.uid;
 
@@ -239,12 +251,13 @@ export class VideosComponent implements OnInit {
       if (index !== -1) {
         // Si ya ha dado like, quitar el like
         comment.likedByComment.splice(index, 1);
-        comment.likesCountComment--;
+        comment.likesCountComment = Math.max(0, comment.likesCountComment - 1); // Decrementar el contador
       } else {
         // Si no ha dado like, agregar el like
         comment.likedByComment.push(userId);
-        comment.likesCountComment++;
+        comment.likesCountComment = (comment.likesCountComment || 0) + 1; // Incrementar el contador
       }
+
 
       // Actualizar los likes del comentario en Firestore
       const videoId = this.dataVideoId.id;
@@ -256,6 +269,7 @@ export class VideosComponent implements OnInit {
           commentsVideo: this.dataVideoId.commentsVideo,
         };
         await this._videosService.updateVideo(videoId, videox);
+        console.log(videox)
       }
     } else {
       this.modal = true;
