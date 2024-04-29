@@ -23,6 +23,14 @@ export class VideosComponent implements OnInit {
   currentUser: any | null;
   esInvitado = false;
   modal = false;
+  modalcom = false;
+  modalDelete = false;
+  modalEditar = false;
+  comentarioDel: any;
+  comentario: string = '';
+  esteComentario: string = '';
+  dataVideoId: any = [];
+  ocultarx = true;
 
   constructor(
     private storage: Storage,
@@ -39,9 +47,9 @@ export class VideosComponent implements OnInit {
       this.currentUser = user;
       const comprobar = user?.uid;
       if (comprobar == 'rm01jawdLvYSObMPDc8BTBasbJp2') {
-        this.esInvitado = true
+        this.esInvitado = true;
       }
-      console.log(user);
+      // console.log(user);
       // if (user) {
       //   this.loadUserLikes(user.uid);
       // }
@@ -58,15 +66,15 @@ export class VideosComponent implements OnInit {
           likesCountVideo: videoData.likesCountVideo || 0,
           likedByVideo: videoData.likedByVideo || [],
           userVideoLikes: videoData.userVideoLikes || [],
+          commentsVideo: videoData.commentsVideo || [],
         });
-        console.log(this.videos);
+        // console.log(this.videos);
       });
     });
   }
 
   async likeVideo(video: Users) {
     const user = await this.afAuth.currentUser;
-    console.log(user);
     if (user && !this.esInvitado) {
       // Verificar si el usuario ya ha dado like
       const userId = user.uid;
@@ -79,13 +87,13 @@ export class VideosComponent implements OnInit {
       if (index !== -1) {
         // Si ya ha dado like, quitar el like
         video.likedByVideo.splice(index, 1);
-        video.userVideoLikes.splice(index, 1)
+        video.userVideoLikes.splice(index, 1);
         video.likesCountVideo--;
       } else {
         // Si no ha dado like, agregar el like
         video.likedByVideo.push(userId);
         video.likesCountVideo++;
-        video.userVideoLikes.push({usuario, correo})
+        video.userVideoLikes.push({ usuario, correo });
       }
 
       // Actualizar los likes en Firestore
@@ -93,12 +101,37 @@ export class VideosComponent implements OnInit {
       const videox: any = {
         likesCountVideo: video.likesCountVideo,
         likedByVideo: video.likedByVideo,
-        userVideoLikes: video.userVideoLikes
+        userVideoLikes: video.userVideoLikes,
       };
       await this._videosService.updateVideo(id, videox);
-      console.log(video);
     } else {
       this.modal = true;
+    }
+  }
+  async addComment(comentario: string) {
+    // Obtener el usuario actual
+    const user = await this.afAuth.currentUser;
+
+    if (user) {
+      const video = this.dataVideoId;
+      // Obtener el ID del video
+      const videoId = this.dataVideoId.id;
+      const usuario = user.displayName;
+      const correo = user.email;
+      // Crear el comentario
+      video.commentsVideo.push({ usuario, correo, comentario });
+
+      // const newComment = {
+      //   usuario: user.displayName,
+      //   correo: user.email,
+      //   comentario: comentario,
+      // };
+      const videox: any = {
+        commentsVideo: video.commentsVideo,
+      };
+      // Actualizar los comentarios en Firestore
+      await this._videosService.updateVideo(videoId, videox);
+      this.comentario = '';
     }
   }
   salir() {
@@ -106,10 +139,130 @@ export class VideosComponent implements OnInit {
       this.router.navigate(['/login']);
     });
   }
-  close(){
-    this.modal = false
+  close() {
+    this.modal = false;
+    this.modalcom = false;
+  }
+  closeDelete() {
+    this.modalDelete = false;
+    this.modalEditar = false;
+    this.ocultarx = true;
+  }
+
+  async abrirCom(video: Users) {
+    this.dataVideoId = video;
+    const user = await this.afAuth.currentUser;
+    if (user && !this.esInvitado) {
+      this.modalcom = true;
+    } else {
+      this.modal = true;
+    }
+  }
+  deleteModal(comentario: any) {
+    this.modalDelete = true;
+    this.comentarioDel = comentario;
+    this.ocultarx = false;
+  }
+  borrarComentario() {
+    // Encuentra el índice del comentario en el array commentsVideo
+    const index = this.dataVideoId.commentsVideo.indexOf(this.comentarioDel);
+
+    // Asegúrate de que el índice sea válido
+    if (index !== -1) {
+      // Elimina el comentario del array commentsVideo
+      this.dataVideoId.commentsVideo.splice(index, 1);
+
+      // Actualiza los comentarios en Firestore
+      const videoId = this.dataVideoId.id;
+      const videox: any = {
+        commentsVideo: this.dataVideoId.commentsVideo,
+      };
+      this._videosService
+        .updateVideo(videoId, videox)
+        .then(() => {
+          this.modalDelete = false;
+          this.ocultarx = true;
+          console.log('Comentario eliminado correctamente');
+        })
+        .catch((error) => {
+          console.error('Error al eliminar el comentario:', error);
+        });
+    } else {
+      console.error('Índice de comentario no válido');
+    }
+  }
+  abrirEditar(comentario: any) {
+    this.modalEditar = true;
+    this.comentarioDel = comentario;
+    this.esteComentario = comentario.comentario;
+    this.ocultarx = false;
+  }
+  editarComentario() {
+    // Obtén el comentario modificado desde el formulario
+    const comentarioModificado = this.esteComentario;
+
+    // Encuentra el índice del comentario en el array commentsVideo
+    const index = this.dataVideoId.commentsVideo.indexOf(this.comentarioDel);
+
+    // Asegúrate de que el índice sea válido
+    if (index !== -1) {
+      // Actualiza el comentario en el array commentsVideo
+      this.dataVideoId.commentsVideo[index].comentario = comentarioModificado;
+
+      // Actualiza los comentarios en Firestore
+      const videoId = this.dataVideoId.id;
+      const videox: any = {
+        commentsVideo: this.dataVideoId.commentsVideo,
+      };
+      this._videosService
+        .updateVideo(videoId, videox)
+        .then(() => {
+          this.modalEditar = false;
+          this.ocultarx = true;
+          console.log('Comentario editado correctamente');
+        })
+        .catch((error) => {
+          console.error('Error al editar el comentario:', error);
+        });
+    } else {
+      console.error('Índice de comentario no válido');
+    }
+  }
+  async likeComment(comment: any) {
+    const user = await this.afAuth.currentUser;
+    if (user && !this.esInvitado) {
+      // Verificar si el usuario ya ha dado like
+      const userId = user.uid;
+
+      const index = comment.likedByComment.indexOf(userId);
+
+      if (index !== -1) {
+        // Si ya ha dado like, quitar el like
+        comment.likedByComment.splice(index, 1);
+        comment.likesCountComment--;
+      } else {
+        // Si no ha dado like, agregar el like
+        comment.likedByComment.push(userId);
+        comment.likesCountComment++;
+      }
+
+      // Actualizar los likes del comentario en Firestore
+      const videoId = this.dataVideoId.id;
+      const commentIndex = this.dataVideoId.commentsVideo.findIndex(
+        (c: any) => c === comment
+      );
+      if (commentIndex !== -1) {
+        const videox: any = {
+          commentsVideo: this.dataVideoId.commentsVideo,
+        };
+        await this._videosService.updateVideo(videoId, videox);
+      }
+    } else {
+      this.modal = true;
+    }
   }
 }
+
 // Cargar likes del usuario logueado desde Firestore
 // loadUserLikes(userId: string) {
 //   this.afs

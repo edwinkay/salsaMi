@@ -34,13 +34,23 @@
                 {{ video.nombre }}
               </p>
             </div>
-            <div class="likes">
-              <i
-                style="cursor: pointer"
-                class="far fa-thumbs-up"
-                (click)="likeVideo(video)"
-              ></i>
-              <span>{{ video.likesCountVideo }}</span>
+            <div class="bocadillos">
+              <div class="comment">
+                <i
+                  style="cursor: pointer"
+                  class="far fa-comment"
+                  (click)="abrirCom(video)"
+                ></i>
+                <span>{{ video.commentsVideo.length }}</span>
+              </div>
+              <div class="likes">
+                <i
+                  style="cursor: pointer"
+                  class="far fa-thumbs-up"
+                  (click)="likeVideo(video)"
+                ></i>
+                <span>{{ video.likesCountVideo }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -52,13 +62,108 @@
   <div class="modal" *ngIf="modal">
     <div class="modal-con">
       <span (click)="close()" class="fas fa-times lax"></span>
-      <div style="text-align: center;">
+      <div style="text-align: center">
         <p>
           Primero debes
           <a class="iniciar" (click)="salir()">Iniciar Sesion</a> o
           <a class="registrar" routerLink="/registrar">Registrate</a>
         </p>
       </div>
+    </div>
+  </div>
+</div>
+<div class="modalcom" *ngIf="modalcom">
+  <div class="modal-com">
+    <span *ngIf="ocultarx" (click)="close()" class="fas fa-times lax2"></span>
+    <h3>Comentarios:</h3>
+    <div class="comments-container">
+      <div class="comments-list">
+        <div *ngFor="let comment of dataVideoId.commentsVideo">
+          <span>{{ comment.usuario }}</span>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <p style="padding: 16px; width: 86%">{{ comment.comentario }}</p>
+            <div style="display: flex; gap: 1rem">
+              <div>
+                <i
+                  style="cursor: pointer"
+                  class="far fa-thumbs-up"
+                  (click)="likeComment(comment)"
+                ></i>
+                <span>{{ comment.likesCountComment }}</span>
+              </div>
+              <i
+                (click)="abrirEditar(comment)"
+                style="cursor: pointer; color: blue"
+                class="fas fa-pencil-alt"
+              ></i>
+              <i
+                (click)="deleteModal(comment)"
+                style="cursor: pointer; color: red"
+                class="fas fa-trash"
+              ></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-input">
+      <form (submit)="addComment(comentario)" #commentForm="ngForm">
+        <label for="comentario">Agregar comentario:</label><br />
+        <textarea
+          id="comentario"
+          name="comentario"
+          rows="4"
+          cols="50"
+          [(ngModel)]="comentario"
+          required
+        ></textarea
+        ><br />
+        <button
+          style="padding: 4px; border-radius: 7px"
+          type="submit"
+          [disabled]="!commentForm.valid"
+        >
+          Comentar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="modalDelete" *ngIf="modalDelete">
+    <div class="modal-con">
+      <div style="text-align: center">
+        <p>¿Deseas eliminar este Comentario?</p>
+      </div>
+      <div style="display: flex; justify-content: space-evenly">
+        <button class="buttonDel" (click)="closeDelete()">Cancelar</button>
+        <button (click)="borrarComentario()" class="buttonDel">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modalEditar" *ngIf="modalEditar">
+  <div class="modal-con">
+    <div style="text-align: center">
+      <p>Editar comentario:</p>
+      <textarea
+        style="padding: 12px"
+        [(ngModel)]="esteComentario"
+        name="esteComentario"
+        id="esteComentario"
+        cols="30"
+        rows="10"
+      ></textarea>
+    </div>
+    <div style="display: flex; justify-content: space-evenly; margin-top: 11px">
+      <button class="buttonDel" (click)="closeDelete()">Cancelar</button>
+      <button (click)="editarComentario()" class="buttonDel">Aceptar</button>
     </div>
   </div>
 </div>

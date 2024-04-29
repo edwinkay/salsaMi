@@ -1,15 +1,19 @@
 .contenedor {
-  background-image: url('https://firebasestorage.googleapis.com/v0/b/fitpal-horario.appspot.com/o/fondos%2Fpngwing.com.png?alt=media&token=4e0dc339-1658-4b69-b385-4e1e5c787abf');
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/fitpal-horario.appspot.com/o/fondos%2Fpngwing.com.png?alt=media&token=4e0dc339-1658-4b69-b385-4e1e5c787abf");
   display: flex;
   overflow: hidden;
   justify-content: center;
   margin: 0;
   padding: 0;
 }
-nav{
+.bocadillos {
   display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+  gap: 1rem;
+}
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
 .box {
@@ -18,7 +22,7 @@ nav{
   padding: 20px;
   width: 100%;
 }
-.caja{
+.caja {
   padding: 20px;
   border-radius: 15px;
   outline: solid rgb(245, 246, 248);
@@ -28,18 +32,18 @@ nav{
   display: flex;
   justify-content: space-between;
 }
-.nav-link{
+.nav-link {
   text-decoration: none;
   color: #f4f4f4;
 }
-.nav-link:hover{
+.nav-link:hover {
   color: rgb(255, 230, 0);
   text-decoration: underline;
 }
 // boton upload
 .con-input {
-    position: relative;
-    padding: 32px 0 49px 0;
+  position: relative;
+  padding: 32px 0 49px 0;
 }
 
 .input-file-container {
@@ -76,7 +80,7 @@ nav{
   padding: 25px;
 }
 
-.video{
+.video {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   column-gap: 30px;
@@ -99,14 +103,40 @@ nav{
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.modal-con{
+.modalDelete {
+  border-radius: 6px;
+  background-color: #b8b5b5;
+  width: 287px;
+  height: 105px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.modalEditar {
+  border-radius: 6px;
+  background-color: #b8b5b5;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.buttonDel{
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 3px;
+}
+.buttonDel:hover{
+  background-color: rgb(211, 225, 221);
+}
+.modal-con {
   padding: 18px;
 }
-.iniciar{
+.iniciar {
   color: blue;
   cursor: pointer;
 }
-.iniciar:hover{
+.iniciar:hover {
   color: red;
 }
 .registrar {
@@ -114,35 +144,112 @@ nav{
   cursor: pointer;
   text-decoration: none;
 }
-.registrar:hover{
+.registrar:hover {
   color: red;
 }
-.lax{
+.lax {
   position: absolute;
   top: 7px;
   right: 8px;
   cursor: pointer;
 }
-.lax:hover{
+.lax:hover {
   color: red;
 }
 
+//modal comentarios
+.modalcom {
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .comments-list div:not(:last-child) {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd; /* Línea divisoria entre comentarios */
+    padding-bottom: 20px; /* Espacio adicional debajo de la línea */
+  }
+}
 
-@media (max-width: 900px){
-  .caja{
+.modal-com {
+  background-color: #fff;
+  padding: 20px;
+  max-width: 80%;
+  max-height: 80%;
+  overflow-y: auto; /* Agrega scroll vertical si hay muchos comentarios */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+   display: flex;
+  flex-direction: column;
+  height: 80%; /* Altura máxima del modal */
+}
+
+.comments-container {
+  flex-grow: 1; /* La lista de comentarios crecerá para llenar el espacio disponible */
+  overflow-y: auto;
+}
+.comment-input {
+  margin-top: 10px; /* Espacio entre la lista de comentarios y el área de entrada */
+}
+
+.comments-list {
+  padding-right: 10px;
+}
+
+.comments-list div {
+  margin-bottom: 10px; /* Espacio entre comentarios */
+}
+.last {
+  margin-bottom: 0; /* Eliminar margen inferior del último comentario */
+  border-bottom: none; /* No añadir línea divisoria al último comentario */
+}
+.comment-input form {
+  position: sticky;
+  bottom: 0;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1); /* Sombra bajo el área de entrada */
+}
+.lax2{
+  display: flex;
+  justify-content: flex-end;
+}
+.lax2:hover{
+  color: red;
+}
+.comment-input textarea {
+  width: calc(100% - 90px); /* Ajustar el ancho del textarea para dejar espacio para el botón */
+  margin-bottom: 5px;
+}
+textarea#comentario {
+    border-radius: 6px;
+    padding: 9px;
+}
+.comment-input button {
+  width: 80px;
+}
+
+
+
+@media (max-width: 900px) {
+  .caja {
     font-size: 15px;
   }
-  .video{
-  grid-template-columns: repeat(2, 1fr);
+  .video {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
+@media (max-width: 580px) {
+  .video {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
-@media (max-width: 580px){
-  .video{
-  grid-template-columns: repeat(1, 1fr);
-}
-}
-@media (max-width: 350px){
-  .caja{
+@media (max-width: 350px) {
+  .caja {
     font-size: 12px;
   }
 }

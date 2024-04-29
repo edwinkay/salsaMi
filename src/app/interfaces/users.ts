@@ -5,4 +5,5 @@ export interface Users {
   likesCountVideo: number;
   likedByVideo: any[];
   userVideoLikes: any[];
+  commentsVideo: any[]
 }
