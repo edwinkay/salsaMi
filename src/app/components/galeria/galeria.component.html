@@ -3,7 +3,7 @@
     <app-navbar></app-navbar>
     <div class="con-input" *ngIf="adm">
       <div class="input-file-container">
-        <input id="file-input" (change)="subirArchivo()" type="file" />
+        <input id="file-input" (change)="subirArchivo($event)" type="file" />
         <label for="file-input" class="file-label">
           <i class="fas fa-plus"></i>
           Agregar nueva imagen

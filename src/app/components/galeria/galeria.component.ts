@@ -4,6 +4,8 @@ import { Storage, ref, uploadBytes, listAll, getDownloadURL } from '@angular/fir
 import { ImagenesService } from 'src/app/services/imagenes.service';
 import {Images} from 'src/app/interfaces/images'
 import { Router } from '@angular/router';
+import { getMetadata } from 'firebase/storage';
+import { ToastrService } from 'ngx-toastr';
 
 
 
@@ -34,12 +36,14 @@ export class GaleriaComponent implements OnInit {
   comentario: string = '';
   esteComentario: string = '';
   dataVideoId: any = [];
+  e: any;
 
   constructor(
     private storage: Storage,
     private el: ElementRef,
     private afAuth: AngularFireAuth,
     private _image: ImagenesService,
+    private toastr: ToastrService,
     private router: Router
   ) {}
 
@@ -50,6 +54,9 @@ export class GaleriaComponent implements OnInit {
       const comprobar = user?.uid;
       if (comprobar == 'rm01jawdLvYSObMPDc8BTBasbJp2') {
         this.esInvitado = true;
+      }
+      if (comprobar == 'QxwJYfG0c2MwfjnJR70AdmmKOIz2') {
+        this.adm = true;
       }
     });
   }
@@ -101,29 +108,53 @@ export class GaleriaComponent implements OnInit {
       this.modal = true;
     }
   }
-  subirArchivo() {}
-  // subirArchivo($event: any) {
-  //   const file = $event.target.files[0];
+  subirArchivo($event: any) {
+    const file = $event.target.files[0];
 
-  //   const imgRef = ref(this.storage, `images/${file.name}`);
-  //   uploadBytes(imgRef, file)
-  //     .then((x) => {
-  //       this.getImages();
-  //     })
-  //     .catch((error) => console.log(error));
-  // }
-  // getImages() {
-  //   const imagesRef = ref(this.storage, 'images');
-  //   listAll(imagesRef)
-  //     .then(async (images) => {
-  //       this.images = [];
-  //       for (let image of images.items) {
-  //         const url = await getDownloadURL(image);
-  //         this.images.push(url);
-  //       }
-  //     })
-  //     .catch((error) => console.log(error));
-  // }
+    const imgRef = ref(this.storage, `images/${file.name}`);
+    uploadBytes(imgRef, file)
+      .then(async (x) => {
+        await this.getImages();
+        this.capturarNuevaImagen();
+        this.toastr.success(
+          'Agregando nueva imagen'
+        );
+      })
+      .catch((error) => console.log(error));
+  }
+  capturarNuevaImagen() {
+    const imagesRef = ref(this.storage, 'images');
+    listAll(imagesRef)
+      .then(async (images) => {
+        let latestImage;
+        let latestTimestamp = new Date(0); // Inicializamos con la fecha más antigua posible
+
+        for (let imageRef of images.items) {
+          const metadata = await getMetadata(imageRef); // Obtener los metadatos del archivo
+          const createdAt = new Date(metadata.timeCreated); // Convertir la cadena a objeto Date
+
+          if (createdAt > latestTimestamp) {
+            latestTimestamp = createdAt;
+            latestImage = imageRef;
+          }
+        }
+
+        if (latestImage) {
+          const url = await getDownloadURL(latestImage);
+          const dato: any = {
+            url: url,
+          };
+          this._image.addImagenInfo(dato).then(() => {
+            console.log('actualizando');
+            window.location.reload();
+            this.toastr.info('Actualizando la lista de Imagenes');
+          });
+        } else {
+          console.log('No se encontraron imágenes.');
+        }
+      })
+      .catch((error) => console.log(error));
+  }
 
   //insert function lightbox
 
