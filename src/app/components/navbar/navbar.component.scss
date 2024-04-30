@@ -1,0 +1,31 @@
+.log {
+  display: flex;
+  justify-content: space-between;
+}
+.caja {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  border-radius: 15px;
+  outline: solid rgb(245, 246, 248);
+  text-align: center;
+  margin-top: 8px;
+}
+.nav-link {
+  text-decoration: none;
+  color: #f4f4f4;
+}
+.nav-link:hover {
+  color: rgb(255, 230, 0);
+  text-decoration: underline;
+}
+@media (max-width: 900px) {
+  .caja {
+    font-size: 15px;
+  }
+}
+@media (max-width: 350px) {
+  .caja {
+    font-size: 12px;
+  }
+}

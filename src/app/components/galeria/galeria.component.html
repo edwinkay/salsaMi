@@ -1,16 +1,9 @@
 <div class="contenedor">
   <div class="box">
-    <div class="caja">
-      <nav>
-        <a class="nav-link" routerLink="/main">INICIO</a>
-        <a class="nav-link" routerLink="/galeria">IMAGENES</a>
-        <a class="nav-link" routerLink="/videos">VIDEOS</a>
-        <a class="nav-link" routerLink="/musica">MUSICA</a>
-      </nav>
-    </div>
-    <div class="con-input">
+    <app-navbar></app-navbar>
+    <div class="con-input" *ngIf="adm">
       <div class="input-file-container">
-        <input id="file-input" (change)="subirArchivo($event)" type="file" />
+        <input id="file-input" (change)="subirArchivo()" type="file" />
         <label for="file-input" class="file-label">
           <i class="fas fa-plus"></i>
           Agregar nueva imagen
@@ -25,9 +18,28 @@
             (mouseleave)="onMouseLeave(i)"
             class="zoomable-image"
             (click)="onPreviewImage(i)"
-            [src]="image"
+            [src]="image.url"
             alt="imagen"
           />
+          <div style="display: inline-flex; gap: 4rem">
+            <div>
+              <i
+                style="cursor: pointer"
+                class="far fa-comment"
+                (click)="abrirCom(image)"
+              ></i>
+              <span>{{ image.commentsVideo.length }}</span>
+            </div>
+            <div >
+              <i
+                [class.liked]="image.likedByImage.includes(currentUser.uid)"
+                (click)="likeImage(image)"
+                style="cursor: pointer"
+                class="far fa-thumbs-up"
+              ></i>
+              <span>{{ image.likesCountImage }}</span>
+            </div>
+          </div>
         </div>
       </div>
       <div
@@ -66,12 +78,144 @@
 
         <div *ngIf="previewImage" class="lightbox-img">
           <img
-            [src]="currentLightboxImage"
+            style="transform: none;"
+            [src]="currentLightboxImage.url"
             alt="imagen"
             [class.zoom-in]="previewImage"
           />
+          <div style="display: inline-flex; gap: 4rem">
+            <div>
+              <i
+                style="cursor: pointer"
+                class="far fa-comment"
+                (click)="abrirCom(currentLightboxImage)"
+              ></i>
+              <span>{{ currentLightboxImage.commentsVideo.length }}</span>
+            </div>
+            <div>
+              <i
+                [class.liked]="
+                  currentLightboxImage.likedByImage.includes(currentUser.uid)
+                "
+                (click)="likeImage(currentLightboxImage)"
+                style="cursor: pointer"
+                class="far fa-thumbs-up"
+              ></i>
+              <span>{{ currentLightboxImage.likesCountImage }}</span>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="modal" *ngIf="modal">
+    <div class="modal-con">
+      <span (click)="close()" class="fas fa-times lax"></span>
+      <div style="text-align: center">
+        <p>
+          Primero debes
+          <a class="iniciar" (click)="salir()">Iniciar Sesion</a> o
+          <a class="registrar" routerLink="/registrar">Registrate</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modalcom" *ngIf="modalcom">
+  <div style="text-align: justify" class="modal-com">
+    <span *ngIf="ocultarx" (click)="close()" class="fas fa-times lax2"></span>
+    <h3>Comentarios:</h3>
+    <div class="comments-container">
+      <div class="comments-list">
+        <div *ngFor="let comment of dataVideoId.commentsVideo">
+          <span>{{ comment.usuario }}</span>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <p style="padding: 16px; width: 86%">{{ comment.comentario }}</p>
+            <div style="display: flex; gap: 1rem">
+              <div>
+                <i
+                  style="cursor: pointer"
+                  class="far fa-thumbs-up"
+                  [class.liked]="comment.likedByComment && comment.likedByComment.includes(currentUser.uid)"
+                  (click)="likeComment(comment)"
+                ></i>
+                <span>{{ comment.likesCountComment }}</span>
+              </div>
+              <i
+                (click)="abrirEditar(comment)"
+                style="cursor: pointer; color: blue"
+                class="fas fa-pencil-alt"
+              ></i>
+              <i
+                (click)="deleteModal(comment)"
+                style="cursor: pointer; color: red"
+                class="fas fa-trash"
+              ></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-input">
+      <form (submit)="addComment(comentario)" #commentForm="ngForm">
+        <label for="comentario">Agregar comentario:</label><br />
+        <textarea
+          id="comentario"
+          name="comentario"
+          rows="4"
+          cols="50"
+          [(ngModel)]="comentario"
+          required
+        ></textarea
+        ><br />
+        <button
+          style="padding: 4px; border-radius: 7px"
+          type="submit"
+          [disabled]="!commentForm.valid"
+        >
+          Comentar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="modalDelete" *ngIf="modalDelete">
+    <div class="modal-con">
+      <div style="text-align: center">
+        <p>¿Deseas eliminar este Comentario?</p>
+      </div>
+      <div style="display: flex; justify-content: space-evenly">
+        <button class="buttonDel" (click)="closeDelete()">Cancelar</button>
+        <button (click)="borrarComentario()" class="buttonDel">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modalEditar" *ngIf="modalEditar">
+  <div class="modal-con">
+    <div style="text-align: center">
+      <p>Editar comentario:</p>
+      <textarea
+        style="padding: 12px"
+        [(ngModel)]="esteComentario"
+        name="esteComentario"
+        id="esteComentario"
+        cols="30"
+        rows="10"
+      ></textarea>
+    </div>
+    <div style="display: flex; justify-content: space-evenly; margin-top: 11px">
+      <button class="buttonDel" (click)="closeDelete()">Cancelar</button>
+      <button (click)="editarComentario()" class="buttonDel">Aceptar</button>
     </div>
   </div>
 </div>

@@ -40,7 +40,6 @@ export class LoginFormComponent implements OnInit {
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
         this.router.navigate(['/main']);
-        console.log(user);
         this.loading = false;
       })
       .catch((error) => {

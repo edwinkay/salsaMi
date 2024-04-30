@@ -52,10 +52,11 @@ nav {
 
     .gallery-img img {
       width: 100%;
-      height: auto;
+      height: 350px;
       cursor: zoom-in;
       border-radius: 0.35rem;
       margin-bottom: 30px;
+      margin-top: 56px;
       box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.21);
     }
   }
@@ -152,7 +153,8 @@ nav {
     }
 
     .lightbox-img img {
-      width: 100%;
+      width: 92%;
+      height: 50vh;
       border-radius: 0.35rem;
     }
   }
@@ -222,7 +224,7 @@ nav {
             column-count: 2;
 
             .gallery-img img {
-                max-width: 100%;
+                width: 100%;
             }
         }
     }
@@ -235,8 +237,17 @@ nav {
   }
 }
 
-@media (max-width: 350px) {
+@media (max-width: 500px) {
   .caja {
     font-size: 12px;
   }
+  .gallery-lightbox-container {
+        .gallery {
+            column-count: 1;
+
+            .gallery-img img {
+                width: 100%;
+            }
+        }
+    }
 }
