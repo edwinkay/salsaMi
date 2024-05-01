@@ -33,7 +33,6 @@ export class VideosComponent implements OnInit {
   dataVideoId: any = [];
   ocultarx = true;
   adm = false;
-  videoPlaying: boolean[] = [];
 
   constructor(
     private storage: Storage,
@@ -60,7 +59,6 @@ export class VideosComponent implements OnInit {
       //   this.loadUserLikes(user.uid);
       // }
     });
-    this.initVideoPlayingArray();
   }
   getVideos() {
     this._videosService.getVideos().subscribe((data) => {
@@ -293,11 +291,6 @@ export class VideosComponent implements OnInit {
     } else {
       this.modal = true;
     }
-  }
-  initVideoPlayingArray() {
-    this.videos.forEach(() => {
-      this.videoPlaying.push(false);
-    });
   }
 }
 

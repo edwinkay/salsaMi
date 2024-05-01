@@ -20,49 +20,52 @@
       </div>
     </div>
     <div class="video-container">
-  <div class="video">
-    <div width="320" height="240" class="gallery-video" *ngFor="let video of videos; let i = index">
-      <!-- <video controls>
+      <div class="video">
+        <div
+          width="320"
+          height="240"
+          class="gallery-video"
+          *ngFor="let video of videos"
+        >
+          <!-- <video controls>
             <source [src]="video.url" type="video/mp4" />
           </video> -->
-      <iframe
-        width="320"
-        height="240"
-        [src]="video.url | safeUrl : 'autoplay=0'"
-        [allow]="videoPlaying[i] ? 'autoplay; encrypted-media' : 'encrypted-media'"
-        frameborder="0"
-        allowfullscreen
-      ></iframe>
-      <div class="section">
-        <div class="title">
-          <p style="margin: 0">
-            {{ video.nombre }}
-          </p>
-        </div>
-        <div class="bocadillos">
-          <div class="comment">
-            <i
-              style="cursor: pointer"
-              class="far fa-comment"
-              (click)="abrirCom(video)"
-            ></i>
-            <span>{{ video.commentsVideo.length }}</span>
-          </div>
-          <div class="likes">
-            <i
-              style="cursor: pointer"
-              class="far fa-thumbs-up"
-              [class.liked]="video.likedByVideo.includes(currentUser.uid)"
-              (click)="likeVideo(video)"
-            ></i>
-            <span>{{ video.likesCountVideo }}</span>
+          <iframe
+            width="320"
+            height="240"
+            [src]="video.url | safeUrl : 'autoplay=0'"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+          <div class="section">
+            <div class="title">
+              <p style="margin: 0">
+                {{ video.nombre }}
+              </p>
+            </div>
+            <div class="bocadillos">
+              <div class="comment">
+                <i
+                  style="cursor: pointer"
+                  class="far fa-comment"
+                  (click)="abrirCom(video)"
+                ></i>
+                <span>{{ video.commentsVideo.length }}</span>
+              </div>
+              <div class="likes">
+                <i
+                  style="cursor: pointer"
+                  class="far fa-thumbs-up"
+                  [class.liked]="video.likedByVideo.includes(currentUser.uid)"
+                  (click)="likeVideo(video)"
+                ></i>
+                <span>{{ video.likesCountVideo }}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-
   </div>
 </div>
 <div>
