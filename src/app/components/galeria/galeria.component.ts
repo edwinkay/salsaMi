@@ -36,7 +36,6 @@ export class GaleriaComponent implements OnInit {
   comentario: string = '';
   esteComentario: string = '';
   dataVideoId: any = [];
-  e: any;
 
   constructor(
     private storage: Storage,

@@ -24,6 +24,8 @@ import { RegistrarUsuarioComponent } from './components/registrar-usuario/regist
 import { RecuperarContrasenaComponent } from './components/recuperar-contrasena/recuperar-contrasena.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { FormVideoComponent } from './components/form-video/form-video.component';
+import { SafeUrlPipe } from './safe-url.pipe';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     RecuperarContrasenaComponent,
     SpinnerComponent,
     NavbarComponent,
+    FormVideoComponent,
+    SafeUrlPipe,
   ],
   imports: [
     BrowserModule,

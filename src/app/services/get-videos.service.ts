@@ -17,4 +17,7 @@ export class GetVideosService {
   updateVideo(videoId: string, data: any) {
     return this.firestore.collection('videos').doc(videoId).update(data);
   }
+  addImagenInfo(videoId: any) {
+    return this.firestore.collection('videos').add(videoId);
+  }
 }

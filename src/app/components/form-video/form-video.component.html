@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="form-container">
+    <form (ngSubmit)="subirVideo()">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input style="width: 94%;" [(ngModel)]="subir.nombre" name="nombre" type="text" />
+      </div>
+      <div class="form-group">
+        <label>Url</label>
+        <input style="width: 94%;" [(ngModel)]="subir.url" name="url" type="text" />
+      </div>
+      <div class="form-group">
+        <button type="submit">Agregar Video</button>
+      </div>
+      <div class="form-group">
+        <button style="background-color: green;" routerLink="/videos">Volver</button>
+      </div>
+    </form>
+  </div>
+</div>

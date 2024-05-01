@@ -13,6 +13,7 @@ import { Users } from 'src/app/interfaces/users';
 import { UsersService } from 'src/app/services/users.service';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-videos',
   templateUrl: './videos.component.html',
@@ -31,6 +32,8 @@ export class VideosComponent implements OnInit {
   esteComentario: string = '';
   dataVideoId: any = [];
   ocultarx = true;
+  adm = false;
+  videoPlaying: boolean[] = [];
 
   constructor(
     private storage: Storage,
@@ -49,11 +52,15 @@ export class VideosComponent implements OnInit {
       if (comprobar == 'rm01jawdLvYSObMPDc8BTBasbJp2') {
         this.esInvitado = true;
       }
+      if (comprobar == 'QxwJYfG0c2MwfjnJR70AdmmKOIz2') {
+        this.adm = true;
+      }
       // console.log(user);
       // if (user) {
       //   this.loadUserLikes(user.uid);
       // }
     });
+    this.initVideoPlayingArray();
   }
   getVideos() {
     this._videosService.getVideos().subscribe((data) => {
@@ -156,7 +163,6 @@ export class VideosComponent implements OnInit {
     if (user && !this.esInvitado) {
       const username = user.displayName;
       this.modalcom = true;
-
     } else {
       this.modal = true;
     }
@@ -165,15 +171,16 @@ export class VideosComponent implements OnInit {
   async deleteModal(comentario: any) {
     const user = await this.afAuth.currentUser;
 
-    if (user?.email === comentario.correo || user?.email == 'administrador.sistema@gmail.com'){
+    if (
+      user?.email === comentario.correo ||
+      user?.email == 'administrador.sistema@gmail.com'
+    ) {
       this.modalDelete = true;
       this.ocultarx = false;
     }
     this.comentarioDel = comentario;
-
   }
   borrarComentario() {
-
     // Encuentra el índice del comentario en el array commentsVideo
     const index = this.dataVideoId.commentsVideo.indexOf(this.comentarioDel);
 
@@ -203,7 +210,7 @@ export class VideosComponent implements OnInit {
   }
   async abrirEditar(comentario: any) {
     const user = await this.afAuth.currentUser;
-    if (user?.email === comentario.correo){
+    if (user?.email === comentario.correo) {
       this.modalEditar = true;
       this.ocultarx = false;
     }
@@ -286,6 +293,11 @@ export class VideosComponent implements OnInit {
     } else {
       this.modal = true;
     }
+  }
+  initVideoPlayingArray() {
+    this.videos.forEach(() => {
+      this.videoPlaying.push(false);
+    });
   }
 }
 
