@@ -14,6 +14,8 @@ export class PerfilEditarComponent implements OnInit {
   displayNameValue: any | null;
   phoneNumberValue: string | null | undefined;
   genderValue: any;
+  estado: any;
+  ciudad: any;
   birthdayValue: any;
   aboutMeValue: any;
   usuariosInfo: any[] = [];
@@ -57,6 +59,8 @@ export class PerfilEditarComponent implements OnInit {
         this.genderValue = buscarObjeto.Genero;
         this.birthdayValue = buscarObjeto.cumpleanos;
         this.aboutMeValue = buscarObjeto.about
+        this.ciudad = buscarObjeto.ciudad
+        this.estado = buscarObjeto.estado
       });
     });
   }
@@ -67,15 +71,19 @@ export class PerfilEditarComponent implements OnInit {
         .then((user) => {
           const userUid = user?.uid;
           const email = user?.email;
+          const foto = user?.photoURL;
           if (this.comprobar) {
             const usuarioData = {
               idUser: userUid,
               usuario: this.displayNameValue,
               email: email,
+              foto: foto,
               telefono: this.phoneNumberValue,
               Genero: this.genderValue,
               cumpleanos: this.birthdayValue,
-              about: this.aboutMeValue
+              about: this.aboutMeValue,
+              ciudad: this.ciudad,
+              estado: this.estado
             };
             this._user.addIUserInfo(usuarioData).then(() => {});
             // console.log('no existe');
@@ -85,10 +93,13 @@ export class PerfilEditarComponent implements OnInit {
               idUser: userUid,
               usuario: this.displayNameValue,
               email: email,
+              foto: foto,
               telefono: this.phoneNumberValue,
               Genero: this.genderValue,
               cumpleanos: this.birthdayValue,
               about: this.aboutMeValue,
+              ciudad: this.ciudad,
+              estado: this.estado,
             };
             this._user.updateUser(usuarioData, this.id).then(() => {});
           }

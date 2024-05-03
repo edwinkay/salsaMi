@@ -11,6 +11,16 @@
       />
     </div>
     <div class="form-group">
+      <label>Lugar actual:</label>
+      <input
+        class="form-control"
+        required
+        [(ngModel)]="ciudad"
+        name="displayName"
+        type="text"
+      />
+    </div>
+    <div class="form-group">
       <label>Email:</label>
       <input
         class="form-control"
@@ -38,6 +48,22 @@
         <option value="no_definido">No definido</option>
       </select>
     </div>
+    <div class="form-group">
+  <label>Estado:</label>
+  <select class="form-control slc" [(ngModel)]="estado" name="estado">
+    <option value="soltero(a)">Soltero(a)</option>
+    <option value="en una relacion">En una relacion</option>
+    <option value="comprometido(a)">Comprometido(a)</option>
+    <option value="casado(a)">Casado(a)</option>
+    <option value="pareja de hecho">Pareja de hecho</option>
+    <option value="relacion abierta">Relacion abierta</option>
+    <option value="es complicado">Es complicado</option>
+    <option value="separado(a)">Separado(a)</option>
+    <option value="divorciado(a)">Divorciado(a)</option>
+    <option value="viudo(a)">Viudo(a)</option>
+  </select>
+</div>
+
     <div class="form-group brt">
       <label>Fecha de cumpleaños:</label>
       <input
