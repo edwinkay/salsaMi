@@ -83,11 +83,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  .comments-list div:not(:last-child) {
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ddd; /* Línea divisoria entre comentarios */
-    padding-bottom: 20px; /* Espacio adicional debajo de la línea */
-  }
+  // .comments-list div:not(:last-child) {
+  //   margin-bottom: 20px;
+  //   border-bottom: 1px solid #ddd; /* Línea divisoria entre comentarios */
+  //   padding-bottom: 20px; /* Espacio adicional debajo de la línea */
+  // }
 }
 
 .modal-com {

@@ -4,7 +4,7 @@
 }
 
 .contenedor {
-  background-image: url('https://firebasestorage.googleapis.com/v0/b/fitpal-horario.appspot.com/o/fondos%2Fpngwing.com.png?alt=media&token=4e0dc339-1658-4b69-b385-4e1e5c787abf');
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/fitpal-horario.appspot.com/o/fondos%2Fpngwing.com.png?alt=media&token=4e0dc339-1658-4b69-b385-4e1e5c787abf");
   display: flex;
   justify-content: center;
   margin: 0;
@@ -28,6 +28,12 @@ nav {
   outline: solid rgb(245, 246, 248);
   text-align: center;
 }
+.btn-lc {
+  display: inline-flex;
+  gap: 4rem;
+  position: absolute;
+  bottom: 0;
+}
 .zoomable-image {
   transition: transform 0.3s ease-in-out;
 }
@@ -44,7 +50,6 @@ nav {
   position: relative;
   display: inline-block;
 
-
   .gallery {
     line-height: 0;
     column-count: 3;
@@ -52,7 +57,7 @@ nav {
 
     .gallery-img img {
       width: 100%;
-      height: 350px;
+      height: auto;
       cursor: zoom-in;
       border-radius: 0.35rem;
       margin-bottom: 30px;
@@ -151,10 +156,15 @@ nav {
     .icon-next {
       font-size: 30px;
     }
+    .lightbox-img {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
 
     .lightbox-img img {
-      width: 92%;
-      height: 50vh;
+      width: 100%;
+      height: auto;
       border-radius: 0.35rem;
     }
   }
@@ -173,8 +183,8 @@ nav {
 
 // boton upload
 .con-input {
-    position: relative;
-    padding: 32px 0 49px 0;
+  position: relative;
+  padding: 32px 0 49px 0;
 }
 
 .input-file-container {
@@ -204,7 +214,6 @@ nav {
   display: inline-block;
 }
 
-
 //fin del lightbox
 
 .nav-link {
@@ -219,15 +228,16 @@ nav {
   .caja {
     font-size: 15px;
   }
-      .gallery-lightbox-container {
-        .gallery {
-            column-count: 2;
+  .gallery-lightbox-container {
+    .gallery {
+      column-count: 2;
 
-            .gallery-img img {
-                width: 100%;
-            }
-        }
+      .gallery-img img {
+        width: 100%;
+        height: auto;
+      }
     }
+  }
   .con-input {
     padding: 15px 0 20px 0;
   }
@@ -242,12 +252,18 @@ nav {
     font-size: 12px;
   }
   .gallery-lightbox-container {
-        .gallery {
-            column-count: 1;
+    .gallery {
+      column-count: 1;
 
-            .gallery-img img {
-                width: 100%;
-            }
-        }
+      .gallery-img img {
+        width: 100%;
+      }
     }
+  }
+  .btn-lc {
+  display: inline-flex;
+  gap: 4rem;
+  position: absolute;
+  bottom: 20%;
+}
 }

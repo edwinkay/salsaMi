@@ -123,8 +123,9 @@ export class VideosComponent implements OnInit {
       const videoId = this.dataVideoId.id;
       const usuario = user.displayName;
       const correo = user.email;
+      const imagen = user.photoURL;
       // Crear el comentario
-      video.commentsVideo.push({ usuario, correo, comentario });
+      video.commentsVideo.push({ usuario, correo, comentario, imagen });
 
       // const newComment = {
       //   usuario: user.displayName,

@@ -238,8 +238,9 @@ export class GaleriaComponent implements OnInit {
       const imageId = this.dataVideoId.id;
       const usuario = user.displayName;
       const correo = user.email;
+      const imagen = user.photoURL
       // Crear el comentario
-      image.commentsVideo.push({ usuario, correo, comentario });
+      image.commentsVideo.push({ usuario, correo, comentario,imagen });
 
       const imagex: any = {
         commentsVideo: image.commentsVideo,
