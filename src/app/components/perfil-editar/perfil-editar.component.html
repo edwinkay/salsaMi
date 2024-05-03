@@ -1,0 +1,66 @@
+<div class="container" *ngIf="usuario">
+  <div class="per-con">
+    <div class="form-group">
+      <label>Nombre de usuario:</label>
+      <input
+        class="form-control"
+        required
+        [(ngModel)]="displayNameValue"
+        name="displayName"
+        type="text"
+      />
+    </div>
+    <div class="form-group">
+      <label>Email:</label>
+      <input
+        class="form-control"
+        [disabled]="true"
+        required
+        [(ngModel)]="usuario.email"
+        name="email"
+        type="text"
+      />
+    </div>
+    <div class="form-group">
+      <label>Teléfono:</label>
+      <input
+        class="form-control"
+        [(ngModel)]="phoneNumberValue"
+        name="phoneNumber"
+        type="number"
+      />
+    </div>
+    <div class="form-group">
+      <label>Género:</label>
+      <select class="form-control slc" [(ngModel)]="genderValue" name="gender">
+        <option value="hombre">Hombre</option>
+        <option value="mujer">Mujer</option>
+        <option value="no_definido">No definido</option>
+      </select>
+    </div>
+    <div class="form-group brt">
+      <label>Fecha de cumpleaños:</label>
+      <input
+        class="form-control dent"
+        [(ngModel)]="birthdayValue"
+        name="birthday"
+        type="date"
+      />
+    </div>
+    <div class="form-group">
+      <label>Sobre mí (máximo 50 caracteres):</label>
+      <textarea
+        class="form-control"
+        [(ngModel)]="aboutMeValue"
+        name="aboutMe"
+        maxlength="50"
+      ></textarea>
+    </div>
+    <div class="but">
+      <button class="btn btn-primary" (click)="actualizarPerfil()">
+        Guardar cambios
+      </button>
+      <button class="btn btn-secondary" routerLink="/perfil">Volver</button>
+    </div>
+  </div>
+</div>

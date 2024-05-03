@@ -2,6 +2,12 @@
   display: flex;
   justify-content: space-between;
 }
+.verperfil{
+  cursor: pointer;
+}
+.verperfil:hover{
+  color: red;
+}
 .caja {
   display: flex;
   justify-content: space-around;

@@ -1,7 +1,7 @@
 <div>
   <div>
     <div class="log">
-        <span> Hola {{usuarioActual}}</span>
+        <span class="verperfil" style="cursor: pointer;" (click)="verPerfil()">Hola {{usuarioActual}}</span>
         <span style="cursor: pointer;" (click)="logout()">Salir</span>
     </div>
   </div>
@@ -11,4 +11,18 @@
         <a class="nav-link" routerLink="/videos">VIDEOS</a>
         <a class="nav-link" routerLink="/musica">MUSICA</a>
     </div>
+</div>
+<div>
+  <div class="modal" *ngIf="modal">
+    <div class="modal-con">
+      <span (click)="close()" class="fas fa-times lax"></span>
+      <div style="text-align: center">
+        <p>
+          Primero debes
+          <a class="iniciar" (click)="salir()">Iniciar Sesion</a> o
+          <a class="registrar" routerLink="/registrar">Registrate</a>
+        </p>
+      </div>
+    </div>
+  </div>
 </div>

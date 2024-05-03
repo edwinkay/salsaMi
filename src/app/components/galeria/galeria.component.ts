@@ -116,7 +116,7 @@ export class GaleriaComponent implements OnInit {
         await this.getImages();
         this.capturarNuevaImagen();
         this.toastr.success(
-          'Agregando nueva imagen'
+          'Agregando nueva imagen...'
         );
       })
       .catch((error) => console.log(error));

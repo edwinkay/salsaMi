@@ -10,6 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NavbarComponent implements OnInit {
   usuarioActual: any;
+  esInvitado = false;
+  modal = false
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -19,7 +21,10 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.afAuth.user.subscribe((user) => {
-      this.usuarioActual = user?.displayName
+      this.usuarioActual = user?.displayName;
+      if (this.usuarioActual == 'Invitad@'){
+        this.esInvitado = true
+      }
     });
   }
   logout() {
@@ -27,5 +32,17 @@ export class NavbarComponent implements OnInit {
       this.router.navigate(['/login']);
       this.toastr.success('Gracias por visitarnos, vuelve pronto.');
     });
+  }
+  verPerfil(){
+    if (this.esInvitado) {
+    } else {
+      this.router.navigate(['/perfil']);
+    }
+  }
+  close(){
+    this.modal = false
+  }
+  salir(){
+    this.logout()
   }
 }

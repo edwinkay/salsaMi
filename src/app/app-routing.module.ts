@@ -9,6 +9,8 @@ import { RegistrarUsuarioComponent } from './components/registrar-usuario/regist
 import { RecuperarContrasenaComponent } from './components/recuperar-contrasena/recuperar-contrasena.component';
 import { AuthGuard } from './auth.guard';
 import { FormVideoComponent } from './components/form-video/form-video.component';
+import { PerfilComponent } from './components/perfil/perfil.component';
+import { PerfilEditarComponent } from './components/perfil-editar/perfil-editar.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -24,8 +26,18 @@ const routes: Routes = [
   { path: 'main', component: MainComponent, canActivate: [AuthGuard] },
   { path: 'galeria', component: GaleriaComponent, canActivate: [AuthGuard] },
   { path: 'videos', component: VideosComponent, canActivate: [AuthGuard] },
-  { path: 'nuevo-video', component: FormVideoComponent, canActivate: [AuthGuard] },
+  {
+    path: 'nuevo-video',
+    component: FormVideoComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'musica', component: MusicaComponent, canActivate: [AuthGuard] },
+  { path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard] },
+  {
+    path: 'perfil-editar',
+    component: PerfilEditarComponent,
+    canActivate: [AuthGuard],
+  },
   { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];
 

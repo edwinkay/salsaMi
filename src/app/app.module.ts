@@ -26,6 +26,8 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FormVideoComponent } from './components/form-video/form-video.component';
 import { SafeUrlPipe } from './safe-url.pipe';
+import { PerfilComponent } from './components/perfil/perfil.component';
+import { PerfilEditarComponent } from './components/perfil-editar/perfil-editar.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { SafeUrlPipe } from './safe-url.pipe';
     NavbarComponent,
     FormVideoComponent,
     SafeUrlPipe,
+    PerfilComponent,
+    PerfilEditarComponent,
   ],
   imports: [
     BrowserModule,

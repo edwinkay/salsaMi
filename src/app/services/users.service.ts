@@ -8,19 +8,16 @@ import { Users } from '../interfaces/users';
 })
 export class UsersService {
   constructor(private firestore: AngularFirestore) {}
-
-  updateLikesVideo(video: Users, userId: string) {
-    return this.firestore
-      .collection('likes')
-      .doc(userId)
-      .set(
-        {
-          [video.id]: {
-            likesCount: video.likesCountVideo,
-            likedBy: video.likedByVideo,
-          },
-        },
-        { merge: true }
-      );
+  getUsers(): Observable<any> {
+    return this.firestore.collection('users').snapshotChanges();
+  }
+  getUserById(userId: any): Observable<any> {
+    return this.firestore.collection('users').snapshotChanges();
+  }
+  addIUserInfo(videoId: any) {
+    return this.firestore.collection('users').add(videoId);
+  }
+  updateUser(user: any, userId: string) {
+    return this.firestore.collection('users').doc(userId).update(user);
   }
 }
