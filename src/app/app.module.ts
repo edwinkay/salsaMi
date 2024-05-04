@@ -28,6 +28,7 @@ import { FormVideoComponent } from './components/form-video/form-video.component
 import { SafeUrlPipe } from './safe-url.pipe';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { PerfilEditarComponent } from './components/perfil-editar/perfil-editar.component';
+import { VerUsuarioComponent } from './components/ver-usuario/ver-usuario.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { PerfilEditarComponent } from './components/perfil-editar/perfil-editar.
     SafeUrlPipe,
     PerfilComponent,
     PerfilEditarComponent,
+    VerUsuarioComponent,
   ],
   imports: [
     BrowserModule,

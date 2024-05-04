@@ -94,6 +94,7 @@
         >
           <div style="display: flex; flex-direction: column">
             <img
+            (click)="ir(comment.idUser)"
               style="cursor: pointer; border-radius: 50%"
               [src]="
                 comment.imagen ||

@@ -1,16 +1,25 @@
 <div>
   <div>
     <div class="log">
-        <span class="verperfil" style="cursor: pointer;" (click)="verPerfil()">Hola {{usuarioActual}}</span>
-        <span style="cursor: pointer;" (click)="logout()">Salir</span>
+      <span
+        class="verperfil"
+        style="text-shadow: 3px 1px 2px #1669c1; cursor: pointer; color: white"
+        (click)="verPerfil()"
+        >Hola {{ usuarioActual }}</span
+      >
+      <span
+        style="text-shadow: 3px 1px 2px #c11b16; cursor: pointer; color: white"
+        (click)="logout()"
+        >Salir</span
+      >
     </div>
   </div>
   <div class="caja">
-        <a class="nav-link" routerLink="/main">INICIO</a>
-        <a class="nav-link" routerLink="/galeria">IMAGENES</a>
-        <a class="nav-link" routerLink="/videos">VIDEOS</a>
-        <a class="nav-link" routerLink="/musica">MUSICA</a>
-    </div>
+    <a class="nav-link" routerLink="/main">INICIO</a>
+    <a class="nav-link" routerLink="/galeria">IMAGENES</a>
+    <a class="nav-link" routerLink="/videos">VIDEOS</a>
+    <a class="nav-link" routerLink="/musica">MUSICA</a>
+  </div>
 </div>
 <div>
   <div class="modal" *ngIf="modal">

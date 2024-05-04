@@ -11,6 +11,7 @@ import { AuthGuard } from './auth.guard';
 import { FormVideoComponent } from './components/form-video/form-video.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { PerfilEditarComponent } from './components/perfil-editar/perfil-editar.component';
+import { VerUsuarioComponent } from './components/ver-usuario/ver-usuario.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -36,6 +37,11 @@ const routes: Routes = [
   {
     path: 'perfil-editar',
     component: PerfilEditarComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'usuario/:id',
+    component: VerUsuarioComponent,
     canActivate: [AuthGuard],
   },
   { path: '**', redirectTo: '/', pathMatch: 'full' },

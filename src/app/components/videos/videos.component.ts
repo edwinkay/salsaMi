@@ -124,14 +124,10 @@ export class VideosComponent implements OnInit {
       const usuario = user.displayName;
       const correo = user.email;
       const imagen = user.photoURL;
+      const idUser = user.uid;
       // Crear el comentario
-      video.commentsVideo.push({ usuario, correo, comentario, imagen });
+      video.commentsVideo.push({ usuario, correo, comentario, imagen, idUser });
 
-      // const newComment = {
-      //   usuario: user.displayName,
-      //   correo: user.email,
-      //   comentario: comentario,
-      // };
       const videox: any = {
         commentsVideo: video.commentsVideo,
       };
@@ -291,6 +287,15 @@ export class VideosComponent implements OnInit {
       }
     } else {
       this.modal = true;
+    }
+  }
+  async ir(id: any) {
+    const user = await this.afAuth.currentUser;
+    const userId = user?.uid;
+    if (userId === id) {
+      this.router.navigate(['/perfil']);
+    } else {
+      this.router.navigate(['/usuario/', id]);
     }
   }
 }

@@ -6,6 +6,7 @@ import {Images} from 'src/app/interfaces/images'
 import { Router } from '@angular/router';
 import { getMetadata } from 'firebase/storage';
 import { ToastrService } from 'ngx-toastr';
+import { UsersService } from 'src/app/services/users.service';
 
 
 
@@ -37,13 +38,15 @@ export class GaleriaComponent implements OnInit {
   esteComentario: string = '';
   dataVideoId: any = [];
 
+
   constructor(
     private storage: Storage,
     private el: ElementRef,
     private afAuth: AngularFireAuth,
     private _image: ImagenesService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private _user: UsersService
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +62,7 @@ export class GaleriaComponent implements OnInit {
       }
     });
   }
+
   getImages() {
     this._image.getImage().subscribe((data) => {
       this.images = [];
@@ -115,9 +119,7 @@ export class GaleriaComponent implements OnInit {
       .then(async (x) => {
         await this.getImages();
         this.capturarNuevaImagen();
-        this.toastr.success(
-          'Agregando nueva imagen...'
-        );
+        this.toastr.success('Agregando nueva imagen...');
       })
       .catch((error) => console.log(error));
   }
@@ -238,9 +240,10 @@ export class GaleriaComponent implements OnInit {
       const imageId = this.dataVideoId.id;
       const usuario = user.displayName;
       const correo = user.email;
-      const imagen = user.photoURL
+      const imagen = user.photoURL;
+      const idUser = user.uid
       // Crear el comentario
-      image.commentsVideo.push({ usuario, correo, comentario,imagen });
+      image.commentsVideo.push({ usuario, correo, comentario, imagen, idUser });
 
       const imagex: any = {
         commentsVideo: image.commentsVideo,
@@ -255,7 +258,6 @@ export class GaleriaComponent implements OnInit {
     const user = await this.afAuth.currentUser;
 
     if (user && !this.esInvitado) {
-      const username = user.displayName;
       this.modalcom = true;
     } else {
       this.modal = true;
@@ -369,5 +371,15 @@ export class GaleriaComponent implements OnInit {
     this.modalDelete = false;
     this.modalEditar = false;
     this.ocultarx = true;
+  }
+   async ir(id:any){
+    const user = await this.afAuth.currentUser;
+    const userId = user?.uid
+    if (userId === id) {
+      this.router.navigate(['/perfil']);
+    } else {
+      this.router.navigate(['/usuario/', id]);
+    }
+
   }
 }
