@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { UsersService } from 'src/app/services/users.service';
 import { Location } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-ver-usuario',
@@ -15,14 +16,15 @@ export class VerUsuarioComponent implements OnInit {
   usuariosInfo: any[] = [];
   info: any;
   showMoreInfo: boolean = false;
-  ver = 'Ver mas...'
+  ver = 'Ver mas...';
 
   constructor(
     private route: ActivatedRoute,
     private _user: UsersService,
     private afAuth: AngularFireAuth,
-    private router: Router,
-    private location: Location
+    private location: Location,
+    private toastr: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -57,10 +59,15 @@ export class VerUsuarioComponent implements OnInit {
   toggleInfo() {
     this.showMoreInfo = !this.showMoreInfo;
     if (this.showMoreInfo) {
-      this.ver = 'Ver menos'
-    }else{
+      this.ver = 'Ver menos';
+    } else {
       this.ver = 'Ver mas...';
     }
-
+  }
+  logout() {
+    this.afAuth.signOut().then(() => {
+      this.router.navigate(['/login']);
+      this.toastr.success('Gracias por visitarnos, vuelve pronto.');
+    });
   }
 }

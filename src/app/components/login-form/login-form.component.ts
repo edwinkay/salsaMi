@@ -39,7 +39,7 @@ export class LoginFormComponent implements OnInit {
     this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
-        this.router.navigate(['/main']);
+        this.router.navigate(['/perfil']);
         this.loading = false;
       })
       .catch((error) => {
@@ -62,7 +62,7 @@ export class LoginFormComponent implements OnInit {
         .signInWithEmailAndPassword(email, password)
         .then(() => {
           this.loading = false;
-          this.router.navigate(['/main']);
+          this.router.navigate(['/perfil']);
         })
         .catch((error) => {
           this.loading = false;

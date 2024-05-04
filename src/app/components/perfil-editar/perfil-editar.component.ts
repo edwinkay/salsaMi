@@ -21,6 +21,7 @@ export class PerfilEditarComponent implements OnInit {
   usuariosInfo: any[] = [];
   id: any;
   comprobar = false;
+  urlPortada: any
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -58,9 +59,9 @@ export class PerfilEditarComponent implements OnInit {
         this.phoneNumberValue = buscarObjeto.telefono;
         this.genderValue = buscarObjeto.Genero;
         this.birthdayValue = buscarObjeto.cumpleanos;
-        this.aboutMeValue = buscarObjeto.about
-        this.ciudad = buscarObjeto.ciudad
-        this.estado = buscarObjeto.estado
+        this.aboutMeValue = buscarObjeto.about;
+        this.ciudad = buscarObjeto.ciudad;
+        this.estado = buscarObjeto.estado;
       });
     });
   }
@@ -83,7 +84,8 @@ export class PerfilEditarComponent implements OnInit {
               cumpleanos: this.birthdayValue,
               about: this.aboutMeValue,
               ciudad: this.ciudad,
-              estado: this.estado
+              estado: this.estado,
+              portada: this.urlPortada
             };
             this._user.addIUserInfo(usuarioData).then(() => {});
             // console.log('no existe');
@@ -100,6 +102,7 @@ export class PerfilEditarComponent implements OnInit {
               about: this.aboutMeValue,
               ciudad: this.ciudad,
               estado: this.estado,
+              portada: this.urlPortada,
             };
             this._user.updateUser(usuarioData, this.id).then(() => {});
           }

@@ -1,6 +1,6 @@
 <div *ngIf="!loading" class="content">
   <form class="login-form" (ngSubmit)="registrar()" #loginForm="ngForm" [formGroup]="registrarUsuario">
-    <h2 class="elH2">Asi Somos Asi Bailamos</h2>
+    <h2 class="elH2">Asi Somos</h2>
     <h2 class="form-title">REGISTRARSE</h2>
     <div class="form-group">
       <label for="username">Nombre de Usuario</label>
@@ -85,7 +85,7 @@
   </form>
 </div>
 <div *ngIf="loading" style=" background-color: white; display: flex; height: 90vh; flex-direction: column; justify-content: center; align-items: center;">
-  <h2 class="elH2">Asi Somos Asi Bailamos</h2>
+  <h2 class="elH2">Asi Somos</h2>
   <span style="margin-bottom: 18px">Registrando...</span>
   <app-spinner></app-spinner>
 </div>

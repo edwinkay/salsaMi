@@ -34,10 +34,7 @@ export class NavbarComponent implements OnInit {
     });
   }
   verPerfil(){
-    if (this.esInvitado) {
-    } else {
-      this.router.navigate(['/perfil']);
-    }
+    this.router.navigate(['/perfil']);
   }
   close(){
     this.modal = false

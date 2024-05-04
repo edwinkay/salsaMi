@@ -1,4 +1,82 @@
 <div class="container">
+  <ng-container *ngIf="usuario">
+    <span
+      style="
+        padding: 6px;
+        position: absolute;
+        right: 0;
+        text-shadow: 3px 1px 2px #c11b16;
+        cursor: pointer;
+        color: white;
+      "
+      (click)="logout()"
+      >Salir</span
+    >
+    <div class="user-info">
+      <div class="img-container">
+        <img
+          style="width: 100%; position: absolute; z-index: -1"
+          [src]="
+            info.portada ||
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Starsinthesky.jpg/1024px-Starsinthesky.jpg'
+          "
+          alt=""
+        />
+        <div style="padding: 5px">
+          <img
+            style="cursor: pointer; user-select: none"
+            [src]="
+              info.foto
+                ? info.foto
+                : 'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg'
+            "
+            alt="Foto de perfil"
+            width="70"
+            height="70"
+          />
+          <p class="lap user">{{ usuario.displayName }}</p>
+        </div>
+        <div>
+          <p (click)="toggleInfo()" class="edit-perfil">Ver mas</p>
+          <div
+            style="display: flex; flex-direction: column; align-items: center"
+            *ngIf="showMoreInfo"
+          >
+            <p class="lap email">Vive en: {{ info.ciudad }}</p>
+            <p class="lap email">Genero: {{ info.Genero }}</p>
+            <p class="lap email">Cumpleaños: {{ info.cumpleanos }}</p>
+            <p class="lap email">Estado: {{ info.estado }}</p>
+            <p class="lap email">Celular: {{ info.telefono }}</p>
+          </div>
+        </div>
+      </div>
+      <p class="lap">{{ info.about }}</p>
+    </div>
+    <div class="acciones">
+      <p>Grupos</p>
+      <p>Imagenes</p>
+      <p>Videos</p>
+    </div>
+    <div style="padding: 20px">
+      <div class="container-img-g">
+        <div class="bf">
+          <img
+            style="cursor: pointer"
+            routerLink="/main"
+            width="120"
+            src="https://firebasestorage.googleapis.com/v0/b/fitpal-horario.appspot.com/o/fondos%2Ffondo%20asi%20somos.png?alt=media&token=023a7ed4-800e-465e-b616-20ce4df7c7ba"
+            alt=""
+          />
+        </div>
+        <span>Asi somos asi bailamos</span>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!usuario">
+    <p>No se ha iniciado sesión.</p>
+  </ng-container>
+</div>
+<!-- <div class="container">
   <ng-container *ngIf="info">
     <div class="user-info">
       <img
@@ -33,4 +111,4 @@
   <ng-container *ngIf="!info">
     <p>No se ha iniciado sesión.</p>
   </ng-container>
-</div>
+</div> -->
