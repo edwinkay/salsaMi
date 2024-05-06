@@ -39,6 +39,11 @@
         <div *ngIf="!esInvitado">
           <p routerLink="/perfil-editar" class="edit-perfil">Editar perfil</p>
         </div>
+        <div *ngIf="!esInvitado">
+          <p
+          (click)="changePortada()"
+          class="edit-perfil">+</p>
+        </div>
       </div>
       <p class="lap">{{ aboutMeValue }}</p>
       <!-- <a routerLink="/main">Regresar</a> -->

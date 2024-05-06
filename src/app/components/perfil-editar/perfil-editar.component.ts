@@ -85,7 +85,7 @@ export class PerfilEditarComponent implements OnInit {
               about: this.aboutMeValue,
               ciudad: this.ciudad,
               estado: this.estado,
-              portada: this.urlPortada
+              // portada: this.urlPortada
             };
             this._user.addIUserInfo(usuarioData).then(() => {});
             // console.log('no existe');
@@ -102,7 +102,7 @@ export class PerfilEditarComponent implements OnInit {
               about: this.aboutMeValue,
               ciudad: this.ciudad,
               estado: this.estado,
-              portada: this.urlPortada,
+              // portada: this.urlPortada,
             };
             this._user.updateUser(usuarioData, this.id).then(() => {});
           }

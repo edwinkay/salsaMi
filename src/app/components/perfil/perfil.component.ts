@@ -14,13 +14,15 @@ import { UsersService } from 'src/app/services/users.service';
 export class PerfilComponent implements OnInit {
   usuario: any | null;
   usuariosInfo: any[] = [];
-  phoneNumberValue: any
+  idInfo: any[] = [];
+  phoneNumberValue: any;
   genderValue: any;
   birthdayValue: any;
   aboutMeValue: any;
   urlPortada: any;
   esInvitado = false;
   usuarioActual: any;
+  id:any
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -44,6 +46,7 @@ export class PerfilComponent implements OnInit {
   getUsers() {
     this._user.getUsers().subscribe((usuarios) => {
       this.usuariosInfo = [];
+      this.idInfo = []
       usuarios.forEach((element: any) => {
         this.usuariosInfo.push({
           id: element.payload.doc.data(),
@@ -52,6 +55,15 @@ export class PerfilComponent implements OnInit {
         const userData = this.usuariosInfo.find(
           (obj) => obj.id.idUser === this.usuario.uid
         );
+        const userData2 = {
+          id: element.payload.doc.id, // Aquí obtenemos el ID del documento
+          ...element.payload.doc.data(),
+        };
+        this.idInfo.push(userData2)
+        const id = this.idInfo.find(
+          (obj) => obj.idUser === this.usuario.uid
+        )?.id;
+        this.id = id
         this.phoneNumberValue = userData.telefono;
         this.genderValue = userData.Genero;
         this.birthdayValue = userData.cumpleanos;
@@ -103,7 +115,7 @@ export class PerfilComponent implements OnInit {
       });
 
       input.click();
-    }else{
+    } else {
     }
   }
   logout() {
@@ -111,6 +123,43 @@ export class PerfilComponent implements OnInit {
       this.router.navigate(['/login']);
       this.toastr.success('Gracias por visitarnos, vuelve pronto.');
     });
+  }
+  changePortada(): void {
+    if (!this.esInvitado) {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+
+      input.addEventListener('change', (event) => {
+        const file = (event?.target as HTMLInputElement)?.files?.[0];
+
+        if (file) {
+          const filePath = `portada/${this.usuario?.uid}/${file.name}`;
+          const fileRef = this.storage.ref(filePath);
+          const task = this.storage.upload(filePath, file);
+
+          task
+            .snapshotChanges()
+            .pipe(
+              finalize(() => {
+                fileRef.getDownloadURL().subscribe((url) => {
+                  const dato: any = {
+                    portada: url,
+                  };
+                  this._user.updateUser(dato, this.id).then(() => {
+                    console.log('actualizando');
+                    this.toastr.info('portada cambiada');
+                  });
+                });
+              })
+            )
+            .subscribe();
+        }
+      });
+
+      input.click();
+    } else {
+    }
   }
 }
 
