@@ -102,7 +102,7 @@ export class PerfilComponent implements OnInit {
                         photoURL: url,
                       })
                       .then(() => {
-                        // Actualización exitosa de la foto de perfil
+                        this.toastr.info('Foto de perfil cambiada');
                       })
                       .catch((error) => {
                         // Error al actualizar la foto de perfil
@@ -168,7 +168,7 @@ export class PerfilComponent implements OnInit {
                   };
                   this._user.updateUser(dato, this.id).then(() => {
                     console.log('actualizando');
-                    this.toastr.info('portada cambiada');
+                    this.toastr.info('Foto de portada cambiada');
                   });
                 });
               })
