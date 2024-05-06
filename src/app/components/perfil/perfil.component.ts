@@ -22,7 +22,12 @@ export class PerfilComponent implements OnInit {
   urlPortada: any;
   esInvitado = false;
   usuarioActual: any;
-  id:any
+  id: any;
+
+  gr = true
+  im = false
+  vd = false
+
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -46,7 +51,7 @@ export class PerfilComponent implements OnInit {
   getUsers() {
     this._user.getUsers().subscribe((usuarios) => {
       this.usuariosInfo = [];
-      this.idInfo = []
+      this.idInfo = [];
       usuarios.forEach((element: any) => {
         this.usuariosInfo.push({
           id: element.payload.doc.data(),
@@ -59,11 +64,11 @@ export class PerfilComponent implements OnInit {
           id: element.payload.doc.id, // Aquí obtenemos el ID del documento
           ...element.payload.doc.data(),
         };
-        this.idInfo.push(userData2)
+        this.idInfo.push(userData2);
         const id = this.idInfo.find(
           (obj) => obj.idUser === this.usuario.uid
         )?.id;
-        this.id = id
+        this.id = id;
         this.phoneNumberValue = userData.telefono;
         this.genderValue = userData.Genero;
         this.birthdayValue = userData.cumpleanos;
@@ -118,6 +123,21 @@ export class PerfilComponent implements OnInit {
     } else {
     }
   }
+  grupos(){
+    this.gr = true
+    this.im = false
+    this.vd = false
+  }
+  imagenes(){
+    this.gr = false
+    this.im = true
+    this.vd = false
+  }
+  videos(){
+    this.gr = false
+    this.im = false
+    this.vd = true
+  }
   logout() {
     this.afAuth.signOut().then(() => {
       this.router.navigate(['/login']);
@@ -161,10 +181,42 @@ export class PerfilComponent implements OnInit {
     } else {
     }
   }
+  // misImages(): void {
+  //   if (!this.esInvitado) {
+  //     const input = document.createElement('input');
+  //     input.type = 'file';
+  //     input.accept = 'image/*';
+
+  //     input.addEventListener('change', (event) => {
+  //       const file = (event?.target as HTMLInputElement)?.files?.[0];
+
+  //       if (file) {
+  //         const filePath = `portada/${this.usuario?.uid}/${file.name}`;
+  //         const fileRef = this.storage.ref(filePath);
+  //         const task = this.storage.upload(filePath, file);
+
+  //         task
+  //           .snapshotChanges()
+  //           .pipe(
+  //             finalize(() => {
+  //               fileRef.getDownloadURL().subscribe((url) => {
+  //                 const dato: any = {
+  //                   portada: url,
+  //                 };
+  //                 this._user.updateUser(dato, this.id).then(() => {
+  //                   console.log('actualizando');
+  //                   this.toastr.info('portada cambiada');
+  //                 });
+  //               });
+  //             })
+  //           )
+  //           .subscribe();
+  //       }
+  //     });
+
+  //     input.click();
+  //   } else {
+  //   }
+  // }
+
 }
-
-
-// const index = this.usuariosInfo.findIndex(
-//   (obj) => obj.id.idUser === this.usuario.uid
-// );
-// console.log('aqui el index', index);

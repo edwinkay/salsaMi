@@ -1,4 +1,4 @@
-<div style="user-select: none;"  class="container">
+<div style="user-select: none" class="container">
   <ng-container *ngIf="usuario">
     <span
       style="
@@ -40,20 +40,18 @@
           <p routerLink="/perfil-editar" class="edit-perfil">Editar perfil</p>
         </div>
         <div *ngIf="!esInvitado">
-          <p
-          (click)="changePortada()"
-          class="edit-perfil">+</p>
+          <p (click)="changePortada()" class="edit-perfil">+</p>
         </div>
       </div>
       <p class="lap">{{ aboutMeValue }}</p>
       <!-- <a routerLink="/main">Regresar</a> -->
     </div>
     <div class="acciones">
-      <p>Grupos</p>
-      <p>Imagenes</p>
-      <p>Videos</p>
+      <p style="cursor: pointer" (click)="grupos()">Grupos</p>
+      <p style="cursor: pointer" (click)="imagenes()">Imagenes</p>
+      <p style="cursor: pointer" (click)="videos()">Videos</p>
     </div>
-    <div style="padding: 20px">
+    <div *ngIf="gr" style="padding: 20px">
       <div class="container-img-g">
         <div class="bf">
           <img
@@ -67,6 +65,8 @@
         <span>Asi somos asi bailamos</span>
       </div>
     </div>
+    <div *ngIf="im">aqui se ven las imagenes</div>
+    <div *ngIf="vd">aqui se ven las los videos</div>
   </ng-container>
   <ng-container *ngIf="!usuario">
     <p>No se ha iniciado sesión.</p>
