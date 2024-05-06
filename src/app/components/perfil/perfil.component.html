@@ -65,7 +65,12 @@
         <span>Asi somos asi bailamos</span>
       </div>
     </div>
-    <div *ngIf="im">aqui se ven las imagenes</div>
+    <div *ngIf="im">
+      <div>
+        <p (click)="misImages()">+ Agregar imagen</p>
+        <img width="300" [src]="imageX" alt="">
+      </div>
+    </div>
     <div *ngIf="vd">aqui se ven las los videos</div>
   </ng-container>
   <ng-container *ngIf="!usuario">

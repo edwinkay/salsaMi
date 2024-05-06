@@ -23,11 +23,11 @@ export class PerfilComponent implements OnInit {
   esInvitado = false;
   usuarioActual: any;
   id: any;
+  imageX:any
 
-  gr = true
-  im = false
-  vd = false
-
+  gr = true;
+  im = false;
+  vd = false;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -74,6 +74,7 @@ export class PerfilComponent implements OnInit {
         this.birthdayValue = userData.cumpleanos;
         this.aboutMeValue = userData.about;
         this.urlPortada = userData.portada;
+        this.imageX = userData.misImagenes;
       });
     });
   }
@@ -123,20 +124,20 @@ export class PerfilComponent implements OnInit {
     } else {
     }
   }
-  grupos(){
-    this.gr = true
-    this.im = false
-    this.vd = false
+  grupos() {
+    this.gr = true;
+    this.im = false;
+    this.vd = false;
   }
-  imagenes(){
-    this.gr = false
-    this.im = true
-    this.vd = false
+  imagenes() {
+    this.gr = false;
+    this.im = true;
+    this.vd = false;
   }
-  videos(){
-    this.gr = false
-    this.im = false
-    this.vd = true
+  videos() {
+    this.gr = false;
+    this.im = false;
+    this.vd = true;
   }
   logout() {
     this.afAuth.signOut().then(() => {
@@ -181,42 +182,41 @@ export class PerfilComponent implements OnInit {
     } else {
     }
   }
-  // misImages(): void {
-  //   if (!this.esInvitado) {
-  //     const input = document.createElement('input');
-  //     input.type = 'file';
-  //     input.accept = 'image/*';
+  misImages(): void {
+    if (!this.esInvitado) {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
 
-  //     input.addEventListener('change', (event) => {
-  //       const file = (event?.target as HTMLInputElement)?.files?.[0];
+      input.addEventListener('change', (event) => {
+        const file = (event?.target as HTMLInputElement)?.files?.[0];
 
-  //       if (file) {
-  //         const filePath = `portada/${this.usuario?.uid}/${file.name}`;
-  //         const fileRef = this.storage.ref(filePath);
-  //         const task = this.storage.upload(filePath, file);
+        if (file) {
+          const filePath = `usuarios/${this.usuario?.uid}/${file.name}`;
+          const fileRef = this.storage.ref(filePath);
+          const task = this.storage.upload(filePath, file);
 
-  //         task
-  //           .snapshotChanges()
-  //           .pipe(
-  //             finalize(() => {
-  //               fileRef.getDownloadURL().subscribe((url) => {
-  //                 const dato: any = {
-  //                   portada: url,
-  //                 };
-  //                 this._user.updateUser(dato, this.id).then(() => {
-  //                   console.log('actualizando');
-  //                   this.toastr.info('portada cambiada');
-  //                 });
-  //               });
-  //             })
-  //           )
-  //           .subscribe();
-  //       }
-  //     });
+          task
+            .snapshotChanges()
+            .pipe(
+              finalize(() => {
+                fileRef.getDownloadURL().subscribe((url) => {
+                  const dato: any = {
+                    misImagenes: url,
+                  };
+                  this._user.updateUser(dato, this.id).then(() => {
+                    console.log('actualizando');
+                    this.toastr.info('nueva imagen agregada');
+                  });
+                });
+              })
+            )
+            .subscribe();
+        }
+      });
 
-  //     input.click();
-  //   } else {
-  //   }
-  // }
-
+      input.click();
+    } else {
+    }
+  }
 }
