@@ -24,6 +24,7 @@ export class PerfilComponent implements OnInit {
   usuarioActual: any;
   id: any;
   imageX:any
+  objetoUsuario:any
 
   gr = true;
   im = false;
@@ -53,13 +54,16 @@ export class PerfilComponent implements OnInit {
       this.usuariosInfo = [];
       this.idInfo = [];
       usuarios.forEach((element: any) => {
+        const data = element.payload.doc.data();
         this.usuariosInfo.push({
           id: element.payload.doc.data(),
           ...element.payload.doc.data(),
+          misImagenes: data.misImagenes || []
         });
         const userData = this.usuariosInfo.find(
           (obj) => obj.id.idUser === this.usuario.uid
         );
+        this.objetoUsuario = userData
         const userData2 = {
           id: element.payload.doc.id, // Aquí obtenemos el ID del documento
           ...element.payload.doc.data(),
@@ -75,6 +79,7 @@ export class PerfilComponent implements OnInit {
         this.aboutMeValue = userData.about;
         this.urlPortada = userData.portada;
         this.imageX = userData.misImagenes;
+        console.log(this.imageX)
       });
     });
   }
@@ -201,8 +206,10 @@ export class PerfilComponent implements OnInit {
             .pipe(
               finalize(() => {
                 fileRef.getDownloadURL().subscribe((url) => {
+                  const obj = this.objetoUsuario
+                  obj.misImagenes.push(url)
                   const dato: any = {
-                    misImagenes: url,
+                    misImagenes: obj.misImagenes,
                   };
                   this._user.updateUser(dato, this.id).then(() => {
                     console.log('actualizando');

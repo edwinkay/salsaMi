@@ -68,7 +68,9 @@
     <div *ngIf="im">
       <div>
         <p (click)="misImages()">+ Agregar imagen</p>
-        <img width="300" [src]="imageX" alt="">
+        <div *ngFor="let img of imageX">
+          <img width="300" [src]="img" alt="">
+        </div>
       </div>
     </div>
     <div *ngIf="vd">aqui se ven las los videos</div>
