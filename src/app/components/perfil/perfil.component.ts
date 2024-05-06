@@ -23,8 +23,8 @@ export class PerfilComponent implements OnInit {
   esInvitado = false;
   usuarioActual: any;
   id: any;
-  imageX:any
-  objetoUsuario:any
+  imageX: any;
+  objetoUsuario: any;
 
   gr = true;
   im = false;
@@ -58,12 +58,12 @@ export class PerfilComponent implements OnInit {
         this.usuariosInfo.push({
           id: element.payload.doc.data(),
           ...element.payload.doc.data(),
-          misImagenes: data.misImagenes || []
+          misImagenes: data.misImagenes || [],
         });
         const userData = this.usuariosInfo.find(
           (obj) => obj.id.idUser === this.usuario.uid
         );
-        this.objetoUsuario = userData
+        this.objetoUsuario = userData;
         const userData2 = {
           id: element.payload.doc.id, // Aquí obtenemos el ID del documento
           ...element.payload.doc.data(),
@@ -79,7 +79,6 @@ export class PerfilComponent implements OnInit {
         this.aboutMeValue = userData.about;
         this.urlPortada = userData.portada;
         this.imageX = userData.misImagenes;
-        console.log(this.imageX)
       });
     });
   }
@@ -93,42 +92,91 @@ export class PerfilComponent implements OnInit {
         const file = (event?.target as HTMLInputElement)?.files?.[0];
 
         if (file) {
-          const filePath = `profilePictures/${this.usuario?.uid}/${file.name}`;
-          const fileRef = this.storage.ref(filePath);
-          const task = this.storage.upload(filePath, file);
+          const image = new Image();
+          const reader = new FileReader();
 
-          task
-            .snapshotChanges()
-            .pipe(
-              finalize(() => {
-                fileRef.getDownloadURL().subscribe((url) => {
-                  this.afAuth.currentUser.then((user) => {
-                    user
-                      ?.updateProfile({
-                        photoURL: url,
-                      })
-                      .then(() => {
-                        this.toastr.info('Foto de perfil cambiada');
-                      })
-                      .catch((error) => {
-                        // Error al actualizar la foto de perfil
-                        console.error(
-                          'Error al actualizar la foto de perfil:',
-                          error
-                        );
-                      });
-                  });
-                });
-              })
-            )
-            .subscribe();
+          reader.onload = (e: any) => {
+            image.onload = () => {
+              const canvas = document.createElement('canvas');
+              const maxWidth = 800; // Ancho máximo permitido
+              const maxHeight = 600; // Altura máxima permitida
+              let width = image.width;
+              let height = image.height;
+
+              // Redimensionar la imagen si es necesario
+              if (width > maxWidth || height > maxHeight) {
+                if (width > height) {
+                  height *= maxWidth / width;
+                  width = maxWidth;
+                } else {
+                  width *= maxHeight / height;
+                  height = maxHeight;
+                }
+              }
+
+              canvas.width = width;
+              canvas.height = height;
+
+              const ctx = canvas.getContext('2d');
+
+              if (ctx) {
+                ctx.drawImage(image, 0, 0, width, height);
+
+                canvas.toBlob((blob) => {
+                  if (blob) {
+                    const filePath = `profilePictures/${this.usuario?.uid}/${file.name}`;
+                    const fileRef = this.storage.ref(filePath);
+                    const task = this.storage.upload(filePath, blob, {
+                      contentType: blob.type,
+                    });
+
+                    task
+                      .snapshotChanges()
+                      .pipe(
+                        finalize(() => {
+                          fileRef.getDownloadURL().subscribe((url) => {
+                            this.afAuth.currentUser.then((user) => {
+                              user
+                                ?.updateProfile({
+                                  photoURL: url,
+                                })
+                                .then(() => {
+                                  this.toastr.info('Foto de perfil cambiada');
+                                })
+                                .catch((error) => {
+                                  // Error al actualizar la foto de perfil
+                                  console.error(
+                                    'Error al actualizar la foto de perfil:',
+                                    error
+                                  );
+                                });
+                            });
+                          });
+                        })
+                      )
+                      .subscribe();
+                  }
+                }, file.type);
+              } else {
+                console.error(
+                  'Error: No se pudo obtener el contexto 2D del canvas.'
+                );
+              }
+            };
+
+            image.src = e.target.result;
+          };
+
+          reader.readAsDataURL(file);
         }
       });
 
       input.click();
     } else {
+      // Código para usuarios invitados
     }
   }
+
   grupos() {
     this.gr = true;
     this.im = false;
@@ -160,33 +208,82 @@ export class PerfilComponent implements OnInit {
         const file = (event?.target as HTMLInputElement)?.files?.[0];
 
         if (file) {
-          const filePath = `portada/${this.usuario?.uid}/${file.name}`;
-          const fileRef = this.storage.ref(filePath);
-          const task = this.storage.upload(filePath, file);
+          const image = new Image();
+          const reader = new FileReader();
 
-          task
-            .snapshotChanges()
-            .pipe(
-              finalize(() => {
-                fileRef.getDownloadURL().subscribe((url) => {
-                  const dato: any = {
-                    portada: url,
-                  };
-                  this._user.updateUser(dato, this.id).then(() => {
-                    console.log('actualizando');
-                    this.toastr.info('Foto de portada cambiada');
-                  });
-                });
-              })
-            )
-            .subscribe();
+          reader.onload = (e: any) => {
+            image.onload = () => {
+              const canvas = document.createElement('canvas');
+              const maxWidth = 800; // Ancho máximo permitido
+              const maxHeight = 600; // Altura máxima permitida
+              let width = image.width;
+              let height = image.height;
+
+              // Redimensionar la imagen si es necesario
+              if (width > maxWidth || height > maxHeight) {
+                if (width > height) {
+                  height *= maxWidth / width;
+                  width = maxWidth;
+                } else {
+                  width *= maxHeight / height;
+                  height = maxHeight;
+                }
+              }
+
+              canvas.width = width;
+              canvas.height = height;
+
+              const ctx = canvas.getContext('2d');
+
+              if (ctx) {
+                ctx.drawImage(image, 0, 0, width, height);
+
+                canvas.toBlob((blob) => {
+                  if (blob) {
+                    const filePath = `portada/${this.usuario?.uid}/${file.name}`;
+                    const fileRef = this.storage.ref(filePath);
+                    const task = this.storage.upload(filePath, blob, {
+                      contentType: blob.type,
+                    });
+
+                    task
+                      .snapshotChanges()
+                      .pipe(
+                        finalize(() => {
+                          fileRef.getDownloadURL().subscribe((url) => {
+                            const dato: any = {
+                              portada: url,
+                            };
+                            this._user.updateUser(dato, this.id).then(() => {
+                              console.log('actualizando');
+                              this.toastr.info('Foto de portada cambiada');
+                            });
+                          });
+                        })
+                      )
+                      .subscribe();
+                  }
+                }, file.type);
+              } else {
+                console.error(
+                  'Error: No se pudo obtener el contexto 2D del canvas.'
+                );
+              }
+            };
+
+            image.src = e.target.result;
+          };
+
+          reader.readAsDataURL(file);
         }
       });
 
       input.click();
     } else {
+      // Código para usuarios invitados
     }
   }
+
   misImages(): void {
     if (!this.esInvitado) {
       const input = document.createElement('input');
@@ -197,33 +294,81 @@ export class PerfilComponent implements OnInit {
         const file = (event?.target as HTMLInputElement)?.files?.[0];
 
         if (file) {
-          const filePath = `usuarios/${this.usuario?.uid}/${file.name}`;
-          const fileRef = this.storage.ref(filePath);
-          const task = this.storage.upload(filePath, file);
+          const image = new Image();
+          const reader = new FileReader();
 
-          task
-            .snapshotChanges()
-            .pipe(
-              finalize(() => {
-                fileRef.getDownloadURL().subscribe((url) => {
-                  const obj = this.objetoUsuario
-                  obj.misImagenes.push(url)
-                  const dato: any = {
-                    misImagenes: obj.misImagenes,
-                  };
-                  this._user.updateUser(dato, this.id).then(() => {
-                    console.log('actualizando');
-                    this.toastr.info('nueva imagen agregada');
-                  });
-                });
-              })
-            )
-            .subscribe();
+          reader.onload = (e: any) => {
+            image.onload = () => {
+              const canvas = document.createElement('canvas');
+              const maxWidth = 800; // Ancho máximo permitido
+              const maxHeight = 600; // Altura máxima permitida
+              let width = image.width;
+              let height = image.height;
+
+              // Redimensionar la imagen si es necesario
+              if (width > maxWidth || height > maxHeight) {
+                if (width > height) {
+                  height *= maxWidth / width;
+                  width = maxWidth;
+                } else {
+                  width *= maxHeight / height;
+                  height = maxHeight;
+                }
+              }
+
+              canvas.width = width;
+              canvas.height = height;
+
+              const ctx = canvas.getContext('2d');
+
+              if (ctx) {
+                ctx.drawImage(image, 0, 0, width, height);
+
+                canvas.toBlob((blob) => {
+                  if (blob) {
+                    const filePath = `usuarios/${this.usuario?.uid}/${file.name}`;
+                    const fileRef = this.storage.ref(filePath);
+                    const task = this.storage.upload(filePath, blob, {
+                      contentType: blob.type,
+                    });
+
+                    task
+                      .snapshotChanges()
+                      .pipe(
+                        finalize(() => {
+                          fileRef.getDownloadURL().subscribe((url) => {
+                            const obj = this.objetoUsuario;
+                            obj.misImagenes.push(url);
+                            const dato: any = {
+                              misImagenes: obj.misImagenes,
+                            };
+                            this._user.updateUser(dato, this.id).then(() => {
+                              console.log('actualizando');
+                              this.toastr.info('nueva imagen agregada');
+                            });
+                          });
+                        })
+                      )
+                      .subscribe();
+                  }
+                }, file.type);
+              } else {
+                console.error(
+                  'Error: No se pudo obtener el contexto 2D del canvas.'
+                );
+              }
+            };
+
+            image.src = e.target.result;
+          };
+
+          reader.readAsDataURL(file);
         }
       });
 
       input.click();
     } else {
+      // Código para usuarios invitados
     }
   }
 }

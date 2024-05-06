@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { getMetadata } from 'firebase/storage';
 import { ToastrService } from 'ngx-toastr';
 import { UsersService } from 'src/app/services/users.service';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { finalize } from 'rxjs/operators';
 
 
 
@@ -38,7 +40,6 @@ export class GaleriaComponent implements OnInit {
   esteComentario: string = '';
   dataVideoId: any = [];
 
-
   constructor(
     private storage: Storage,
     private el: ElementRef,
@@ -46,7 +47,8 @@ export class GaleriaComponent implements OnInit {
     private _image: ImagenesService,
     private toastr: ToastrService,
     private router: Router,
-    private _user: UsersService
+    private _user: UsersService,
+    private storagex: AngularFireStorage
   ) {}
 
   ngOnInit(): void {
@@ -111,50 +113,88 @@ export class GaleriaComponent implements OnInit {
       this.modal = true;
     }
   }
-  subirArchivo($event: any) {
-    const file = $event.target.files[0];
+  subirArchivo() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
 
-    const imgRef = ref(this.storage, `images/${file.name}`);
-    uploadBytes(imgRef, file)
-      .then(async (x) => {
-        await this.getImages();
-        this.capturarNuevaImagen();
-        this.toastr.success('Agregando nueva imagen...');
-      })
-      .catch((error) => console.log(error));
-  }
-  capturarNuevaImagen() {
-    const imagesRef = ref(this.storage, 'images');
-    listAll(imagesRef)
-      .then(async (images) => {
-        let latestImage;
-        let latestTimestamp = new Date(0); // Inicializamos con la fecha más antigua posible
+    input.addEventListener('change', (event) => {
+      const file = (event?.target as HTMLInputElement)?.files?.[0];
 
-        for (let imageRef of images.items) {
-          const metadata = await getMetadata(imageRef); // Obtener los metadatos del archivo
-          const createdAt = new Date(metadata.timeCreated); // Convertir la cadena a objeto Date
+      if (file) {
+        const image = new Image();
+        const reader = new FileReader();
 
-          if (createdAt > latestTimestamp) {
-            latestTimestamp = createdAt;
-            latestImage = imageRef;
-          }
-        }
+        reader.onload = (e: any) => {
+          image.onload = () => {
+            const canvas = document.createElement('canvas');
+            const maxWidth = 800; // Ancho máximo permitido
+            const maxHeight = 600; // Altura máxima permitida
+            let width = image.width;
+            let height = image.height;
 
-        if (latestImage) {
-          const url = await getDownloadURL(latestImage);
-          const dato: any = {
-            url: url,
+            // Redimensionar la imagen si es necesario
+            if (width > maxWidth || height > maxHeight) {
+              if (width > height) {
+                height *= maxWidth / width;
+                width = maxWidth;
+              } else {
+                width *= maxHeight / height;
+                height = maxHeight;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext('2d');
+
+            if (ctx) {
+              ctx.drawImage(image, 0, 0, width, height);
+
+              canvas.toBlob((blob) => {
+                if (blob) {
+                  const filePath = `images/${file.name}`;
+                  const fileRef = this.storagex.ref(filePath);
+                  const task = this.storagex.upload(filePath, blob, {
+                    contentType: blob.type,
+                  });
+
+                  task
+                    .snapshotChanges()
+                    .pipe(
+                      finalize(() => {
+                        fileRef.getDownloadURL().subscribe((url) => {
+                          const dato: any = {
+                            url: url,
+                          };
+                          this._image.addImagenInfo(dato).then(() => {
+                            console.log('actualizando');
+                            this.toastr.info(
+                              'Actualizando lista de Imagenes'
+                            );
+                          });
+                        });
+                      })
+                    )
+                    .subscribe();
+                }
+              }, file.type);
+            } else {
+              console.error(
+                'Error: No se pudo obtener el contexto 2D del canvas.'
+              );
+            }
           };
-          this._image.addImagenInfo(dato).then(() => {
-            console.log('actualizando');
-            window.location.reload();
-            this.toastr.info('Actualizando la lista de Imagenes');
-          });
-        } else {
-          console.log('No se encontraron imágenes.');
-        }
-      })
-      .catch((error) => console.log(error));
+
+          image.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+      }
+    });
+
+    input.click();
   }
 
   //insert function lightbox
@@ -241,7 +281,7 @@ export class GaleriaComponent implements OnInit {
       const usuario = user.displayName;
       const correo = user.email;
       const imagen = user.photoURL;
-      const idUser = user.uid
+      const idUser = user.uid;
       // Crear el comentario
       image.commentsVideo.push({ usuario, correo, comentario, imagen, idUser });
 
@@ -372,14 +412,13 @@ export class GaleriaComponent implements OnInit {
     this.modalEditar = false;
     this.ocultarx = true;
   }
-   async ir(id:any){
+  async ir(id: any) {
     const user = await this.afAuth.currentUser;
-    const userId = user?.uid
+    const userId = user?.uid;
     if (userId === id) {
       this.router.navigate(['/perfil']);
     } else {
       this.router.navigate(['/usuario/', id]);
     }
-
   }
 }
