@@ -4,7 +4,7 @@
     <div class="con-input">
       <p (click)="subirArchivo()">+ Agregar imagen</p>
     </div>
-    <div style="color: chocolate;"  class="gallery-lightbox-container">
+    <div class="gallery-lightbox-container">
       <div class="gallery">
         <div *ngFor="let image of images; let i = index" class="gallery-img">
           <img
@@ -104,18 +104,7 @@
   </div>
 </div>
 <div>
-  <div class="modal" *ngIf="modal">
-    <div class="modal-con">
-      <span (click)="close()" class="fas fa-times lax"></span>
-      <div style="text-align: center">
-        <p>
-          Primero debes
-          <a class="iniciar" (click)="salir()">Iniciar Sesion</a> o
-          <a class="registrar" routerLink="/registrar">Registrate</a>
-        </p>
-      </div>
-    </div>
-  </div>
+
 </div>
 <div class="modalcom" *ngIf="modalcom">
   <div style="text-align: justify" class="modal-com">

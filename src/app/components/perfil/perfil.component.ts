@@ -23,12 +23,18 @@ export class PerfilComponent implements OnInit {
   esInvitado = false;
   usuarioActual: any;
   id: any;
-  imageX: any;
+  imageX: any[] = [];
+
   objetoUsuario: any;
 
   gr = true;
   im = false;
   vd = false;
+
+  previewImage = false;
+  showMask = false;
+  currentLightboxImage = this.imageX[0];
+  currentIndex = 0;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -370,5 +376,33 @@ export class PerfilComponent implements OnInit {
     } else {
       // Código para usuarios invitados
     }
+  }
+  onPreviewImage(index: number) {
+    this.showMask = true;
+    this.previewImage = true;
+    this.currentLightboxImage = this.imageX[index];
+  }
+  close() {
+    this.showMask = false;
+  }
+  next() {
+    this.currentIndex = this.currentIndex + 1;
+    if (this.currentIndex > this.imageX.length - 1) {
+      this.currentIndex = 0;
+    }
+    this.currentLightboxImage = this.imageX[this.currentIndex]; // Mantén currentLightboxImage como un objeto Images
+  }
+  prev(): void {
+    this.currentIndex = this.currentIndex - 1;
+    if (this.currentIndex < 0) {
+      this.currentIndex = this.imageX.length - 1;
+    }
+    this.currentLightboxImage = this.imageX[this.currentIndex]; // Mantén currentLightboxImage como un objeto Images
+  }
+  abrirCom(image: any){
+    console.log('abriendo comentarios', image)
+  }
+  likeImage(image: any){
+    console.log('diste like', image)
   }
 }
