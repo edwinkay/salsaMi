@@ -29,6 +29,10 @@ import { SafeUrlPipe } from './safe-url.pipe';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { PerfilEditarComponent } from './components/perfil-editar/perfil-editar.component';
 import { VerUsuarioComponent } from './components/ver-usuario/ver-usuario.component';
+import { MainActivateComponent } from './components/group-activate/main-activate/main-activate.component';
+import { NavbarActivateComponent } from './components/group-activate/navbar-activate/navbar-activate.component';
+import { GaleriaActivateComponent } from './components/group-activate/galeria-activate/galeria-activate.component';
+import { VideosActivateComponent } from './components/group-activate/videos-activate/videos-activate.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +51,10 @@ import { VerUsuarioComponent } from './components/ver-usuario/ver-usuario.compon
     PerfilComponent,
     PerfilEditarComponent,
     VerUsuarioComponent,
+    MainActivateComponent,
+    NavbarActivateComponent,
+    GaleriaActivateComponent,
+    VideosActivateComponent,
   ],
   imports: [
     BrowserModule,

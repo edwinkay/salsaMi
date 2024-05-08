@@ -12,6 +12,9 @@ import { FormVideoComponent } from './components/form-video/form-video.component
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { PerfilEditarComponent } from './components/perfil-editar/perfil-editar.component';
 import { VerUsuarioComponent } from './components/ver-usuario/ver-usuario.component';
+import { MainActivateComponent } from './components/group-activate/main-activate/main-activate.component';
+import { GaleriaActivateComponent } from './components/group-activate/galeria-activate/galeria-activate.component';
+import { VideosActivateComponent } from './components/group-activate/videos-activate/videos-activate.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -25,6 +28,9 @@ const routes: Routes = [
     component: RecuperarContrasenaComponent,
   },
   { path: 'main', component: MainComponent, canActivate: [AuthGuard] },
+  { path: 'main-activate', component: MainActivateComponent, canActivate: [AuthGuard] },
+  { path: 'galeria-activate', component: GaleriaActivateComponent, canActivate: [AuthGuard] },
+  { path: 'videos-activate', component: VideosActivateComponent, canActivate: [AuthGuard] },
   { path: 'galeria', component: GaleriaComponent, canActivate: [AuthGuard] },
   { path: 'videos', component: VideosComponent, canActivate: [AuthGuard] },
   {

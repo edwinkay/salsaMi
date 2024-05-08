@@ -51,7 +51,15 @@
       <p style="cursor: pointer" (click)="imagenes()">Imagenes</p>
       <p style="cursor: pointer" (click)="videos()">Videos</p>
     </div>
-    <div *ngIf="gr" style="padding: 20px">
+    <div
+      *ngIf="gr"
+      style="
+        display: flex;
+        padding: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+      "
+    >
       <div class="container-img-g">
         <div class="bf">
           <img
@@ -61,8 +69,18 @@
             src="https://firebasestorage.googleapis.com/v0/b/fitpal-horario.appspot.com/o/fondos%2FScreen%20Shot%202024-05-06%20at%2011.43.48%20AM.png?alt=media&token=c0c71fed-4aff-4923-8663-9d91d1f9f4df"
             alt=""
           />
+          <span>Asi somos</span>
         </div>
-        <span>Asi somos asi bailamos</span>
+        <div class="bf bf2">
+          <img
+            style="cursor: pointer"
+            routerLink="/main-activate"
+            width="120"
+            src="https://firebasestorage.googleapis.com/v0/b/fitpal-horario.appspot.com/o/fondos%2Factivate-logo.jpeg?alt=media&token=28baeec7-81b9-42a8-845d-3e226031f3ba"
+            alt=""
+          />
+          <span>Actividad Fisica</span>
+        </div>
       </div>
     </div>
     <div class="contenedor-img" *ngIf="im">
@@ -73,47 +91,45 @@
         <div class="gallery">
           <div class="gallery-img" *ngFor="let img of imageX; let i = index">
             <img
-              (click)="onPreviewImage(i)"
+              (click)="onPreviewImage(i, img)"
               class="zoomable-image"
               width="130"
-              [src]="img"
+              [src]="img.url"
               alt=""
             />
           </div>
         </div>
       </div>
       <div class="modalcom" *ngIf="showMask">
-    <div class="modal-con">
-      <span style="color: white; font-size: 48px;" (click)="close()" class="fas fa-times lax"></span>
-      <div class="anterior">
-        <button
-          class="btn-lightbox-carousel btn-prev"
-          (click)="prev()"
-        >
-          <i
-            class="fas fa-arrow-circle-left icon-lightbox-carousel icon-prev"
-          ></i>
-        </button>
-      </div>
-      <div class="siguiente">
-        <button
-          class="btn-lightbox-carousel btn-next"
-          (click)="next()"
-        >
-          <i
-            class="fas fa-arrow-circle-right icon-lightbox-carousel icon-next"
-          ></i>
-        </button>
-      </div>
-      <div style="text-align: center">
-        <img
-            style="transform: none; width: 100%;"
-            [src]="currentLightboxImage"
-            alt="imagen"
-            [class.zoom-in]="previewImage"
-          />
-      </div>
-      <div style="color: white;">
+        <div class="modal-con">
+          <span
+            style="color: white; font-size: 48px"
+            (click)="close()"
+            class="fas fa-times lax"
+          ></span>
+          <div class="anterior">
+            <button class="btn-lightbox-carousel btn-prev" (click)="prev()">
+              <i
+                class="fas fa-arrow-circle-left icon-lightbox-carousel icon-prev"
+              ></i>
+            </button>
+          </div>
+          <div class="siguiente">
+            <button class="btn-lightbox-carousel btn-next" (click)="next()">
+              <i
+                class="fas fa-arrow-circle-right icon-lightbox-carousel icon-next"
+              ></i>
+            </button>
+          </div>
+          <div style="text-align: center">
+            <img
+              style="transform: none; width: 100%"
+              [src]="currentLightboxImage"
+              alt="imagen"
+              [class.zoom-in]="previewImage"
+            />
+          </div>
+          <!-- <div style="color: white;">
           <div>
               <i
                 style="cursor: pointer"
@@ -130,9 +146,9 @@
               ></i>
               <span>99</span>
             </div>
-          </div>
-    </div>
-  </div>
+          </div> -->
+        </div>
+      </div>
     </div>
     <div *ngIf="vd">Muy pronto tendremos esta funcion...</div>
   </ng-container>

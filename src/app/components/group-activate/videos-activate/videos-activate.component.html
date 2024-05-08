@@ -1,0 +1,192 @@
+<div class="contenedor">
+  <div class="box">
+    <app-navbar-activate></app-navbar-activate>
+    <!-- <div class="con-input">
+      <div class="input-file-container">
+        <input id="file-input" (change)="subirArchivo($event)" type="file" />
+        <label for="file-input" class="file-label">
+          <i class="fas fa-plus"></i>
+          Agregar nuevo video
+        </label>
+      </div>
+    </div> -->
+    <!-- <div  class="con-input">
+      <div class="input-file-container">
+        <button routerLink="/nuevo-video" id="file-input"></button>
+        <label for="file-input" class="file-label">
+          <i class="fas fa-plus"></i>
+          Agregar nuevo video
+        </label>
+      </div>
+    </div> -->
+    <div class="video-container">
+      <div class="video">
+        <div
+          width="320"
+          height="240"
+          class="gallery-video"
+          *ngFor="let video of videos"
+        >
+          <video controls>
+            <source [src]="video.url" type="video/mp4" />
+          </video>
+          <!-- <iframe
+            width="320"
+            height="240"
+            [src]="video.url | safeUrl : 'autoplay=0'"
+            frameborder="0"
+            allowfullscreen
+          ></iframe> -->
+          <div class="section">
+            <div class="title">
+              <p style="margin: 0">
+                {{video.nombre}}
+              </p>
+            </div>
+            <div class="bocadillos">
+              <div class="comment">
+                <i
+                  style="cursor: pointer"
+                  class="far fa-comment"
+                  (click)="abrirCom(video)"
+                ></i>
+                <span>{{ video.commentsVideo.length }}</span>
+              </div>
+              <div class="likes">
+                <i
+                  style="cursor: pointer"
+                  class="far fa-thumbs-up"
+                  [class.liked]="video.likedByVideo.includes(currentUser.uid)"
+                  (click)="likeVideo(video)"
+                ></i>
+                <span>{{video.likesCountVideo}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- abrir modal comentarios -->
+<div class="modalcom" *ngIf="modalcom">
+  <div class="modal-com">
+    <span *ngIf="ocultarx" (click)="close()" class="fas fa-times lax2"></span>
+    <h3>Comentarios:</h3>
+    <div class="comments-container">
+      <div class="comments-list">
+        <div
+          style="border-bottom: 1px solid #a1a197"
+          *ngFor="let comment of dataVideoId.commentsVideo"
+        >
+          <div style="display: flex; flex-direction: column">
+            <img
+            (click)="ir(comment.idUser)"
+              style="cursor: pointer; border-radius: 50%"
+              [src]="
+                comment.imagen ||
+                'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg'
+              "
+              alt="Foto de perfil"
+              width="50"
+              height="50"
+            />
+            <span>{{ comment.usuario }}</span>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              border: 1px solid #80808054;
+              border-radius: 9px;
+              padding: 3px;
+            "
+          >
+            <p style="padding: 16px; width: 86%">{{ comment.comentario }}</p>
+            <div style="display: flex; gap: 1rem">
+              <div>
+                <i
+                  style="cursor: pointer"
+                  class="far fa-thumbs-up"
+                  [class.liked]="
+                    comment.likedByComment &&
+                    comment.likedByComment.includes(currentUser.uid)
+                  "
+                  (click)="likeComment(comment)"
+                ></i>
+                <span>{{ comment.likesCountComment }}</span>
+              </div>
+              <i
+                (click)="abrirEditar(comment)"
+                style="cursor: pointer; color: blue"
+                class="fas fa-pencil-alt"
+              ></i>
+              <i
+                (click)="deleteModal(comment)"
+                style="cursor: pointer; color: red"
+                class="fas fa-trash"
+              ></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-input">
+      <form (submit)="addComment(comentario)" #commentForm="ngForm">
+        <label for="comentario">Agregar comentario:</label><br />
+        <textarea
+          id="comentario"
+          name="comentario"
+          rows="4"
+          cols="50"
+          [(ngModel)]="comentario"
+          required
+        ></textarea
+        ><br />
+        <button
+          style="padding: 4px; border-radius: 7px"
+          type="submit"
+          [disabled]="!commentForm.valid"
+        >
+          Comentar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- modal eliminar -->
+<div>
+  <div class="modalDelete" *ngIf="modalDelete">
+    <div class="modal-con">
+      <div style="text-align: center">
+        <p>¿Deseas eliminar este Comentario?</p>
+      </div>
+      <div style="display: flex; justify-content: space-evenly">
+        <button class="buttonDel" (click)="closeDelete()">Cancelar</button>
+        <button (click)="borrarComentario()" class="buttonDel">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal editar -->
+<div class="modalEditar" *ngIf="modalEditar">
+  <div class="modal-con">
+    <div style="text-align: center">
+      <p>Editar comentario:</p>
+      <textarea
+        style="padding: 12px"
+        [(ngModel)]="esteComentario"
+        name="esteComentario"
+        id="esteComentario"
+        cols="30"
+        rows="10"
+      ></textarea>
+    </div>
+    <div style="display: flex; justify-content: space-evenly; margin-top: 11px">
+      <button class="buttonDel" (click)="closeDelete()">Cancelar</button>
+      <button (click)="editarComentario()" class="buttonDel">Aceptar</button>
+    </div>
+  </div>
+</div>

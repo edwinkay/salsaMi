@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
 import { UsersService } from 'src/app/services/users.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-perfil',
@@ -24,6 +25,7 @@ export class PerfilComponent implements OnInit {
   usuarioActual: any;
   id: any;
   imageX: any[] = [];
+  idGenerado: any;
 
   objetoUsuario: any;
 
@@ -53,6 +55,11 @@ export class PerfilComponent implements OnInit {
         this.esInvitado = true;
       }
     });
+    this.generateUniqueId();
+  }
+  generateUniqueId() {
+    const uniqueId = uuidv4();
+    this.idGenerado = uniqueId;
   }
 
   getUsers() {
@@ -65,6 +72,9 @@ export class PerfilComponent implements OnInit {
           id: element.payload.doc.data(),
           ...element.payload.doc.data(),
           misImagenes: data.misImagenes || [],
+          likedByImage: data.misImagenes[this.currentIndex]
+          // likesCountImage: data.likesCountImage || 0,
+          // likedByImage: data.likedByImage || [],
         });
         const userData = this.usuariosInfo.find(
           (obj) => obj.id.idUser === this.usuario.uid
@@ -85,6 +95,7 @@ export class PerfilComponent implements OnInit {
         this.aboutMeValue = userData.about;
         this.urlPortada = userData.portada;
         this.imageX = userData.misImagenes;
+        console.log(this.objetoUsuario);
       });
     });
   }
@@ -344,7 +355,8 @@ export class PerfilComponent implements OnInit {
                         finalize(() => {
                           fileRef.getDownloadURL().subscribe((url) => {
                             const obj = this.objetoUsuario;
-                            obj.misImagenes.push(url);
+                            const id = this.idGenerado;
+                            obj.misImagenes.push({ url, id });
                             const dato: any = {
                               misImagenes: obj.misImagenes,
                             };
@@ -377,10 +389,11 @@ export class PerfilComponent implements OnInit {
       // Código para usuarios invitados
     }
   }
-  onPreviewImage(index: number) {
+  onPreviewImage(index: number, info: any) {
     this.showMask = true;
+    this.currentIndex = index;
     this.previewImage = true;
-    this.currentLightboxImage = this.imageX[index];
+    this.currentLightboxImage = this.imageX[index].url;
   }
   close() {
     this.showMask = false;
@@ -390,19 +403,31 @@ export class PerfilComponent implements OnInit {
     if (this.currentIndex > this.imageX.length - 1) {
       this.currentIndex = 0;
     }
-    this.currentLightboxImage = this.imageX[this.currentIndex]; // Mantén currentLightboxImage como un objeto Images
+    this.currentLightboxImage = this.imageX[this.currentIndex].url; // Mantén currentLightboxImage como un objeto Images
   }
   prev(): void {
     this.currentIndex = this.currentIndex - 1;
     if (this.currentIndex < 0) {
       this.currentIndex = this.imageX.length - 1;
     }
-    this.currentLightboxImage = this.imageX[this.currentIndex]; // Mantén currentLightboxImage como un objeto Images
+    this.currentLightboxImage = this.imageX[this.currentIndex].url; // Mantén currentLightboxImage como un objeto Images
   }
-  abrirCom(image: any){
-    console.log('abriendo comentarios', image)
+  abrirCom(image: any) {
+    console.log('abriendo comentarios', image);
   }
-  likeImage(image: any){
-    console.log('diste like', image)
+  // Resto de tu código...
+
+  likeImage(image: any) {
+    console.log('diste click')
+    const imageIndex = this.imageX.findIndex((img: any) => img.id === image.id);
+
+    const likedCount = 1
+    const datoImage = this.imageX[this.currentIndex]
+    datoImage.likedByImage.push(likedCount)
+
+    const im = {
+      likedCount: datoImage.likedByImage
+    }
+    console.log(im)
   }
 }

@@ -28,14 +28,21 @@
   background: linear-gradient(to bottom right, #242624, #91a7b8);
 }
 .container-img-g {
-  text-align: center;
-  width: 135px;
+  gap: 2rem;
+    display: flex;
+    text-align: center;
+    width: 135px;
+    justify-content: center;
 }
 .bf {
   border-radius: 7px;
   padding: 7px;
   background: linear-gradient(to bottom right, #242624, #91a7b8);
 }
+.bf span{
+  color: white;
+}
+
 .user {
   color: white;
   margin: 0;
@@ -126,3 +133,9 @@
   .btn-next :hover{
         color: hsl(202, 100%, 50%);
   }
+ @media (max-width: 500px) {
+  .bf2{
+  position: relative;
+  top: 3rem;
+}
+ }
