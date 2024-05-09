@@ -47,6 +47,8 @@ export class PerfilComponent implements OnInit {
   comentario: string = '';
   esteComentario: string = '';
   dataVideoId: any = [];
+  modalDeleteImage = false
+  idDelete:string = ''
 
   objetoUsuario: any;
 
@@ -123,7 +125,7 @@ export class PerfilComponent implements OnInit {
   }
   getUserImages() {
     this._imageUser.getUsuarioImagen().subscribe((imagen) => {
-      this.imageZ = []
+      this.imageZ = [];
       this.imageX = [];
       imagen.forEach((element: any) => {
         const imageData = element.payload.doc.data();
@@ -135,8 +137,10 @@ export class PerfilComponent implements OnInit {
           userImageLikes: imageData.userImageLikes || [],
           commentsVideo: imageData.commentsVideo || [],
         });
-        const imagenFiltrada = this.imageZ.filter(item => item.idUser === this.usuario?.uid)
-        this.imageX = imagenFiltrada
+        const imagenFiltrada = this.imageZ.filter(
+          (item) => item.idUser === this.usuario?.uid
+        );
+        this.imageX = imagenFiltrada;
       });
     });
   }
@@ -474,6 +478,7 @@ export class PerfilComponent implements OnInit {
   onClosePreview() {
     this.previewImage = false;
     this.showMask = false;
+    this.modalDeleteImage = false
     document.body.style.overflow = '';
   }
   next(): void {
@@ -611,7 +616,8 @@ export class PerfilComponent implements OnInit {
       const videox: any = {
         commentsVideo: this.dataVideoId.commentsVideo,
       };
-      this._imageUser.updateImgUsuario(videoId, videox)
+      this._imageUser
+        .updateImgUsuario(videoId, videox)
         .then(() => {
           this.modalEditar = false;
           this.ocultarx = true;
@@ -673,6 +679,7 @@ export class PerfilComponent implements OnInit {
     this.modalDelete = false;
     this.modalEditar = false;
     this.ocultarx = true;
+    this.modalDeleteImage = false
   }
   async ir(id: any) {
     const user = await this.afAuth.currentUser;
@@ -682,5 +689,20 @@ export class PerfilComponent implements OnInit {
     } else {
       this.router.navigate(['/usuario/', id]);
     }
+  }
+  deleteImgModal(id: string){
+    this.idDelete = id
+    this.modalDeleteImage = true
+    this.ocultarx = true;
+  }
+  eliminarImagen(){
+    this._imageUser.delete(this.idDelete).then(()=>{
+      this.imageX = this.imageX.filter((image) => image.id !== this.idDelete);
+      this.toastr.error(
+        'Imagen eliminida'
+      );
+      this.modalDeleteImage = false;
+      this.previewImage = false
+    })
   }
 }

@@ -87,7 +87,7 @@
       <div class="subir">
             <p style="cursor: pointer;" (click)="misImages()">+ Agregar imagen</p>
           </div>
-      <div class="contenedor">
+      <div style="color: white;" class="contenedor">
         <div class="box">
           <div class="gallery-lightbox-container">
             <div class="gallery">
@@ -188,6 +188,13 @@
                       class="far fa-thumbs-up"
                     ></i>
                     <span>{{ currentLightboxImage.likesCountImage }}</span>
+                  </div>
+                  <div>
+                    <i
+                      (click)="deleteImgModal(currentLightboxImage.id)"
+                      style="cursor: pointer; color: red"
+                      class="fas fa-trash"
+                    ></i>
                   </div>
                 </div>
               </div>
@@ -330,6 +337,23 @@
             <button (click)="editarComentario()" class="buttonDel">
               Aceptar
             </button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="modalDelete" *ngIf="modalDeleteImage">
+          <div class="modal-con">
+            <div style="text-align: center">
+              <p>¿Estas seguro de eliminar esta imagen?</p>
+            </div>
+            <div style="display: flex; justify-content: space-evenly">
+              <button class="buttonDel" (click)="closeDelete()">
+                Cancelar
+              </button>
+              <button (click)="eliminarImagen()" class="buttonDel">
+                Aceptar
+              </button>
+            </div>
           </div>
         </div>
       </div>

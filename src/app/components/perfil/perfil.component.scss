@@ -133,12 +133,7 @@
 //   .btn-next :hover{
 //         color: hsl(202, 100%, 50%);
 //   }
-//  @media (max-width: 500px) {
-//   .bf2{
-//   position: relative;
-//   top: 3rem;
-// }
-//  }
+
 :host {
   display: block;
   text-align: center;
@@ -358,4 +353,9 @@ nav {
   text-decoration: underline;
 }
 
-
+ @media (max-width: 500px) {
+  .bf2{
+  position: relative;
+  top: 3rem;
+}
+ }
