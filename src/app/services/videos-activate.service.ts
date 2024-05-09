@@ -9,7 +9,7 @@ export class VideosActivateService {
   constructor(private firestore: AngularFirestore) {}
 
   getactvid():Observable<any>{
-    return this.firestore.collection('videos-activate').snapshotChanges();
+    return this.firestore.collection('videos-activate', (ref) => ref.orderBy('nombre','asc')).snapshotChanges();
   }
   updateActVideo(vd:string, data:any){
     return this.firestore.collection('videos-activate').doc(vd).update(data);

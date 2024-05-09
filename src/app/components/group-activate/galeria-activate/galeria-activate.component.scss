@@ -1,5 +1,269 @@
-.contenedor{
+:host {
+  display: block;
+  text-align: center;
+}
+
+.contenedor {
   background-color: black;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.box {
+  color: white;
   padding: 20px;
-  height: 100vh;
+  width: 100%;
+}
+.caja {
+  padding: 20px;
+  border-radius: 15px;
+  outline: solid rgb(245, 246, 248);
+  text-align: center;
+}
+.btn-lc {
+  display: inline-flex;
+  gap: 4rem;
+  position: absolute;
+  bottom: 0;
+}
+.zoomable-image {
+  transition: transform 0.3s ease-in-out;
+}
+.zoomable-image:hover {
+  transform: scale(1.1);
+}
+//implentacion de gallery lightbox
+:host {
+  display: block;
+  text-align: center;
+}
+
+.gallery-lightbox-container {
+  position: relative;
+  display: inline-block;
+
+  .gallery {
+    line-height: 0;
+    column-count: 3;
+    column-gap: 30px;
+
+    .gallery-img img {
+      width: 100%;
+      height: auto;
+      cursor: zoom-in;
+      border-radius: 0.35rem;
+      margin-bottom: 30px;
+      margin-top: 56px;
+      box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.21);
+    }
+  }
+
+  .lightbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+    pointer-events: none;
+
+    .count {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 7%;
+      height: 10%;
+      color: #fff;
+      opacity: 0.7;
+      font-size: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 25px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 0;
+      color: #fff;
+      background: 0 0;
+      border: 0;
+      cursor: pointer;
+      width: 7%;
+      height: 10%;
+      z-index: 2;
+
+      .fa-times {
+        font-size: 25px;
+      }
+    }
+
+    .btn-lightbox-carousel {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      width: 8%;
+      height: 8%;
+      padding: 0;
+      color: #fff;
+      text-align: center;
+      background: 0 0;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .btn-prev {
+      left: 0;
+    }
+
+    .btn-next {
+      right: 0;
+    }
+
+    .icon-lightbox-carousel {
+      color: #fff;
+      opacity: 0.5;
+      transition: all 0.15s ease;
+    }
+
+    .icon-lightbox-carousel:hover {
+      opacity: 0.9;
+    }
+
+    .icon-lightbox-carousel:active {
+      opacity: 0.5;
+    }
+
+    .icon-prev,
+    .icon-next {
+      font-size: 30px;
+    }
+    .lightbox-img {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .lightbox-img img {
+      width: 100%;
+      height: auto;
+      border-radius: 0.35rem;
+    }
+  }
+  .lightbox.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .lightbox-img img {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .lightbox-img img.zoom-in {
+    transform: scale(1.1);
+  }
+}
+
+// boton upload
+.con-input {
+  position: relative;
+  padding: 32px 0 49px 0;
+}
+
+.input-file-container {
+  position: absolute;
+  right: 0;
+  overflow: hidden;
+  display: inline-block;
+}
+
+#file-input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.file-label {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+//fin del lightbox
+
+.nav-link {
+  text-decoration: none;
+  color: #f4f4f4;
+}
+.nav-link:hover {
+  color: rgb(255, 230, 0);
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  .caja {
+    font-size: 15px;
+  }
+  .gallery-lightbox-container {
+    .gallery {
+      column-count: 2;
+
+      .gallery-img img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+  .con-input {
+    padding: 15px 0 20px 0;
+  }
+  .file-label {
+    padding: 4px 4px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 500px) {
+  .caja {
+    font-size: 12px;
+  }
+  .gallery-lightbox-container {
+    .gallery {
+      column-count: 1;
+
+      .gallery-img img {
+        width: 100%;
+      }
+    }
+  }
+  .btn-lc {
+  display: inline-flex;
+  gap: 4rem;
+  position: absolute;
+  bottom: 20%;
+}
 }

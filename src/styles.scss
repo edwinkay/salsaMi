@@ -151,3 +151,9 @@ textarea#comentario {
   width: 80px;
 }
 //background: linear-gradient(to bottom right, #4CAF50, #2196F3);
+.ytp-fit-cover-video .html5-main-video {
+    object-fit: contain !important;
+}
+.html5-video-player .video-click-tracking, .html5-video-player .video-stream {
+    width: 100% !important;
+}

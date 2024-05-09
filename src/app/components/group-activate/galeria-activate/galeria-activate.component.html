@@ -1,3 +1,228 @@
 <div class="contenedor">
-  <app-navbar-activate></app-navbar-activate>
+  <div class="box">
+    <app-navbar-activate></app-navbar-activate>
+    <div class="con-input">
+      <p (click)="subirArchivo()">+ Agregar imagen</p>
+    </div>
+    <div class="gallery-lightbox-container">
+      <div class="gallery">
+        <div *ngFor="let image of images; let i = index" class="gallery-img">
+          <img
+            (mouseenter)="onMouseEnter(i)"
+            (mouseleave)="onMouseLeave(i)"
+            class="zoomable-image"
+            (click)="onPreviewImage(i)"
+            [src]="image.url"
+            alt="imagen"
+          />
+          <div style="display: inline-flex; gap: 4rem">
+            <div>
+              <i
+                style="cursor: pointer"
+                class="far fa-comment"
+                (click)="abrirCom(image)"
+              ></i>
+              <span>{{ image.commentsVideo.length }}</span>
+            </div>
+            <div>
+              <i
+                [class.liked]="image.likedByImage.includes(currentUser.uid)"
+                (click)="likeImage(image)"
+                style="cursor: pointer"
+                class="far fa-thumbs-up"
+              ></i>
+              <span>{{ image.likesCountImage }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        *ngIf="showMask"
+        class="lightbox"
+        [ngClass]="{ active: previewImage }"
+      >
+        <span *ngIf="showCount" class="count">
+          {{ currentIndex + 1 }}/{{ totalImageCount }}
+        </span>
+        <button
+          *ngIf="previewImage"
+          class="close-btn"
+          (click)="onClosePreview()"
+        >
+          <i class="far fa-times"></i>
+        </button>
+        <button
+          *ngIf="controls"
+          class="btn-lightbox-carousel btn-prev"
+          (click)="prev()"
+        >
+          <i
+            class="fas fa-arrow-circle-left icon-lightbox-carousel icon-prev"
+          ></i>
+        </button>
+        <button
+          *ngIf="controls"
+          class="btn-lightbox-carousel btn-next"
+          (click)="next()"
+        >
+          <i
+            class="fas fa-arrow-circle-right icon-lightbox-carousel icon-next"
+          ></i>
+        </button>
+
+        <div *ngIf="previewImage" class="lightbox-img">
+          <img
+            style="transform: none"
+            [src]="currentLightboxImage.url"
+            alt="imagen"
+            [class.zoom-in]="previewImage"
+          />
+          <div class="btn-lc">
+            <div>
+              <i
+                style="cursor: pointer"
+                class="far fa-comment"
+                (click)="abrirCom(currentLightboxImage)"
+              ></i>
+              <span>{{ currentLightboxImage.commentsVideo.length }}</span>
+            </div>
+            <div>
+              <i
+                [class.liked]="
+                  currentLightboxImage.likedByImage.includes(currentUser.uid)
+                "
+                (click)="likeImage(currentLightboxImage)"
+                style="cursor: pointer"
+                class="far fa-thumbs-up"
+              ></i>
+              <span>{{ currentLightboxImage.likesCountImage }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+
+</div>
+<div class="modalcom" *ngIf="modalcom">
+  <div style="text-align: justify" class="modal-com">
+    <span *ngIf="ocultarx" (click)="close()" class="fas fa-times lax2"></span>
+    <h3>Comentarios:</h3>
+    <div class="comments-container">
+      <div class="comments-list">
+        <div
+          style="border-bottom: 1px solid #a1a197"
+          *ngFor="let comment of dataVideoId.commentsVideo"
+        >
+          <div style="display: flex; flex-direction: column">
+            <img
+              (click)="ir(comment.idUser)"
+
+              style="cursor: pointer; border-radius: 50%"
+              [src]="
+                comment.imagen ||
+                'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg'
+              "
+              alt="Foto de perfil"
+              width="50"
+              height="50"
+            />
+            <span>{{ comment.usuario }}</span>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              border: 1px solid #80808054;
+              border-radius: 9px;
+              padding: 3px;
+            "
+          >
+            <p style="padding: 16px; width: 86%">{{ comment.comentario }}</p>
+            <div style="display: flex; gap: 1rem">
+              <div>
+                <i
+                  style="cursor: pointer"
+                  class="far fa-thumbs-up"
+                  [class.liked]="
+                    comment.likedByComment &&
+                    comment.likedByComment.includes(currentUser.uid)
+                  "
+                  (click)="likeComment(comment)"
+                ></i>
+                <span>{{ comment.likesCountComment }}</span>
+              </div>
+              <i
+                (click)="abrirEditar(comment)"
+                style="cursor: pointer; color: blue"
+                class="fas fa-pencil-alt"
+              ></i>
+              <i
+                (click)="deleteModal(comment)"
+                style="cursor: pointer; color: red"
+                class="fas fa-trash"
+              ></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-input">
+      <form (submit)="addComment(comentario)" #commentForm="ngForm">
+        <label for="comentario">Agregar comentario:</label><br />
+        <textarea
+          id="comentario"
+          name="comentario"
+          rows="4"
+          cols="50"
+          [(ngModel)]="comentario"
+          required
+        ></textarea
+        ><br />
+        <button
+          style="padding: 4px; border-radius: 7px"
+          type="submit"
+          [disabled]="!commentForm.valid"
+        >
+          Comentar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="modalDelete" *ngIf="modalDelete">
+    <div class="modal-con">
+      <div style="text-align: center">
+        <p>¿Deseas eliminar este Comentario?</p>
+      </div>
+      <div style="display: flex; justify-content: space-evenly">
+        <button class="buttonDel" (click)="closeDelete()">Cancelar</button>
+        <button (click)="borrarComentario()" class="buttonDel">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modalEditar" *ngIf="modalEditar">
+  <div class="modal-con">
+    <div style="text-align: center">
+      <p>Editar comentario:</p>
+      <textarea
+        style="padding: 12px"
+        [(ngModel)]="esteComentario"
+        name="esteComentario"
+        id="esteComentario"
+        cols="30"
+        rows="10"
+      ></textarea>
+    </div>
+    <div style="display: flex; justify-content: space-evenly; margin-top: 11px">
+      <button class="buttonDel" (click)="closeDelete()">Cancelar</button>
+      <button (click)="editarComentario()" class="buttonDel">Aceptar</button>
+    </div>
+  </div>
 </div>
