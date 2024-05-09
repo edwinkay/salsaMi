@@ -15,6 +15,18 @@ nav {
   flex-direction: row;
   justify-content: space-evenly;
 }
+.subir {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 12px;
+}
+.subir p {
+  background: linear-gradient(to bottom right, #c4d6019a, #fefeff75);
+  color: white;
+  width: 129px;
+  padding: 5px 9px;
+  border-radius: 13px;
+}
 
 .box {
   color: white;
@@ -31,7 +43,7 @@ nav {
   display: inline-flex;
   gap: 4rem;
   position: absolute;
-  bottom: 0;
+  bottom: 20%;
 }
 .zoomable-image {
   transition: transform 0.3s ease-in-out;
@@ -52,15 +64,14 @@ nav {
   .gallery {
     line-height: 0;
     column-count: 3;
-    column-gap: 30px;
+    column-gap: 2px;
 
     .gallery-img img {
       width: 100%;
       height: auto;
       cursor: zoom-in;
       border-radius: 0.35rem;
-      margin-bottom: 30px;
-      margin-top: 56px;
+      margin-bottom: 2px;
       box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.21);
     }
   }
@@ -224,46 +235,3 @@ nav {
   text-decoration: underline;
 }
 
-@media (max-width: 767px) {
-  .caja {
-    font-size: 15px;
-  }
-  .gallery-lightbox-container {
-    .gallery {
-      column-count: 2;
-
-      .gallery-img img {
-        width: 100%;
-        height: auto;
-      }
-    }
-  }
-  .con-input {
-    padding: 15px 0 20px 0;
-  }
-  .file-label {
-    padding: 4px 4px;
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 500px) {
-  .caja {
-    font-size: 12px;
-  }
-  .gallery-lightbox-container {
-    .gallery {
-      column-count: 1;
-
-      .gallery-img img {
-        width: 100%;
-      }
-    }
-  }
-  .btn-lc {
-  display: inline-flex;
-  gap: 4rem;
-  position: absolute;
-  bottom: 20%;
-}
-}

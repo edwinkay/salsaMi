@@ -1,8 +1,8 @@
 <div class="contenedor">
   <div class="box">
     <app-navbar-activate></app-navbar-activate>
-    <div class="con-input">
-      <p (click)="subirArchivo()">+ Agregar imagen</p>
+    <div class="subir">
+      <p style="cursor: pointer;" (click)="subirArchivo()">+ Agregar imagen</p>
     </div>
     <div class="gallery-lightbox-container">
       <div class="gallery">
@@ -15,7 +15,7 @@
             [src]="image.url"
             alt="imagen"
           />
-          <div style="display: inline-flex; gap: 4rem">
+          <!-- <div style="display: inline-flex; gap: 4rem">
             <div>
               <i
                 style="cursor: pointer"
@@ -33,7 +33,7 @@
               ></i>
               <span>{{ image.likesCountImage }}</span>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
       <div
@@ -223,6 +223,20 @@
     <div style="display: flex; justify-content: space-evenly; margin-top: 11px">
       <button class="buttonDel" (click)="closeDelete()">Cancelar</button>
       <button (click)="editarComentario()" class="buttonDel">Aceptar</button>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="modal" *ngIf="modal">
+    <div class="modal-con">
+      <span (click)="close()" class="fas fa-times lax"></span>
+      <div style="text-align: center">
+        <p>
+          Primero debes
+          <a class="iniciar" (click)="salir()">Iniciar Sesion</a> o
+          <a class="registrar" routerLink="/registrar">Registrate</a>
+        </p>
+      </div>
     </div>
   </div>
 </div>

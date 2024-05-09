@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
 import { UsersService } from 'src/app/services/users.service';
+import { UsuariosImgService } from 'src/app/services/usuarios-img.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -16,6 +17,8 @@ export class PerfilComponent implements OnInit {
   usuario: any | null;
   usuariosInfo: any[] = [];
   idInfo: any[] = [];
+  currentUser: any | null;
+  adm = false;
   phoneNumberValue: any;
   genderValue: any;
   birthdayValue: any;
@@ -25,7 +28,25 @@ export class PerfilComponent implements OnInit {
   usuarioActual: any;
   id: any;
   imageX: any[] = [];
+  imageZ: any[] = [];
   idGenerado: any;
+
+  modal = false;
+  modalcom = false;
+  modalDelete = false;
+  modalEditar = false;
+  previewImage = false;
+  showMask = false;
+  currentLightboxImage = this.imageX[0];
+  currentIndex = 0;
+  showCount = false;
+  controls = true;
+  totalImageCount = 0;
+  ocultarx = true;
+  comentarioDel: any;
+  comentario: string = '';
+  esteComentario: string = '';
+  dataVideoId: any = [];
 
   objetoUsuario: any;
 
@@ -33,29 +54,34 @@ export class PerfilComponent implements OnInit {
   im = false;
   vd = false;
 
-  previewImage = false;
-  showMask = false;
-  currentLightboxImage = this.imageX[0];
-  currentIndex = 0;
-
   constructor(
     private afAuth: AngularFireAuth,
     private storage: AngularFireStorage,
     private _user: UsersService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private _imageUser: UsuariosImgService,
+    private el: ElementRef
   ) {}
 
   ngOnInit(): void {
     this.afAuth.user.subscribe((user) => {
       this.usuario = user;
+      this.currentUser = user;
       this.getUsers();
       this.usuarioActual = user?.displayName;
+      const comprobar = user?.uid;
       if (this.usuarioActual == 'Invitad@') {
         this.esInvitado = true;
       }
+      if (comprobar == 'rm01jawdLvYSObMPDc8BTBasbJp2') {
+        this.esInvitado = true;
+      }
+      if (comprobar == 'QxwJYfG0c2MwfjnJR70AdmmKOIz2') {
+        this.adm = true;
+      }
     });
-    this.generateUniqueId();
+    this.getUserImages();
   }
   generateUniqueId() {
     const uniqueId = uuidv4();
@@ -71,8 +97,6 @@ export class PerfilComponent implements OnInit {
         this.usuariosInfo.push({
           id: element.payload.doc.data(),
           ...element.payload.doc.data(),
-          misImagenes: data.misImagenes || [],
-          likedByImage: data.misImagenes[this.currentIndex]
           // likesCountImage: data.likesCountImage || 0,
           // likedByImage: data.likedByImage || [],
         });
@@ -94,8 +118,25 @@ export class PerfilComponent implements OnInit {
         this.birthdayValue = userData.cumpleanos;
         this.aboutMeValue = userData.about;
         this.urlPortada = userData.portada;
-        this.imageX = userData.misImagenes;
-        console.log(this.objetoUsuario);
+      });
+    });
+  }
+  getUserImages() {
+    this._imageUser.getUsuarioImagen().subscribe((imagen) => {
+      this.imageZ = []
+      this.imageX = [];
+      imagen.forEach((element: any) => {
+        const imageData = element.payload.doc.data();
+        this.imageZ.push({
+          id: element.payload.doc.id,
+          ...imageData,
+          likesCountImage: imageData.likesCountImage || 0,
+          likedByImage: imageData.likedByImage || [],
+          userImageLikes: imageData.userImageLikes || [],
+          commentsVideo: imageData.commentsVideo || [],
+        });
+        const imagenFiltrada = this.imageZ.filter(item => item.idUser === this.usuario?.uid)
+        this.imageX = imagenFiltrada
       });
     });
   }
@@ -354,15 +395,16 @@ export class PerfilComponent implements OnInit {
                       .pipe(
                         finalize(() => {
                           fileRef.getDownloadURL().subscribe((url) => {
-                            const obj = this.objetoUsuario;
-                            const id = this.idGenerado;
-                            obj.misImagenes.push({ url, id });
+                            const idUser = this.usuario?.uid;
                             const dato: any = {
-                              misImagenes: obj.misImagenes,
+                              url: url,
+                              idUser: idUser,
                             };
-                            this._user.updateUser(dato, this.id).then(() => {
+                            this._imageUser.addImagenUsuario(dato).then(() => {
                               console.log('actualizando');
-                              this.toastr.info('nueva imagen agregada');
+                              this.toastr.info(
+                                'Actualizando lista de Imagenes'
+                              );
                             });
                           });
                         })
@@ -389,45 +431,256 @@ export class PerfilComponent implements OnInit {
       // Código para usuarios invitados
     }
   }
-  onPreviewImage(index: number, info: any) {
+  async likeImage(image: any) {
+    const user = await this.afAuth.currentUser;
+    if (user && !this.esInvitado) {
+      const userId = user.uid;
+
+      const usuario = user.displayName;
+      const correo = user.email;
+
+      const index = image.likedByImage.indexOf(userId);
+
+      if (index !== -1) {
+        image.likedByImage.splice(index, 1);
+        image.userImageLikes.splice(index, 1);
+        image.likesCountImage--;
+      } else {
+        image.likedByImage.push(userId);
+        image.likesCountImage++;
+        image.userImageLikes.push({ usuario, correo });
+      }
+
+      const id = image.id;
+      const imagex: any = {
+        likesCountImage: image.likesCountImage,
+        likedByImage: image.likedByImage,
+        userImageLikes: image.userImageLikes,
+      };
+      await this._imageUser.updateImgUsuario(id, imagex);
+    } else {
+      this.modal = true;
+    }
+  }
+  onPreviewImage(index: number): void {
     this.showMask = true;
-    this.currentIndex = index;
     this.previewImage = true;
-    this.currentLightboxImage = this.imageX[index].url;
+    this.currentIndex = index;
+    this.showCount = true;
+    this.currentLightboxImage = this.imageX[index];
+    this.totalImageCount = this.imageX.length;
+    document.body.style.overflow = 'hidden';
   }
-  close() {
+  onClosePreview() {
+    this.previewImage = false;
     this.showMask = false;
+    document.body.style.overflow = '';
   }
-  next() {
+  next(): void {
     this.currentIndex = this.currentIndex + 1;
     if (this.currentIndex > this.imageX.length - 1) {
       this.currentIndex = 0;
     }
-    this.currentLightboxImage = this.imageX[this.currentIndex].url; // Mantén currentLightboxImage como un objeto Images
+    this.currentLightboxImage = this.imageX[this.currentIndex]; // Mantén currentLightboxImage como un objeto Images
   }
+
   prev(): void {
     this.currentIndex = this.currentIndex - 1;
     if (this.currentIndex < 0) {
       this.currentIndex = this.imageX.length - 1;
     }
-    this.currentLightboxImage = this.imageX[this.currentIndex].url; // Mantén currentLightboxImage como un objeto Images
+    this.currentLightboxImage = this.imageX[this.currentIndex]; // Mantén currentLightboxImage como un objeto Images
   }
-  abrirCom(image: any) {
-    console.log('abriendo comentarios', image);
+
+  onMouseEnter(index: number) {
+    const imageElement =
+      this.el.nativeElement.querySelectorAll('.zoomable-image')[index];
+    imageElement.style.transform = 'scale(1.1)';
   }
-  // Resto de tu código...
 
-  likeImage(image: any) {
-    console.log('diste click')
-    const imageIndex = this.imageX.findIndex((img: any) => img.id === image.id);
-
-    const likedCount = 1
-    const datoImage = this.imageX[this.currentIndex]
-    datoImage.likedByImage.push(likedCount)
-
-    const im = {
-      likedCount: datoImage.likedByImage
+  onMouseLeave(index: number) {
+    const imageElement =
+      this.el.nativeElement.querySelectorAll('.zoomable-image')[index];
+    imageElement.style.transform = 'scale(1)';
+  }
+  salir() {
+    this.afAuth.signOut().then(() => {
+      this.router.navigate(['/login']);
+    });
+  }
+  close() {
+    this.modal = false;
+    this.modalcom = false;
+  }
+  async abrirEditar(comentario: any) {
+    const user = await this.afAuth.currentUser;
+    if (user?.email === comentario.correo) {
+      this.modalEditar = true;
+      this.ocultarx = false;
     }
-    console.log(im)
+    this.comentarioDel = comentario;
+    this.esteComentario = comentario.comentario;
+  }
+  async deleteModal(comentario: any) {
+    const user = await this.afAuth.currentUser;
+
+    if (
+      user?.email === comentario.correo ||
+      user?.email == 'administrador.sistema@gmail.com'
+    ) {
+      this.modalDelete = true;
+      this.ocultarx = false;
+    }
+    this.comentarioDel = comentario;
+  }
+  async addComment(comentario: string) {
+    // Obtener el usuario actual
+    const user = await this.afAuth.currentUser;
+
+    if (user) {
+      const image = this.dataVideoId;
+      // Obtener el ID del video
+      const imageId = this.dataVideoId.id;
+      const usuario = user.displayName;
+      const correo = user.email;
+      const imagen = user.photoURL;
+      const idUser = user.uid;
+      // Crear el comentario
+      image.commentsVideo.push({ usuario, correo, comentario, imagen, idUser });
+
+      const imagex: any = {
+        commentsVideo: image.commentsVideo,
+      };
+      // Actualizar los comentarios en Firestore
+      await this._imageUser.updateImgUsuario(imageId, imagex);
+      this.comentario = '';
+    }
+  }
+  async abrirCom(image: any) {
+    this.dataVideoId = image;
+    const user = await this.afAuth.currentUser;
+
+    if (user && !this.esInvitado) {
+      this.modalcom = true;
+    } else {
+      this.modal = true;
+    }
+  }
+  borrarComentario() {
+    // Encuentra el índice del comentario en el array commentsVideo
+    const index = this.dataVideoId.commentsVideo.indexOf(this.comentarioDel);
+
+    // Asegúrate de que el índice sea válido
+    if (index !== -1) {
+      // Elimina el comentario del array commentsVideo
+      this.dataVideoId.commentsVideo.splice(index, 1);
+
+      // Actualiza los comentarios en Firestore
+      const videoId = this.dataVideoId.id;
+      const videox: any = {
+        commentsVideo: this.dataVideoId.commentsVideo,
+      };
+      this._imageUser
+        .updateImgUsuario(videoId, videox)
+        .then(() => {
+          this.modalDelete = false;
+          this.ocultarx = true;
+          console.log('Comentario eliminado correctamente');
+        })
+        .catch((error) => {
+          console.error('Error al eliminar el comentario:', error);
+        });
+    } else {
+      console.error('Índice de comentario no válido');
+    }
+  }
+  editarComentario() {
+    // Obtén el comentario modificado desde el formulario
+    const comentarioModificado = this.esteComentario;
+
+    // Encuentra el índice del comentario en el array commentsVideo
+    const index = this.dataVideoId.commentsVideo.indexOf(this.comentarioDel);
+
+    // Asegúrate de que el índice sea válido
+    if (index !== -1) {
+      // Actualiza el comentario en el array commentsVideo
+      this.dataVideoId.commentsVideo[index].comentario = comentarioModificado;
+
+      // Actualiza los comentarios en Firestore
+      const videoId = this.dataVideoId.id;
+      const videox: any = {
+        commentsVideo: this.dataVideoId.commentsVideo,
+      };
+      this._imageUser.updateImgUsuario(videoId, videox)
+        .then(() => {
+          this.modalEditar = false;
+          this.ocultarx = true;
+          console.log('Comentario editado correctamente');
+        })
+        .catch((error) => {
+          console.error('Error al editar el comentario:', error);
+        });
+    } else {
+      console.error('Índice de comentario no válido');
+    }
+  }
+  async likeComment(comment: any) {
+    const user = await this.afAuth.currentUser;
+    if (user && !this.esInvitado) {
+      // Verificar si el comentario está definido
+      if (!comment) {
+        console.error('El comentario no está definido');
+        return;
+      }
+
+      // Verificar si el comentario tiene la propiedad likedByComment
+      if (!comment.likedByComment) {
+        // Si no tiene la propiedad, crearla como un array vacío
+        comment.likedByComment = [];
+      }
+
+      // Verificar si el usuario ya ha dado like
+      const userId = user.uid;
+
+      const index = comment.likedByComment.indexOf(userId);
+
+      if (index !== -1) {
+        // Si ya ha dado like, quitar el like
+        comment.likedByComment.splice(index, 1);
+        comment.likesCountComment = Math.max(0, comment.likesCountComment - 1); // Decrementar el contador
+      } else {
+        // Si no ha dado like, agregar el like
+        comment.likedByComment.push(userId);
+        comment.likesCountComment = (comment.likesCountComment || 0) + 1; // Incrementar el contador
+      }
+
+      // Actualizar los likes del comentario en Firestore
+      const videoId = this.dataVideoId.id;
+      const commentIndex = this.dataVideoId.commentsVideo.findIndex(
+        (c: any) => c === comment
+      );
+      if (commentIndex !== -1) {
+        const videox: any = {
+          commentsVideo: this.dataVideoId.commentsVideo,
+        };
+        await this._imageUser.updateImgUsuario(videoId, videox);
+      }
+    } else {
+      this.modal = true;
+    }
+  }
+  closeDelete() {
+    this.modalDelete = false;
+    this.modalEditar = false;
+    this.ocultarx = true;
+  }
+  async ir(id: any) {
+    const user = await this.afAuth.currentUser;
+    const userId = user?.uid;
+    if (userId === id) {
+      this.router.navigate(['/perfil']);
+    } else {
+      this.router.navigate(['/usuario/', id]);
+    }
   }
 }

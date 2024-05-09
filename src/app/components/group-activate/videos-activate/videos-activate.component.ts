@@ -277,4 +277,9 @@ export class VideosActivateComponent implements OnInit {
       console.error('Índice de comentario no válido');
     }
   }
+  salir() {
+    this.afAuth.signOut().then(() => {
+      this.router.navigate(['/login']);
+    });
+  }
 }

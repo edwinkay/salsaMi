@@ -25,16 +25,16 @@
           class="gallery-video"
           *ngFor="let video of videos"
         >
-          <!-- <video controls>
+          <video controls>
             <source [src]="video.url" type="video/mp4" />
-          </video> -->
-          <iframe
+          </video>
+          <!-- <iframe
             width="320"
             height="240"
             [src]="video.url | safeUrl : 'autoplay=0'"
             frameborder="0"
             allowfullscreen
-          ></iframe>
+          ></iframe> -->
           <div class="section">
             <div class="title">
               <p style="margin: 0">
@@ -185,6 +185,20 @@
     <div style="display: flex; justify-content: space-evenly; margin-top: 11px">
       <button class="buttonDel" (click)="closeDelete()">Cancelar</button>
       <button (click)="editarComentario()" class="buttonDel">Aceptar</button>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="modal" *ngIf="modal">
+    <div class="modal-con">
+      <span (click)="close()" class="fas fa-times lax"></span>
+      <div style="text-align: center">
+        <p>
+          Primero debes
+          <a class="iniciar" (click)="salir()">Iniciar Sesion</a> o
+          <a class="registrar" routerLink="/registrar">Registrate</a>
+        </p>
+      </div>
     </div>
   </div>
 </div>

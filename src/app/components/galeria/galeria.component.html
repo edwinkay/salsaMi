@@ -226,3 +226,17 @@
     </div>
   </div>
 </div>
+<div>
+  <div class="modal" *ngIf="modal">
+    <div class="modal-con">
+      <span (click)="close()" class="fas fa-times lax"></span>
+      <div style="text-align: center">
+        <p>
+          Primero debes
+          <a class="iniciar" (click)="salir()">Iniciar Sesion</a> o
+          <a class="registrar" routerLink="/registrar">Registrate</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
