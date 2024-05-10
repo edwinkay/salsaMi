@@ -97,6 +97,13 @@
               ></i>
               <span>{{ currentLightboxImage.likesCountImage }}</span>
             </div>
+            <div>
+                    <i
+                      (click)="deleteImgModal(currentLightboxImage.id)"
+                      style="cursor: pointer; color: red"
+                      class="fas fa-trash"
+                    ></i>
+                  </div>
           </div>
         </div>
       </div>
@@ -240,3 +247,20 @@
     </div>
   </div>
 </div>
+<div>
+        <div class="modalDelete" *ngIf="modalDeleteImage">
+          <div class="modal-con">
+            <div style="text-align: center">
+              <p>¿Estas seguro de eliminar esta imagen?</p>
+            </div>
+            <div style="display: flex; justify-content: space-evenly">
+              <button class="buttonDel" (click)="closeDelete()">
+                Cancelar
+              </button>
+              <button (click)="eliminarImagen()" class="buttonDel">
+                Aceptar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>

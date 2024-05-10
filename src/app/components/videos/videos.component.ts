@@ -283,7 +283,7 @@ export class VideosComponent implements OnInit {
           commentsVideo: this.dataVideoId.commentsVideo,
         };
         await this._videosService.updateVideo(videoId, videox);
-        console.log(videox);
+
       }
     } else {
       this.modal = true;

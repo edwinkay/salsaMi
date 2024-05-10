@@ -17,4 +17,7 @@ export class GaleriaActivateService {
   addImagenInfo(imagen: any) {
     return this.firestore.collection('img-activate').add(imagen);
   }
+  delete(id: string): Promise<any> {
+    return this.firestore.collection('img-activate').doc(id).delete();
+  }
 }

@@ -25,6 +25,9 @@ export class VideosActivateComponent implements OnInit {
   ocultarx = true;
   adm = false;
 
+  filteredVideos: any[] = [];
+  searchTerm: string = '';
+
   constructor(
     private afAuth: AngularFireAuth,
     private _videosService: VideosActivateService,
@@ -59,8 +62,8 @@ export class VideosActivateComponent implements OnInit {
           userVideoLikes: videoData.userVideoLikes || [],
           commentsVideo: videoData.commentsVideo || [],
         });
-        console.log(this.videos);
       });
+      this.filteredVideos = this.videos;
     });
   }
   async likeVideo(video: any) {
@@ -281,5 +284,10 @@ export class VideosActivateComponent implements OnInit {
     this.afAuth.signOut().then(() => {
       this.router.navigate(['/login']);
     });
+  }
+  filterVideos() {
+    this.filteredVideos = this.videos.filter((video) =>
+      video.nombre.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
   }
 }

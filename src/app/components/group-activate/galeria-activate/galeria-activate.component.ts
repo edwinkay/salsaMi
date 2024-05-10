@@ -34,6 +34,8 @@ export class GaleriaActivateComponent implements OnInit {
   comentario: string = '';
   esteComentario: string = '';
   dataVideoId: any = [];
+  modalDeleteImage = false
+  idDelete:string = ''
 
   constructor(
     private el: ElementRef,
@@ -201,6 +203,7 @@ export class GaleriaActivateComponent implements OnInit {
   onClosePreview() {
     this.previewImage = false;
     this.showMask = false;
+    this.modalDeleteImage = false;
     document.body.style.overflow = '';
   }
   next(): void {
@@ -401,6 +404,7 @@ export class GaleriaActivateComponent implements OnInit {
     this.modalDelete = false;
     this.modalEditar = false;
     this.ocultarx = true;
+    this.modalDeleteImage = false;
   }
   async ir(id: any) {
     const user = await this.afAuth.currentUser;
@@ -410,5 +414,18 @@ export class GaleriaActivateComponent implements OnInit {
     } else {
       this.router.navigate(['/usuario/', id]);
     }
+  }
+  deleteImgModal(id: string) {
+    this.idDelete = id;
+    this.modalDeleteImage = true;
+    this.ocultarx = true;
+  }
+  eliminarImagen() {
+    this._image.delete(this.idDelete).then(() => {
+      this.images = this.images.filter((image) => image.id !== this.idDelete);
+      this.toastr.error('Imagen eliminida');
+      this.modalDeleteImage = false;
+      this.previewImage = false;
+    });
   }
 }
