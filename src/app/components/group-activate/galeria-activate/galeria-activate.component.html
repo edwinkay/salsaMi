@@ -1,8 +1,8 @@
 <div class="contenedor">
   <div class="box">
     <app-navbar-activate></app-navbar-activate>
-    <div class="subir">
-      <p style="cursor: pointer;" (click)="subirArchivo()">+ Agregar imagen</p>
+    <div *ngIf="adm" class="subir">
+      <p style="cursor: pointer" (click)="subirArchivo()">+ Agregar imagen</p>
     </div>
     <div class="gallery-lightbox-container">
       <div class="gallery">
@@ -97,22 +97,20 @@
               ></i>
               <span>{{ currentLightboxImage.likesCountImage }}</span>
             </div>
-            <div>
-                    <i
-                      (click)="deleteImgModal(currentLightboxImage.id)"
-                      style="cursor: pointer; color: red"
-                      class="fas fa-trash"
-                    ></i>
-                  </div>
+            <div *ngIf="adm">
+              <i
+                (click)="deleteImgModal(currentLightboxImage.id)"
+                style="cursor: pointer; color: red"
+                class="fas fa-trash"
+              ></i>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div>
-
-</div>
+<div></div>
 <div class="modalcom" *ngIf="modalcom">
   <div style="text-align: justify" class="modal-com">
     <span *ngIf="ocultarx" (click)="close()" class="fas fa-times lax2"></span>
@@ -126,7 +124,6 @@
           <div style="display: flex; flex-direction: column">
             <img
               (click)="ir(comment.idUser)"
-
               style="cursor: pointer; border-radius: 50%"
               [src]="
                 comment.imagen ||
@@ -248,19 +245,15 @@
   </div>
 </div>
 <div>
-        <div class="modalDelete" *ngIf="modalDeleteImage">
-          <div class="modal-con">
-            <div style="text-align: center">
-              <p>¿Estas seguro de eliminar esta imagen?</p>
-            </div>
-            <div style="display: flex; justify-content: space-evenly">
-              <button class="buttonDel" (click)="closeDelete()">
-                Cancelar
-              </button>
-              <button (click)="eliminarImagen()" class="buttonDel">
-                Aceptar
-              </button>
-            </div>
-          </div>
-        </div>
+  <div class="modalDelete" *ngIf="modalDeleteImage">
+    <div class="modal-con">
+      <div style="text-align: center">
+        <p>¿Estas seguro de eliminar esta imagen?</p>
       </div>
+      <div style="display: flex; justify-content: space-evenly">
+        <button class="buttonDel" (click)="closeDelete()">Cancelar</button>
+        <button (click)="eliminarImagen()" class="buttonDel">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>

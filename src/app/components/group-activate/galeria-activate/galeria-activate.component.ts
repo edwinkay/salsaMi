@@ -55,7 +55,10 @@ export class GaleriaActivateComponent implements OnInit {
       if (comprobar == 'rm01jawdLvYSObMPDc8BTBasbJp2') {
         this.esInvitado = true;
       }
-      if (comprobar == 'QxwJYfG0c2MwfjnJR70AdmmKOIz2') {
+      if (
+        comprobar == 'QxwJYfG0c2MwfjnJR70AdmmKOIz2' ||
+        comprobar == 'AO7bYMNMPuSUMl5vH8tOqzavTrt2'
+      ) {
         this.adm = true;
       }
     });
@@ -244,7 +247,11 @@ export class GaleriaActivateComponent implements OnInit {
   }
   async abrirEditar(comentario: any) {
     const user = await this.afAuth.currentUser;
-    if (user?.email === comentario.correo) {
+    if (
+      user?.email === comentario.correo ||
+      user?.email == 'administrador.sistema@gmail.com' ||
+      user?.email == 'jeestrada377@gmail.com'
+    ) {
       this.modalEditar = true;
       this.ocultarx = false;
     }
@@ -256,7 +263,8 @@ export class GaleriaActivateComponent implements OnInit {
 
     if (
       user?.email === comentario.correo ||
-      user?.email == 'administrador.sistema@gmail.com'
+      user?.email == 'administrador.sistema@gmail.com' ||
+      user?.email == 'jeestrada377@gmail.com'
     ) {
       this.modalDelete = true;
       this.ocultarx = false;

@@ -178,7 +178,11 @@ export class VideosActivateComponent implements OnInit {
   }
   async abrirEditar(comentario: any) {
     const user = await this.afAuth.currentUser;
-    if (user?.email === comentario.correo) {
+    if (
+      user?.email === comentario.correo ||
+      user?.email == 'administrador.sistema@gmail.com' ||
+      user?.email == 'jeestrada377@gmail.com'
+    ) {
       this.modalEditar = true;
       this.ocultarx = false;
     }
