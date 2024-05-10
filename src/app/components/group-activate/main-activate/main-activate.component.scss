@@ -1,6 +1,7 @@
 .contenedor{
   background-color: black;
   padding: 20px;
+  animation: apearText 2s linear;
 }
 .img-fondo{
   position: relative;
@@ -9,9 +10,39 @@
     z-index: 1;
     height: 60vh;
 }
+.move{
+  animation: moveText 0.5s linear;
+}
+.move2{
+  animation: moveText 1s linear;
+}
 @media (max-width: 500px) {
   .img-fondo{
     height: 44vh;
     top: 5rem;
+  }
+}
+@keyframes moveText {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+@keyframes apearText {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
   }
 }
