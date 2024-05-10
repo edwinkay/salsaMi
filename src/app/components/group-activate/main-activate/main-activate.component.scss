@@ -1,12 +1,17 @@
 .contenedor{
   background-color: black;
   padding: 20px;
-  height: 100vh;
 }
 .img-fondo{
   position: relative;
-    top: 5rem;
+    top: 1rem;
     width: 100%;
     z-index: 1;
+    height: 60vh;
+}
+@media (max-width: 500px) {
+  .img-fondo{
     height: 44vh;
+    top: 5rem;
+  }
 }
