@@ -203,6 +203,12 @@ export class PerfilComponent implements OnInit {
                                   photoURL: url,
                                 })
                                 .then(() => {
+                                  const dato = {
+                                    foto: url
+                                  }
+                                  this._user.updateUser(dato, this.id).then(()=>{
+                                    console.log('perfil actualizado')
+                                  })
                                   this.toastr.info('Foto de perfil cambiada');
                                 })
                                 .catch((error) => {
@@ -519,7 +525,10 @@ export class PerfilComponent implements OnInit {
   }
   async abrirEditar(comentario: any) {
     const user = await this.afAuth.currentUser;
-    if (user?.email === comentario.correo) {
+    if (
+      user?.email === comentario.correo ||
+      user?.email == 'administrador.sistema@gmail.com'
+    ) {
       this.modalEditar = true;
       this.ocultarx = false;
     }

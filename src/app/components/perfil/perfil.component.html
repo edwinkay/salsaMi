@@ -48,7 +48,9 @@
     </div>
     <div class="acciones">
       <p style="cursor: pointer" (click)="grupos()">Grupos</p>
-      <p style="cursor: pointer" (click)="imagenes()">Mis fotos</p>
+      <p *ngIf="!esInvitado" style="cursor: pointer" (click)="imagenes()">
+        Mis fotos
+      </p>
       <!-- <p style="cursor: pointer" (click)="videos()">Videos</p> -->
     </div>
     <div
@@ -85,9 +87,9 @@
     </div>
     <div class="contenedor-img" *ngIf="im">
       <div class="subir">
-            <p style="cursor: pointer;" (click)="misImages()">+ Agregar imagen</p>
-          </div>
-      <div style="color: white;" class="contenedor">
+        <p style="cursor: pointer" (click)="misImages()">+ Agregar imagen</p>
+      </div>
+      <div style="color: white" class="contenedor">
         <div class="box">
           <div class="gallery-lightbox-container">
             <div class="gallery">
@@ -357,8 +359,8 @@
           </div>
         </div>
       </div>
+      <p *ngIf="imageX.length == 0">No se han subido fotos aun..</p>
     </div>
-    <div *ngIf="vd">Muy pronto tendremos esta funcion...</div>
   </ng-container>
   <ng-container *ngIf="!usuario">
     <p>No se ha iniciado sesión.</p>

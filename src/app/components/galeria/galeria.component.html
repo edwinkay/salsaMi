@@ -1,7 +1,7 @@
 <div class="contenedor">
   <div class="box">
     <app-navbar></app-navbar>
-    <div class="con-input">
+    <div *ngIf="adm" class="con-input">
       <p (click)="subirArchivo()">+ Agregar imagen</p>
     </div>
     <div class="gallery-lightbox-container">

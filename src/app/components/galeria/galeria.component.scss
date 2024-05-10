@@ -184,8 +184,16 @@ nav {
 
 // boton upload
 .con-input {
-  position: relative;
-  padding: 32px 0 49px 0;
+  display: flex;
+    margin-top: 15px;
+    padding: 0;
+    justify-content: flex-end;
+}
+.con-input p{
+  padding: 7px;
+    border-radius: 23px;
+    background-color: blue;
+    margin: 0;
 }
 
 .input-file-container {
