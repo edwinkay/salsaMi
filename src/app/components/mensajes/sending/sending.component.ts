@@ -21,6 +21,7 @@ export class SendingComponent implements OnInit {
   idUserActual:any
   mensajes: any[] = []
   idBody:any
+  objetoMensaje:any
 
   constructor(
     private route: ActivatedRoute,
@@ -49,14 +50,24 @@ export class SendingComponent implements OnInit {
     this._msj.getUMessage().subscribe((msj)=>{
       this.mensajes = []
       msj.forEach((element:any)=>{
+        const soloData = {
+          ...element.payload.doc.data(),
+        };
         const mensajeData = {
           id: element.payload.doc.id,
           ...element.payload.doc.data(),
+          mensaje: soloData.mensaje || []
         };
         this.mensajes.push(mensajeData)
+        //capturando el id array mensaje
         const idEnvio = this.usuario.uid
         const idBody = this.mensajes.find(obj => obj.idEmisor && obj.idReceptor === idEnvio && this.id)?.id
         this.idBody = idBody
+        //capturando el cuerpo array mensaje
+        const body = this.mensajes.find(
+          (obj) => obj.idEmisor && obj.idReceptor === idEnvio && this.id
+        );
+        this.objetoMensaje = body
       })
     })
   }
@@ -79,10 +90,12 @@ export class SendingComponent implements OnInit {
 
   addMessage(mensaje: string) {
     this.mensaje = '';
+    const nuevoMensaje = this.objetoMensaje.mensaje
+    nuevoMensaje.push({mensaje})
     const datos = {
       idEmisor: this.id,
       idReceptor: this.idUserActual,
-      mesaje: mensaje,
+      mensaje: nuevoMensaje,
     };
     if (this.idBody == undefined) {
       this._msj.addMessage(datos).then(() => {

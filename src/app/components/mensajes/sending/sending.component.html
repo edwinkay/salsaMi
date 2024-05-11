@@ -3,9 +3,7 @@
     <div>
       <i class="fas fa-arrow-left"></i>
     </div>
-    <div style="gap: 1rem;
-    display: flex;
-    align-items: center;">
+    <div style="gap: 1rem; display: flex; align-items: center">
       <img
         [src]="
           info.foto
@@ -15,11 +13,14 @@
         alt="Foto de perfil"
         width="40"
         height="40"
-        style="border-radius: 50%;"
+        style="border-radius: 50%"
       />
       <div>{{ info.usuario }}</div>
     </div>
   </div>
+  <div *ngFor="let msj of objetoMensaje.mensaje">
+        <div>{{ msj.mensaje }}</div>
+      </div>
   <form (submit)="addMessage(mensaje)">
     <div class="container-element">
       <div style="padding: 0px 0 0 11px">
