@@ -84,7 +84,6 @@ export class VerUsuarioComponent implements OnInit {
         );
         this.info = buscarObjeto;
         this.urlPortada = this.info.portada;
-        console.log(this.info.portada);
       });
     });
   }
@@ -404,5 +403,8 @@ export class VerUsuarioComponent implements OnInit {
       this.modalDeleteImage = false;
       this.previewImage = false;
     });
+  }
+  enviarMensaje(){
+    this.router.navigate(['/enviar-mensaje/', this.id])
   }
 }

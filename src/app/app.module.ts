@@ -33,6 +33,8 @@ import { MainActivateComponent } from './components/group-activate/main-activate
 import { NavbarActivateComponent } from './components/group-activate/navbar-activate/navbar-activate.component';
 import { GaleriaActivateComponent } from './components/group-activate/galeria-activate/galeria-activate.component';
 import { VideosActivateComponent } from './components/group-activate/videos-activate/videos-activate.component';
+import { BandejaComponent } from './components/mensajes/bandeja/bandeja.component';
+import { SendingComponent } from './components/mensajes/sending/sending.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,8 @@ import { VideosActivateComponent } from './components/group-activate/videos-acti
     NavbarActivateComponent,
     GaleriaActivateComponent,
     VideosActivateComponent,
+    BandejaComponent,
+    SendingComponent,
   ],
   imports: [
     BrowserModule,

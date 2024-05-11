@@ -15,6 +15,8 @@ import { VerUsuarioComponent } from './components/ver-usuario/ver-usuario.compon
 import { MainActivateComponent } from './components/group-activate/main-activate/main-activate.component';
 import { GaleriaActivateComponent } from './components/group-activate/galeria-activate/galeria-activate.component';
 import { VideosActivateComponent } from './components/group-activate/videos-activate/videos-activate.component';
+import { BandejaComponent } from './components/mensajes/bandeja/bandeja.component';
+import { SendingComponent } from './components/mensajes/sending/sending.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -28,9 +30,21 @@ const routes: Routes = [
     component: RecuperarContrasenaComponent,
   },
   { path: 'main', component: MainComponent, canActivate: [AuthGuard] },
-  { path: 'main-activate', component: MainActivateComponent, canActivate: [AuthGuard] },
-  { path: 'galeria-activate', component: GaleriaActivateComponent, canActivate: [AuthGuard] },
-  { path: 'videos-activate', component: VideosActivateComponent, canActivate: [AuthGuard] },
+  {
+    path: 'main-activate',
+    component: MainActivateComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'galeria-activate',
+    component: GaleriaActivateComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'videos-activate',
+    component: VideosActivateComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'galeria', component: GaleriaComponent, canActivate: [AuthGuard] },
   { path: 'videos', component: VideosComponent, canActivate: [AuthGuard] },
   {
@@ -40,6 +54,12 @@ const routes: Routes = [
   },
   { path: 'musica', component: MusicaComponent, canActivate: [AuthGuard] },
   { path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard] },
+  { path: 'bandeja', component: BandejaComponent, canActivate: [AuthGuard] },
+  {
+    path: 'enviar-mensaje/:id',
+    component: SendingComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: 'perfil-editar',
     component: PerfilEditarComponent,

@@ -12,6 +12,19 @@
       (click)="logout()"
       >Salir</span
     >
+    <i
+      style="
+        cursor: pointer;
+        position: absolute;
+        background-color: white;
+        right: 1em;
+        padding: 5px;
+        top: 3rem;
+        border-radius: 13px;
+      "
+      class="fas fa-envelope"
+      (click)="enviarMensaje()"
+    ></i>
     <div class="user-info">
       <div class="img-container">
         <img
@@ -37,7 +50,7 @@
           <p class="lap user">{{ info.usuario }}</p>
         </div>
         <div>
-          <p (click)="toggleInfo()" class="edit-perfil">Ver mas</p>
+          <p (click)="toggleInfo()" class="edit-perfil">{{ver}}</p>
           <div
             style="display: flex; flex-direction: column; align-items: center"
             *ngIf="showMoreInfo"
