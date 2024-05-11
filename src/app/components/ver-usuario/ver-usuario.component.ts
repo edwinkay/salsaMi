@@ -45,6 +45,7 @@ export class VerUsuarioComponent implements OnInit {
   idDelete: string = '';
   usuarioActual: any;
   esInvitado = false;
+  usx:any
 
   constructor(
     private route: ActivatedRoute,
@@ -70,6 +71,21 @@ export class VerUsuarioComponent implements OnInit {
       this.esInvitado = true;
     }
   }
+  crearUsuario() {
+    if (this.usx == undefined) {
+      this.afAuth.currentUser.then((user) => {
+        const datos = {
+          idUser: user?.uid,
+          usuario: user?.displayName,
+          email: user?.email,
+          foto: user?.photoURL,
+        };
+        this._user.addIUserInfo(datos).then(() => {
+          console.log('usuario actualizado');
+        });
+      });
+    } else console.log('el usuario ya esta registrado');
+  }
   getUsers() {
     this._user.getUsers().subscribe((usuarios) => {
       this.usuariosInfo = [];
@@ -82,6 +98,9 @@ export class VerUsuarioComponent implements OnInit {
         const buscarObjeto = this.usuariosInfo.find(
           (obj) => obj.idUser === this.id
         );
+        const dato = this.usuariosInfo.find(obj => obj.idUser === this.usuario?.uid)
+        console.log(dato)
+        this.usx = dato
         this.info = buscarObjeto;
         this.urlPortada = this.info?.portada;
       });
@@ -404,7 +423,8 @@ export class VerUsuarioComponent implements OnInit {
       this.previewImage = false;
     });
   }
-  enviarMensaje(){
-    this.router.navigate(['/enviar-mensaje/', this.id])
+  enviarMensaje() {
+    this.crearUsuario()
+    this.router.navigate(['/enviar-mensaje/', this.id]);
   }
 }

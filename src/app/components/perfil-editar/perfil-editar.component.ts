@@ -21,7 +21,7 @@ export class PerfilEditarComponent implements OnInit {
   usuariosInfo: any[] = [];
   id: any;
   comprobar = false;
-  urlPortada: any
+  urlPortada: any;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -56,75 +56,38 @@ export class PerfilEditarComponent implements OnInit {
         if (id == undefined) {
           this.comprobar = true;
         }
-        this.phoneNumberValue = buscarObjeto.telefono;
-        this.genderValue = buscarObjeto.Genero;
-        this.birthdayValue = buscarObjeto.cumpleanos;
-        this.aboutMeValue = buscarObjeto.about;
-        this.ciudad = buscarObjeto.ciudad;
-        this.estado = buscarObjeto.estado;
+        this.phoneNumberValue = buscarObjeto?.telefono;
+        this.genderValue = buscarObjeto?.Genero;
+        this.birthdayValue = buscarObjeto?.cumpleanos;
+        this.aboutMeValue = buscarObjeto?.about;
+        this.ciudad = buscarObjeto?.ciudad;
+        this.estado = buscarObjeto?.estado;
       });
     });
   }
 
   actualizarPerfil(): void {
-    if (this.usuario) {
-      this.afAuth.currentUser
-        .then((user) => {
-          const userUid = user?.uid;
-          const email = user?.email;
-          const foto = user?.photoURL;
-          if (this.comprobar) {
-            const usuarioData = {
-              idUser: userUid,
-              usuario: this.displayNameValue,
-              email: email,
-              foto: foto,
-              telefono: this.phoneNumberValue,
-              Genero: this.genderValue,
-              cumpleanos: this.birthdayValue,
-              about: this.aboutMeValue,
-              ciudad: this.ciudad,
-              estado: this.estado,
-              // portada: this.urlPortada
-            };
-            this._user.addIUserInfo(usuarioData).then(() => {});
-            // console.log('no existe');
-          } else {
-            // console.log('ya existe');
-            const usuarioData = {
-              idUser: userUid,
-              usuario: this.displayNameValue,
-              email: email,
-              foto: foto,
-              telefono: this.phoneNumberValue,
-              Genero: this.genderValue,
-              cumpleanos: this.birthdayValue,
-              about: this.aboutMeValue,
-              ciudad: this.ciudad,
-              estado: this.estado,
-              // portada: this.urlPortada,
-            };
-            this._user.updateUser(usuarioData, this.id).then(() => {});
-          }
-          if (user) {
-            // Verifica si user no es null
-            const userProfile = {
-              displayName: this.displayNameValue,
-            };
-            return user.updateProfile(userProfile);
-          } else {
-            throw new Error('Usuario no autenticado');
-          }
-        })
-        .then(() => {
-          this.router.navigate(['/perfil']);
-          this.toastr.info('Perfil actualizado.');
-        })
-        .catch((error) => {
-          console.error('Error al actualizar el perfil:', error);
-        });
-    } else {
-      console.error('Usuario no encontrado');
-    }
+    this.afAuth.currentUser.then((user) => {
+      const userUid = user?.uid;
+      const email = user?.email;
+      const foto = user?.photoURL;
+
+      const usuarioData = {
+        idUser: userUid,
+        usuario: this.displayNameValue,
+        email: email,
+        foto: foto,
+        telefono: this.phoneNumberValue || null,
+        Genero: this.genderValue || null,
+        cumpleanos: this.birthdayValue || null,
+        about: this.aboutMeValue || null,
+        ciudad: this.ciudad || null,
+        estado: this.estado || null,
+      };
+      this._user.updateUser(usuarioData, this.id).then(() => {
+        this.router.navigate(['/perfil'])
+        this.toastr.info('Datos actualizados')
+      });
+    });
   }
 }

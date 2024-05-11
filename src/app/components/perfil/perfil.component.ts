@@ -89,6 +89,28 @@ export class PerfilComponent implements OnInit {
     const uniqueId = uuidv4();
     this.idGenerado = uniqueId;
   }
+  editarPerfil(){
+    this.crearUsuario()
+    this.router.navigate(['/perfil-editar']);
+  }
+  crearUsuario(){
+    if(this.usuariosInfo == undefined){
+      this.afAuth.currentUser.then((user)=> {
+        const datos = {
+          idUser: user?.uid,
+          usuario: user?.displayName,
+          email: user?.email,
+          foto: user?.photoURL,
+        };
+        this._user.addIUserInfo(datos).then(()=>{
+          console.log('usuario actualizado')
+        })
+      })
+    }
+    else(
+      console.log('el usuario ya esta registrado')
+    )
+  }
 
   getUsers() {
     this._user.getUsers().subscribe((usuarios) => {
@@ -112,7 +134,7 @@ export class PerfilComponent implements OnInit {
         };
         this.idInfo.push(userData2);
         const id = this.idInfo.find(
-          (obj) => obj.idUser === this.usuario.uid
+          (obj) => obj.idUser === this.usuario?.uid
         )?.id;
         this.id = id;
         this.phoneNumberValue = userData?.telefono;

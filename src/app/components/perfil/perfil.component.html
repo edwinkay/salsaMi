@@ -50,7 +50,7 @@
           <p class="lap user">{{ usuario.displayName }}</p>
         </div>
         <div *ngIf="!esInvitado">
-          <p routerLink="/perfil-editar" class="edit-perfil">Editar perfil</p>
+          <p (click)="editarPerfil()" class="edit-perfil">Editar perfil</p>
         </div>
         <div *ngIf="!esInvitado">
           <p (click)="changePortada()" class="edit-perfil">+</p>
