@@ -22,6 +22,7 @@ export class SendingComponent implements OnInit {
   mensajes: any[] = []
   idBody:any
   objetoMensaje:any
+  nombreActual:any
 
   constructor(
     private route: ActivatedRoute,
@@ -89,23 +90,41 @@ export class SendingComponent implements OnInit {
   }
 
   addMessage(mensaje: string) {
+    console.log('diste clic', mensaje)
     this.mensaje = '';
-    const nuevoMensaje = this.objetoMensaje.mensaje
-    nuevoMensaje.push({mensaje})
-    const datos = {
-      idEmisor: this.id,
-      idReceptor: this.idUserActual,
-      mensaje: nuevoMensaje,
-    };
-    if (this.idBody == undefined) {
-      this._msj.addMessage(datos).then(() => {
-        console.log('mensaje enviado');
 
+    if (this.idBody == undefined) {
+      const para = this.info?.usuario;
+      const de = this.usuario?.displayName;
+      let foto = this.usuario?.photoURL;
+      if (foto == undefined) {
+        foto =
+          'shttps://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg';
+      }
+      const encapsular = []
+      encapsular.push({ mensaje, foto, para, de });
+      const datos = {
+        de: de,
+        para: para,
+        idEmisor: this.id,
+        idReceptor: this.idUserActual,
+        mensaje: encapsular,
+      };
+      this._msj.addMessage(datos).then(() => {
+        console.log('mensaje nuevo enviado');
       });
     }else{
+      const nuevoMensaje = this.objetoMensaje.mensaje;
+      nuevoMensaje.push({ mensaje });
+      const datos = {
+        mensaje: nuevoMensaje,
+      };
       this._msj.update(this.idBody, datos).then(()=>{
         console.log('mensage actualizado')
       })
     }
+  }
+  volver(){
+    this.location.back()
   }
 }

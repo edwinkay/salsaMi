@@ -103,7 +103,7 @@ export class PerfilComponent implements OnInit {
           // likedByImage: data.likedByImage || [],
         });
         const userData = this.usuariosInfo.find(
-          (obj) => obj.id.idUser === this.usuario.uid
+          (obj) => obj.id.idUser === this.usuario?.uid
         );
         this.objetoUsuario = userData;
         const userData2 = {
@@ -115,11 +115,11 @@ export class PerfilComponent implements OnInit {
           (obj) => obj.idUser === this.usuario.uid
         )?.id;
         this.id = id;
-        this.phoneNumberValue = userData.telefono;
-        this.genderValue = userData.Genero;
-        this.birthdayValue = userData.cumpleanos;
-        this.aboutMeValue = userData.about;
-        this.urlPortada = userData.portada;
+        this.phoneNumberValue = userData?.telefono;
+        this.genderValue = userData?.Genero;
+        this.birthdayValue = userData?.cumpleanos;
+        this.aboutMeValue = userData?.about;
+        this.urlPortada = userData?.portada;
       });
     });
   }

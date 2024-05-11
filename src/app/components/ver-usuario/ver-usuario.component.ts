@@ -83,7 +83,7 @@ export class VerUsuarioComponent implements OnInit {
           (obj) => obj.idUser === this.id
         );
         this.info = buscarObjeto;
-        this.urlPortada = this.info.portada;
+        this.urlPortada = this.info?.portada;
       });
     });
   }
