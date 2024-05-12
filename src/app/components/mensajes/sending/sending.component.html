@@ -23,27 +23,24 @@
       <div
         *ngFor="let msj of objetoMensaje.mensaje"
         [ngClass]="{
-          'mensaje-saliente': msj.idEmisor === idUserActual,
-          'mensaje-entrante': msj.idEmisor !== idUserActual
+          'mensaje-saliente': msj.para === usuario.displayName,
+          'mensaje-entrante': msj.de === usuario.displayName
         }"
       >
         <div>
-          <span style="color: blue;">{{ msj.de }}: </span
-          >{{ msj.mensaje }}
-        </div>
-      </div>
-    </div>
-    <div *ngIf="objetoMensaje2">
-      <div
-        *ngFor="let msj of objetoMensaje2.mensaje"
-        [ngClass]="{
-          'mensaje-saliente': msj.idEmisor === idUserActual,
-          'mensaje-entrante': msj.idEmisor !== idUserActual
-        }"
-      >
-        <div>
-          <span style="color: rgb(255, 0, 0);">{{ msj.de }}: </span
-          >{{ msj.mensaje }}
+          <div>
+            <span
+            [ngClass]="{
+              'mensaje-s': msj.para === usuario.displayName,
+              'mensaje-e': msj.de === usuario.displayName
+            }"
+            >{{ msj.de }} </span
+          >
+          </div>
+          <div>
+            {{ msj.mensaje }}
+          </div>
+
         </div>
       </div>
     </div>

@@ -21,9 +21,13 @@ export class SendingComponent implements OnInit {
   idUserActual:any
   mensajes: any[] = []
   idBody:any
+  idBody2:any
   objetoMensaje:any
   objetoMensaje2:any
   nombreActual:any
+
+  entrante:any
+  saliente:any
 
   constructor(
     private route: ActivatedRoute,
@@ -40,7 +44,6 @@ export class SendingComponent implements OnInit {
   ngOnInit(): void {
     this.afAuth.user.subscribe((user) => {
       this.usuario = user;
-      this.idUserActual = user?.uid
     });
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.id = params.get('id');
@@ -64,10 +67,11 @@ export class SendingComponent implements OnInit {
         //capturando el id array mensaje
         const idEnvio = this.usuario?.uid
         const idBodyEnvio = this.mensajes.find(obj => obj.idEmisor && obj.idReceptor === idEnvio && this.id)?.id
-        // const idBodyRecido = this.mensajes.find(
-        //   (obj) => obj.idEmisor && obj.idReceptor === this.id && idEnvio
-        // )?.id;
+        const idBodyRecido = this.mensajes.find(
+          (obj) => obj.idEmisor && obj.idReceptor === this.id && idEnvio
+        )?.id;
         this.idBody = idBodyEnvio
+        this.idBody2 = idBodyRecido
         //capturando el cuerpo array mensaje
         const bodyEnvio = this.mensajes.find(
           (obj) => obj.idEmisor && obj.idReceptor === idEnvio && this.id
@@ -75,8 +79,15 @@ export class SendingComponent implements OnInit {
         const bodyRecibido = this.mensajes.find(
           (obj) => obj.idEmisor && obj.idReceptor === this.id && idEnvio
         );
-        this.objetoMensaje = bodyEnvio
-        this.objetoMensaje2 = bodyRecibido
+
+        this.objetoMensaje = bodyEnvio;
+        if (this.objetoMensaje == undefined) {
+          this.objetoMensaje = bodyRecibido
+        }
+        this.entrante = this.objetoMensaje.para
+        this.saliente = this.objetoMensaje.de
+        console.log(this.objetoMensaje.de);
+        console.log(this.objetoMensaje.para);
       })
     })
   }
@@ -100,7 +111,7 @@ export class SendingComponent implements OnInit {
   addMessage(mensaje: string) {
     this.mensaje = '';
 
-    if (this.idBody == undefined) {
+    if (this.idBody == undefined && this.idBody2 == undefined) {
       const para = this.info?.usuario;
       const de = this.usuario?.displayName;
       let foto = this.usuario?.photoURL;
@@ -118,7 +129,6 @@ export class SendingComponent implements OnInit {
         mensaje: encapsular,
       };
       this._msj.addMessage(datos).then(() => {
-        console.log('mensaje nuevo enviado');
       });
     }else{
       let foto = this.usuario?.photoURL;
@@ -133,8 +143,10 @@ export class SendingComponent implements OnInit {
       const datos = {
         mensaje: nuevoMensaje,
       };
+      if (this.idBody == undefined) {
+        this.idBody = this.idBody2
+      }
       this._msj.update(this.idBody, datos).then(()=>{
-        console.log('mensage actualizado')
       })
     }
   }

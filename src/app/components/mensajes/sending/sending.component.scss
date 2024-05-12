@@ -44,15 +44,27 @@
 }
 
 .mensaje-entrante {
-  background-color: #e5e5ea; /* Color de fondo para mensajes entrantes */
+  background-color: #cccce9; /* Color de fondo para mensajes entrantes */
   border-radius: 15px;
   padding: 8px 12px;
   margin-bottom: 8px;
+  width: 50%;
+    position: relative;
 }
 
 .mensaje-saliente {
-  background-color: #dcf8c6; /* Color de fondo para mensajes salientes */
+  text-align: end;
+  background-color: #c6e8f8; /* Color de fondo para mensajes salientes */
   border-radius: 15px;
   padding: 8px 12px;
   margin-bottom: 8px;
+  width: 50%;
+    position: relative;
+    left: 43%;
+}
+.mensaje-e{
+  color:red
+}
+.mensaje-s{
+  color:blue
 }
