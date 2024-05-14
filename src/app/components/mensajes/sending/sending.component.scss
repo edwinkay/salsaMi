@@ -4,25 +4,26 @@
 
 .container-element {
   gap: 1rem;
-  padding: 2px;
-  bottom: 1rem;
-  width: 90%;
-  position: absolute;
-  border-radius: 9px;
-  background-color: #aa9e9e;
-  display: flex;
-  align-items: center;
+    padding: 2px;
+    bottom: 1rem;
+    width: 90%;
+    position: absolute;
+    border-radius: 20px;
+    background-color: #aa9ea896;
+    display: flex;
+    align-items: center;
 }
 
 .container-element textarea {
   width: 80%;
-  padding: 10px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  outline: none;
-  resize: vertical;
+    height: 20px;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    background-color: #f2f2f2;
+    outline: none;
+    resize: vertical;
 }
 
 .container-element i {
@@ -43,7 +44,7 @@
     margin-top: 20px;
 }
 
-.mensaje-entrante {
+.mensaje-saliente {
   background-color: #cccce9; /* Color de fondo para mensajes entrantes */
   border-radius: 15px;
   padding: 8px 12px;
@@ -52,7 +53,7 @@
     position: relative;
 }
 
-.mensaje-saliente {
+.mensaje-entrante {
   text-align: end;
   background-color: #c6e8f8; /* Color de fondo para mensajes salientes */
   border-radius: 15px;

@@ -30,17 +30,16 @@
         <div>
           <div>
             <span
-            [ngClass]="{
-              'mensaje-s': msj.para === usuario.displayName,
-              'mensaje-e': msj.de === usuario.displayName
-            }"
-            >{{ msj.de }} </span
-          >
+              [ngClass]="{
+                'mensaje-s': msj.para === usuario.displayName,
+                'mensaje-e': msj.de === usuario.displayName
+              }"
+              >{{ msj.de }}
+            </span>
           </div>
           <div>
             {{ msj.mensaje }}
           </div>
-
         </div>
       </div>
     </div>
@@ -55,17 +54,16 @@
         <div>
           <div>
             <span
-            [ngClass]="{
-              'mensaje-s': msj.para === usuario.displayName,
-              'mensaje-e': msj.de === usuario.displayName
-            }"
-            >{{ msj.de }} </span
-          >
+              [ngClass]="{
+                'mensaje-s': msj.para === usuario.displayName,
+                'mensaje-e': msj.de === usuario.displayName
+              }"
+              >{{ msj.de }}
+            </span>
           </div>
           <div>
             {{ msj.mensaje }}
           </div>
-
         </div>
       </div>
     </div>
@@ -79,7 +77,11 @@
         <textarea [(ngModel)]="mensaje" name="mensaje"></textarea>
       </div>
       <div style="padding: 0px 10px 0 0px">
-        <button style="border-radius: 14px" type="submit">
+        <button
+          style="background-color: #0000ff00; border: none; border-radius: 14px"
+          type="submit"
+          [disabled]="!mensaje"
+        >
           <i class="fas fa-chevron-right"></i>
         </button>
       </div>
