@@ -3,10 +3,10 @@
     <i class="fas fa-arrow-left" (click)="volver()"></i>
     <h1>Mensajes</h1>
   </div>
-  <div style="gap: 1rem; display: flex; width: 100%; overflow-x: auto">
-    <div style="text-align: center" *ngFor="let user of users">
+  <div style="gap: 1rem; display: flex; width: 100%; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;">
+    <div style="text-align: center" *ngFor="let user of users2">
       <img
-      (click)="abrirMensaje(user.idUser)"
+        (click)="abrirMensaje(user.idUser)"
         [src]="
           user?.foto
             ? user.foto
@@ -21,11 +21,46 @@
     </div>
   </div>
   <div style="width: 100%" class="inbox-messages">
-    <div *ngFor="let message of mensajes2" class="message">
+    <div *ngFor="let message of mensajes" class="message">
       <div>
         <div>
-          <span (click)="abrirMensaje(message.idEmisor)"
-            ><strong style="color: blue">{{ message.de }}</strong> envio un mensaje a <strong style="color:red">{{message.para}}</strong></span
+          <span
+            style="display: flex; gap: 1rem; align-items: center"
+            (click)="abrirMensaje(message.idEmisor)"
+            ><img
+              [src]="
+                message?.foto
+                  ? message.foto
+                  : 'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg'
+              "
+              alt="Foto de perfil"
+              width="40"
+              height="40"
+              style="border-radius: 50%"
+            /><strong>{{ message.para }}</strong></span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="width: 100%" class="inbox-messages">
+    <div *ngFor="let message of mensajes3" class="message">
+      <div>
+        <div>
+          <span
+            style="display: flex; gap: 1rem; align-items: center"
+            (click)="abrirMensaje(message.idReceptor)"
+            ><img
+              [src]="
+                message?.foto1
+                  ? message.foto1
+                  : 'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg'
+              "
+              alt="Foto de perfil"
+              width="40"
+              height="40"
+              style="border-radius: 50%"
+            /><strong>{{ message.de }}</strong></span
           >
         </div>
       </div>

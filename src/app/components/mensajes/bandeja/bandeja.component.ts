@@ -13,9 +13,11 @@ import { UsersService } from 'src/app/services/users.service';
 export class BandejaComponent implements OnInit {
   mensajes: any[] = [];
   mensajes2: any[] = [];
+  mensajes3: any[] = [];
   misMensajes: any[] = [];
   misMensajes2: any[] = [];
   users: any[] = [];
+  users2: any[] = [];
   usuario: any;
   usuarioActual: any;
 
@@ -37,15 +39,20 @@ export class BandejaComponent implements OnInit {
   }
   getUsers() {
     this.users = [];
-    this._user.getUsers().subscribe((user)=>{
-      user.forEach((element:any)=>{
+    this._user.getUsers().subscribe((user) => {
+      user.forEach((element: any) => {
         this.users.push({
           id: element.payload.doc.id,
           ...element.payload.doc.data(),
         });
-      })
-    })
+      });
+      const nuevoArreglo = this.users.filter(
+        (obj) => obj.idUser !== this.usuarioActual
+      );
+      this.users2 = nuevoArreglo
+    });
   }
+
   getMessages() {
     this._msj.getUMessage().subscribe((msj) => {
       this.mensajes2 = [];
@@ -55,13 +62,14 @@ export class BandejaComponent implements OnInit {
           ...element.payload.doc.data(),
         };
         this.mensajes2.push(soloData);
-        const misMsjs = this.mensajes2.find(
+        const misMsjs = this.mensajes2.filter(
           (obj) => obj.idReceptor == this.usuarioActual
         );
-        this.mensajes.push(misMsjs)
-        // const misMsjs2 = this.mensajes.find(
-        //   (obj) => obj.idEmisor == this.usuarioActual
-        // );
+        const misMsjs2 = this.mensajes2.filter(
+          (obj) => obj.idEmisor == this.usuarioActual
+        );
+        this.mensajes = misMsjs;
+        this.mensajes3 = misMsjs2;
       });
     });
   }

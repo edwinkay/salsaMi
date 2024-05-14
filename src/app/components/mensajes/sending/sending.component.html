@@ -44,6 +44,31 @@
         </div>
       </div>
     </div>
+    <div *ngIf="objetoMensaje2">
+      <div
+        *ngFor="let msj of objetoMensaje2.mensaje"
+        [ngClass]="{
+          'mensaje-saliente': msj.para === usuario.displayName,
+          'mensaje-entrante': msj.de === usuario.displayName
+        }"
+      >
+        <div>
+          <div>
+            <span
+            [ngClass]="{
+              'mensaje-s': msj.para === usuario.displayName,
+              'mensaje-e': msj.de === usuario.displayName
+            }"
+            >{{ msj.de }} </span
+          >
+          </div>
+          <div>
+            {{ msj.mensaje }}
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
   <form (submit)="addMessage(mensaje)">
     <div class="container-element">

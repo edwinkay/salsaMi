@@ -23,9 +23,8 @@ export class SendingComponent implements OnInit {
   idBody: any;
   idBody2: any;
   objetoMensaje: any;
+  objetoMensaje2: any;
   nombreActual: any;
-  comprobarIgual1 = false;
-  comprobarIgual2 = false;
 
   entrante: any;
   saliente: any;
@@ -46,8 +45,6 @@ export class SendingComponent implements OnInit {
     this.afAuth.user.subscribe((user) => {
       this.usuario = user;
       this.idUserActual = this.usuario?.uid;
-      console.log('usuario actual',this.idUserActual)
-      console.log('enviadno a', this.id)
     });
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.id = params.get('id');
@@ -90,51 +87,32 @@ export class SendingComponent implements OnInit {
         const body = this.mensajes.find(obj => obj.idEmisor == this.id)
         const idBody2 = this.mensajes.find(obj => obj.idEmisor == this.idUserActual)?.id
         const body2 = this.mensajes.find(obj => obj.idEmisor == this.idUserActual)
-        if (body == undefined) {
-          this.idBody  = idBody2
-          this.objetoMensaje = body2
-        }else{
-          this.objetoMensaje = body;
-          this.idBody = idBody
-        }
-        console.log(this.objetoMensaje?.idReceptor, this.idUserActual)
-        console.log(this.objetoMensaje?.idEmisor, this.idUserActual)
-        console.log(this.idBody)
 
-        if (this.idUserActual === this.objetoMensaje?.idReceptor) {
-          console.log('verdadero')
-          this.comprobarIgual1 = true
-        }else{
-          console.log('falso')
-          this.comprobarIgual1 = false;
-        }
-        if (this.idUserActual === this.objetoMensaje?.idEmisor) {
-          this.comprobarIgual2 = true;
-          console.log('emisor verdadero');
-        }else{
-          this.comprobarIgual2 = false;
-          console.log('emisor falso')
-        }
-        console.log(this.comprobarIgual1)
-        console.log(this.comprobarIgual2)
+        const objetoMensaje = body
+        const objetoMensaje2 = body2
 
-
-        if (this.comprobarIgual1 && !this.comprobarIgual2) {
-          console.log('es usuario uno');
-        } else if (
-          this.comprobarIgual1 === false && this.comprobarIgual2 === true
+        if (
+          (objetoMensaje?.idReceptor == this.idUserActual &&
+            objetoMensaje?.idEmisor == this.id)
         ) {
-          console.log('es usuario dos');
-        } else if (!this.comprobarIgual1 && !this.comprobarIgual2) {
-          console.log('es usuario 3')
+          this.objetoMensaje = objetoMensaje;
+          this.idBody = objetoMensaje?.id
+        } else if (
+          objetoMensaje2?.idReceptor == this.id &&
+          objetoMensaje == undefined
+        ) {
+          if (
+            objetoMensaje2?.idReceptor == this.id &&
+            objetoMensaje2?.idEmisor == this.idUserActual
+          ){
+            this.idBody = objetoMensaje2?.id
+            this.objetoMensaje2 = objetoMensaje2;
+          }
+
+        } else {
           this.objetoMensaje = undefined
-        }else {
-          console.log('nada')
+          this.objetoMensaje2 = undefined
         }
-
-
-        console.log(this.objetoMensaje)
-        //capturando el cuerpo array mensaje
 
         this.entrante = this.objetoMensaje?.para;
         this.saliente = this.objetoMensaje?.de;
@@ -145,10 +123,15 @@ export class SendingComponent implements OnInit {
   addMessage(mensaje: string) {
     this.mensaje = '';
 
-    if (this.objetoMensaje == undefined) {
+    if (this.objetoMensaje == undefined && this.objetoMensaje2 == undefined) {
       const para = this.info?.usuario;
       const de = this.usuario?.displayName;
-      let foto = this.usuario?.photoURL;
+      let foto1 = this.usuario?.photoURL
+      if (foto1 == undefined) {
+        foto1 =
+          'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg';
+      }
+      let foto = this.info?.foto;
       if (foto == undefined) {
         foto =
           'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg';
@@ -159,6 +142,7 @@ export class SendingComponent implements OnInit {
         de: de,
         para: para,
         foto,
+        foto1,
         idEmisor: this.id,
         idReceptor: this.idUserActual,
         mensaje: encapsular,
@@ -170,22 +154,39 @@ export class SendingComponent implements OnInit {
     // metodo para actualizar el mensaje
 
     else {
-      let foto = this.usuario?.photoURL;
+      let foto1 = this.usuario?.photoURL;
+      if (foto1 == undefined) {
+        foto1 =
+          'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg';
+      }
+      let foto = this.info?.foto;
       if (foto == undefined) {
         foto =
           'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg';
       }
       const para = this.info?.usuario;
       const de = this.usuario?.displayName;
-      const nuevoMensaje = this.objetoMensaje?.mensaje;
-      nuevoMensaje.push({ mensaje, de, para, foto });
-      const datos = {
-        mensaje: nuevoMensaje,
-      };
 
-      this._msj.update(this.idBody, datos).then(() => {
-        console.log('mensaje actualizado')
-      });
+      if (this.objetoMensaje?.mensaje == undefined) {
+        const nuevoMensaje = this.objetoMensaje2?.mensaje;
+        nuevoMensaje.push({ mensaje, de, para, foto });
+        const datos = {
+          mensaje: nuevoMensaje,
+        };
+        this._msj.update(this.idBody, datos).then(() => {
+          console.log('mensaje actualizado');
+        });
+      } else {
+        const nuevoMensaje = this.objetoMensaje?.mensaje;
+        nuevoMensaje.push({ mensaje, de, para, foto });
+        const datos = {
+          mensaje: nuevoMensaje,
+        };
+        this._msj.update(this.idBody, datos).then(() => {
+          console.log('mensaje actualizado');
+        });
+      }
+
     }
   }
   volver() {
