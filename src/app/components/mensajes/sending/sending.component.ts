@@ -18,16 +18,17 @@ export class SendingComponent implements OnInit {
   id: any;
   usuariosInfo: any[] = [];
   info: any;
-  idUserActual:any
-  mensajes: any[] = []
-  idBody:any
-  idBody2:any
-  objetoMensaje:any
-  objetoMensaje2:any
-  nombreActual:any
+  idUserActual: any;
+  mensajes: any[] = [];
+  idBody: any;
+  idBody2: any;
+  objetoMensaje: any;
+  nombreActual: any;
+  comprobarIgual1 = false;
+  comprobarIgual2 = false;
 
-  entrante:any
-  saliente:any
+  entrante: any;
+  saliente: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,52 +45,15 @@ export class SendingComponent implements OnInit {
   ngOnInit(): void {
     this.afAuth.user.subscribe((user) => {
       this.usuario = user;
+      this.idUserActual = this.usuario?.uid;
+      console.log('usuario actual',this.idUserActual)
+      console.log('enviadno a', this.id)
     });
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.id = params.get('id');
     });
-    this.getUsers()
-    this.getMessages()
-  }
-  getMessages(){
-    this._msj.getUMessage().subscribe((msj)=>{
-      this.mensajes = []
-      msj.forEach((element:any)=>{
-        const soloData = {
-          ...element.payload.doc.data(),
-        };
-        const mensajeData = {
-          id: element.payload.doc.id,
-          ...element.payload.doc.data(),
-          mensaje: soloData.mensaje || []
-        };
-        this.mensajes.push(mensajeData)
-        //capturando el id array mensaje
-        const idEnvio = this.usuario?.uid
-        const idBodyEnvio = this.mensajes.find(obj => obj.idEmisor && obj.idReceptor === idEnvio && this.id)?.id
-        const idBodyRecido = this.mensajes.find(
-          (obj) => obj.idEmisor && obj.idReceptor === this.id && idEnvio
-        )?.id;
-        this.idBody = idBodyEnvio
-        this.idBody2 = idBodyRecido
-        //capturando el cuerpo array mensaje
-        const bodyEnvio = this.mensajes.find(
-          (obj) => obj.idEmisor && obj.idReceptor === idEnvio && this.id
-        );
-        const bodyRecibido = this.mensajes.find(
-          (obj) => obj.idEmisor && obj.idReceptor === this.id && idEnvio
-        );
-
-        this.objetoMensaje = bodyEnvio;
-        if (this.objetoMensaje == undefined) {
-          this.objetoMensaje = bodyRecibido
-        }
-        this.entrante = this.objetoMensaje.para
-        this.saliente = this.objetoMensaje.de
-        console.log(this.objetoMensaje.de);
-        console.log(this.objetoMensaje.para);
-      })
-    })
+    this.getUsers();
+    this.getMessages();
   }
   getUsers() {
     this._user.getUsers().subscribe((usuarios) => {
@@ -108,10 +72,80 @@ export class SendingComponent implements OnInit {
     });
   }
 
+  getMessages() {
+    this._msj.getUMessage().subscribe((msj) => {
+      this.mensajes = [];
+      msj.forEach((element: any) => {
+        const soloData = {
+          ...element.payload.doc.data(),
+        };
+        const mensajeData = {
+          id: element.payload.doc.id,
+          ...element.payload.doc.data(),
+          mensaje: soloData.mensaje || [],
+        };
+        this.mensajes.push(mensajeData);
+        //capturando el id array mensaje
+        const idBody = this.mensajes.find(obj => obj.idEmisor == this.id)?.id
+        const body = this.mensajes.find(obj => obj.idEmisor == this.id)
+        const idBody2 = this.mensajes.find(obj => obj.idEmisor == this.idUserActual)?.id
+        const body2 = this.mensajes.find(obj => obj.idEmisor == this.idUserActual)
+        if (body == undefined) {
+          this.idBody  = idBody2
+          this.objetoMensaje = body2
+        }else{
+          this.objetoMensaje = body;
+          this.idBody = idBody
+        }
+        console.log(this.objetoMensaje?.idReceptor, this.idUserActual)
+        console.log(this.objetoMensaje?.idEmisor, this.idUserActual)
+        console.log(this.idBody)
+
+        if (this.idUserActual === this.objetoMensaje?.idReceptor) {
+          console.log('verdadero')
+          this.comprobarIgual1 = true
+        }else{
+          console.log('falso')
+          this.comprobarIgual1 = false;
+        }
+        if (this.idUserActual === this.objetoMensaje?.idEmisor) {
+          this.comprobarIgual2 = true;
+          console.log('emisor verdadero');
+        }else{
+          this.comprobarIgual2 = false;
+          console.log('emisor falso')
+        }
+        console.log(this.comprobarIgual1)
+        console.log(this.comprobarIgual2)
+
+
+        if (this.comprobarIgual1 && !this.comprobarIgual2) {
+          console.log('es usuario uno');
+        } else if (
+          this.comprobarIgual1 === false && this.comprobarIgual2 === true
+        ) {
+          console.log('es usuario dos');
+        } else if (!this.comprobarIgual1 && !this.comprobarIgual2) {
+          console.log('es usuario 3')
+          this.objetoMensaje = undefined
+        }else {
+          console.log('nada')
+        }
+
+
+        console.log(this.objetoMensaje)
+        //capturando el cuerpo array mensaje
+
+        this.entrante = this.objetoMensaje?.para;
+        this.saliente = this.objetoMensaje?.de;
+      });
+    });
+  }
+
   addMessage(mensaje: string) {
     this.mensaje = '';
 
-    if (this.idBody == undefined && this.idBody2 == undefined) {
+    if (this.objetoMensaje == undefined) {
       const para = this.info?.usuario;
       const de = this.usuario?.displayName;
       let foto = this.usuario?.photoURL;
@@ -119,18 +153,23 @@ export class SendingComponent implements OnInit {
         foto =
           'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg';
       }
-      const encapsular = []
+      const encapsular = [];
       encapsular.push({ mensaje, foto, para, de });
       const datos = {
         de: de,
         para: para,
+        foto,
         idEmisor: this.id,
         idReceptor: this.idUserActual,
         mensaje: encapsular,
       };
       this._msj.addMessage(datos).then(() => {
+        console.log('creando un nuevo mensaje')
       });
-    }else{
+    }
+    // metodo para actualizar el mensaje
+
+    else {
       let foto = this.usuario?.photoURL;
       if (foto == undefined) {
         foto =
@@ -138,19 +177,18 @@ export class SendingComponent implements OnInit {
       }
       const para = this.info?.usuario;
       const de = this.usuario?.displayName;
-      const nuevoMensaje = this.objetoMensaje.mensaje;
-      nuevoMensaje.push({ mensaje, de, para, foto});
+      const nuevoMensaje = this.objetoMensaje?.mensaje;
+      nuevoMensaje.push({ mensaje, de, para, foto });
       const datos = {
         mensaje: nuevoMensaje,
       };
-      if (this.idBody == undefined) {
-        this.idBody = this.idBody2
-      }
-      this._msj.update(this.idBody, datos).then(()=>{
-      })
+
+      this._msj.update(this.idBody, datos).then(() => {
+        console.log('mensaje actualizado')
+      });
     }
   }
-  volver(){
-    this.location.back()
+  volver() {
+    this.location.back();
   }
 }

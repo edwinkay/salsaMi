@@ -81,7 +81,6 @@ export class VerUsuarioComponent implements OnInit {
           foto: user?.photoURL,
         };
         this._user.addIUserInfo(datos).then(() => {
-          console.log('usuario actualizado');
         });
       });
     } else console.log('el usuario ya esta registrado');
@@ -99,7 +98,6 @@ export class VerUsuarioComponent implements OnInit {
           (obj) => obj.idUser === this.id
         );
         const dato = this.usuariosInfo.find(obj => obj.idUser === this.usuario?.uid)
-        console.log(dato)
         this.usx = dato
         this.info = buscarObjeto;
         this.urlPortada = this.info?.portada;

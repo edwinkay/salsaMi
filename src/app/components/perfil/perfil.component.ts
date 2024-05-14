@@ -94,7 +94,7 @@ export class PerfilComponent implements OnInit {
     this.router.navigate(['/perfil-editar']);
   }
   crearUsuario(){
-    if(this.usuariosInfo == undefined){
+    if(this.id == undefined){
       this.afAuth.currentUser.then((user)=> {
         const datos = {
           idUser: user?.uid,
@@ -735,5 +735,9 @@ export class PerfilComponent implements OnInit {
       this.modalDeleteImage = false;
       this.previewImage = false
     })
+  }
+  abrirBandeja(){
+    this.crearUsuario();
+    this.router.navigate(['/bandeja'])
   }
 }

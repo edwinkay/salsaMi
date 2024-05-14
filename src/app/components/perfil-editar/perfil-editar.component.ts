@@ -47,10 +47,10 @@ export class PerfilEditarComponent implements OnInit {
         };
         this.usuariosInfo.push(userData);
         const buscarObjeto = this.usuariosInfo.find(
-          (obj) => obj.idUser === this.usuario.uid
+          (obj) => obj.idUser === this.usuario?.uid
         );
         const id = this.usuariosInfo.find(
-          (obj) => obj.idUser === this.usuario.uid
+          (obj) => obj.idUser === this.usuario?.uid
         )?.id;
         this.id = id;
         if (id == undefined) {

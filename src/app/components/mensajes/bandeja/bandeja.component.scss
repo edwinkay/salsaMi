@@ -1,0 +1,43 @@
+/* Estilos para el contenedor principal */
+.inbox-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+
+/* Estilos para el encabezado */
+.inbox-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.inbox-header i {
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.inbox-header h1 {
+  font-size: 24px;
+  color: #333;
+  margin: 0;
+}
+
+/* Estilos para cada mensaje */
+.message {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.message span {
+  font-size: 16px;
+  color: #333;
+}
