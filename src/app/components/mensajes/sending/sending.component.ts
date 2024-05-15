@@ -29,6 +29,8 @@ export class SendingComponent implements OnInit {
   entrante: any;
   saliente: any;
 
+  showEmoticonSection: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private _user: UsersService,
@@ -83,20 +85,24 @@ export class SendingComponent implements OnInit {
         };
         this.mensajes.push(mensajeData);
         //capturando el id array mensaje
-        const idBody = this.mensajes.find(obj => obj.idEmisor == this.id)?.id
-        const body = this.mensajes.find(obj => obj.idEmisor == this.id)
-        const idBody2 = this.mensajes.find(obj => obj.idEmisor == this.idUserActual)?.id
-        const body2 = this.mensajes.find(obj => obj.idEmisor == this.idUserActual)
+        const idBody = this.mensajes.find((obj) => obj.idEmisor == this.id)?.id;
+        const body = this.mensajes.find((obj) => obj.idEmisor == this.id);
+        const idBody2 = this.mensajes.find(
+          (obj) => obj.idEmisor == this.idUserActual
+        )?.id;
+        const body2 = this.mensajes.find(
+          (obj) => obj.idEmisor == this.idUserActual
+        );
 
-        const objetoMensaje = body
-        const objetoMensaje2 = body2
+        const objetoMensaje = body;
+        const objetoMensaje2 = body2;
 
         if (
-          (objetoMensaje?.idReceptor == this.idUserActual &&
-            objetoMensaje?.idEmisor == this.id)
+          objetoMensaje?.idReceptor == this.idUserActual &&
+          objetoMensaje?.idEmisor == this.id
         ) {
           this.objetoMensaje = objetoMensaje;
-          this.idBody = objetoMensaje?.id
+          this.idBody = objetoMensaje?.id;
         } else if (
           objetoMensaje2?.idReceptor == this.id &&
           objetoMensaje == undefined
@@ -104,14 +110,13 @@ export class SendingComponent implements OnInit {
           if (
             objetoMensaje2?.idReceptor == this.id &&
             objetoMensaje2?.idEmisor == this.idUserActual
-          ){
-            this.idBody = objetoMensaje2?.id
+          ) {
+            this.idBody = objetoMensaje2?.id;
             this.objetoMensaje2 = objetoMensaje2;
           }
-
         } else {
-          this.objetoMensaje = undefined
-          this.objetoMensaje2 = undefined
+          this.objetoMensaje = undefined;
+          this.objetoMensaje2 = undefined;
         }
 
         this.entrante = this.objetoMensaje?.para;
@@ -126,7 +131,7 @@ export class SendingComponent implements OnInit {
     if (this.objetoMensaje == undefined && this.objetoMensaje2 == undefined) {
       const para = this.info?.usuario;
       const de = this.usuario?.displayName;
-      let foto1 = this.usuario?.photoURL
+      let foto1 = this.usuario?.photoURL;
       if (foto1 == undefined) {
         foto1 =
           'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg';
@@ -148,11 +153,10 @@ export class SendingComponent implements OnInit {
         mensaje: encapsular,
       };
       this._msj.addMessage(datos).then(() => {
-        console.log('creando un nuevo mensaje')
+        console.log('creando un nuevo mensaje');
       });
     }
     // metodo para actualizar el mensaje
-
     else {
       let foto1 = this.usuario?.photoURL;
       if (foto1 == undefined) {
@@ -186,8 +190,17 @@ export class SendingComponent implements OnInit {
           console.log('mensaje actualizado');
         });
       }
-
     }
+  }
+  toggleEmoticonSection() {
+    this.showEmoticonSection = !this.showEmoticonSection;
+  }
+
+  addEmoji(emoji: string) {
+    this.mensaje += emoji;
+  }
+  agregarImagen(){
+
   }
   volver() {
     this.location.back();

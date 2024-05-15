@@ -11,7 +11,7 @@ import { UsersService } from 'src/app/services/users.service';
 })
 export class PerfilEditarComponent implements OnInit {
   usuario: any | null;
-  displayNameValue: any | null;
+  displayNameValue: any
   phoneNumberValue: string | null | undefined;
   genderValue: any;
   estado: any;
@@ -33,7 +33,6 @@ export class PerfilEditarComponent implements OnInit {
   ngOnInit(): void {
     this.afAuth.user.subscribe((user) => {
       this.usuario = user;
-      this.displayNameValue = user?.displayName;
       this.getUsers();
     });
   }
@@ -56,6 +55,7 @@ export class PerfilEditarComponent implements OnInit {
         if (id == undefined) {
           this.comprobar = true;
         }
+        this.displayNameValue = buscarObjeto?.usuario;
         this.phoneNumberValue = buscarObjeto?.telefono;
         this.genderValue = buscarObjeto?.Genero;
         this.birthdayValue = buscarObjeto?.cumpleanos;

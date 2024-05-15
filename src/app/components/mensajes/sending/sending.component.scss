@@ -69,3 +69,20 @@
 .mensaje-s{
   color:blue
 }
+.emoticon-section{
+  border-radius: 14px;
+    width: 82%;
+    bottom: 9%;
+    left: 6%;
+    position: fixed;
+    background-color: beige;
+    padding: 12px;
+}
+.emoticon{
+  gap: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    height: 16vh;
+}

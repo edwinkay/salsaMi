@@ -1,5 +1,5 @@
 <div style="user-select: none" class="container">
-  <ng-container *ngIf="usuario">
+  <ng-container *ngIf="objetoUsuario">
     <span
       style="
         padding: 6px;
@@ -47,7 +47,7 @@
             width="auto"
             height="70"
           />
-          <p class="lap user">{{ usuario.displayName }}</p>
+          <p class="lap user">{{ objetoUsuario.usuario }}</p>
         </div>
         <div *ngIf="!esInvitado">
           <p (click)="editarPerfil()" class="edit-perfil">Editar perfil</p>
