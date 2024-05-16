@@ -37,7 +37,10 @@
               >{{ msj.de }}
             </span>
           </div>
-          <div>
+          <div *ngIf="isUrl(msj.mensaje)">
+            <img (click)="ampliar(msj.mensaje)" style="width: 100%;" [src]="msj.mensaje" alt="Imagen del mensaje" />
+          </div>
+          <div *ngIf="!isUrl(msj.mensaje)">
             {{ msj.mensaje }}
           </div>
         </div>
@@ -61,7 +64,10 @@
               >{{ msj.de }}
             </span>
           </div>
-          <div>
+          <div *ngIf="isUrl(msj.mensaje)">
+            <img (click)="ampliar(msj.mensaje)" style="width: 100%;" [src]="msj.mensaje" alt="Imagen del mensaje" />
+          </div>
+          <div *ngIf="!isUrl(msj.mensaje)">
             {{ msj.mensaje }}
           </div>
         </div>
@@ -402,7 +408,6 @@
         <div>
           <!-- <i class="fas fa-paperclip"></i> -->
           <i (click)="agregarImagen()" class="fas fa-file-image"></i>
-
         </div>
         <!-- Carita para abrir la sección de emoticones -->
         <div (click)="toggleEmoticonSection()" style="cursor: pointer">
@@ -423,4 +428,8 @@
       </div>
     </div>
   </form>
+</div>
+<div class="zoom" *ngIf="abrirImg">
+  <span class="cerrar" (click)="cerrar()">&times;</span>
+  <img style="width: 87%;" [src]="zoomImg" alt="zoom">
 </div>

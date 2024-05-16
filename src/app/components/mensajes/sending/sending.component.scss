@@ -86,3 +86,19 @@
     overflow-y: auto;
     height: 16vh;
 }
+.zoom{
+  background-color: #00000070;
+    display: flex;
+    position: fixed;
+    top: 0%;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+.cerrar{
+  font-size: 68px;
+    color: white;
+    position: absolute;
+    top: 6rem;
+    right: 6%;
+}

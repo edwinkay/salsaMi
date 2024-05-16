@@ -32,7 +32,8 @@ export class SendingComponent implements OnInit {
 
   showEmoticonSection: boolean = false;
 
-  url:any
+  zoomImg:any
+  abrirImg = false
 
   constructor(
     private route: ActivatedRoute,
@@ -256,8 +257,7 @@ export class SendingComponent implements OnInit {
                     .pipe(
                       finalize(() => {
                         fileRef.getDownloadURL().subscribe((url) => {
-
-
+                          this.addMessage(url);
                         });
                       })
                     )
@@ -282,5 +282,26 @@ export class SendingComponent implements OnInit {
   }
   volver() {
     this.location.back();
+  }
+  isUrl(str: string): boolean {
+    // Expresión regular para verificar si la cadena es una URL
+    const pattern = new RegExp(
+      '^(https?:\\/\\/)?' + // Protocolo
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // Dominio
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // o dirección IP
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // Puerto y ruta
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // Parámetros de consulta
+        '(\\#[-a-z\\d_]*)?$',
+      'i'
+    ); // Fragmento
+
+    return !!pattern.test(str);
+  }
+  ampliar(img:any){
+    this.zoomImg = img
+    this.abrirImg = true
+  }
+  cerrar(){
+    this.abrirImg = false
   }
 }
