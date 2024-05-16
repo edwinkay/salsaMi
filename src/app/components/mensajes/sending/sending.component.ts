@@ -6,7 +6,8 @@ import { Location } from '@angular/common';
 import { UsersService } from 'src/app/services/users.service';
 import { UsuariosImgService } from 'src/app/services/usuarios-img.service';
 import { ComunicationService } from 'src/app/services/comunication.service';
-
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-sending',
   templateUrl: './sending.component.html',
@@ -31,6 +32,8 @@ export class SendingComponent implements OnInit {
 
   showEmoticonSection: boolean = false;
 
+  url:any
+
   constructor(
     private route: ActivatedRoute,
     private _user: UsersService,
@@ -40,7 +43,8 @@ export class SendingComponent implements OnInit {
     private _imageUser: UsuariosImgService,
     private router: Router,
     private _msj: ComunicationService,
-    private el: ElementRef
+    private el: ElementRef,
+    private storagex: AngularFireStorage
   ) {}
 
   ngOnInit(): void {
@@ -126,6 +130,7 @@ export class SendingComponent implements OnInit {
   }
 
   addMessage(mensaje: string) {
+    this.showEmoticonSection = false;
     this.mensaje = '';
 
     if (this.objetoMensaje == undefined && this.objetoMensaje2 == undefined) {
@@ -199,8 +204,81 @@ export class SendingComponent implements OnInit {
   addEmoji(emoji: string) {
     this.mensaje += emoji;
   }
-  agregarImagen(){
+  agregarImagen() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
 
+    input.addEventListener('change', (event) => {
+      const file = (event?.target as HTMLInputElement)?.files?.[0];
+
+      if (file) {
+        const image = new Image();
+        const reader = new FileReader();
+
+        reader.onload = (e: any) => {
+          image.onload = () => {
+            const canvas = document.createElement('canvas');
+            const maxWidth = 800; // Ancho máximo permitido
+            const maxHeight = 600; // Altura máxima permitida
+            let width = image.width;
+            let height = image.height;
+
+            // Redimensionar la imagen si es necesario
+            if (width > maxWidth || height > maxHeight) {
+              if (width > height) {
+                height *= maxWidth / width;
+                width = maxWidth;
+              } else {
+                width *= maxHeight / height;
+                height = maxHeight;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext('2d');
+
+            if (ctx) {
+              ctx.drawImage(image, 0, 0, width, height);
+
+              canvas.toBlob((blob) => {
+                if (blob) {
+                  const filePath = `chatsImg/${this.usuario?.uid}/${file.name}`;
+                  const fileRef = this.storagex.ref(filePath);
+                  const task = this.storagex.upload(filePath, blob, {
+                    contentType: blob.type,
+                  });
+
+                  task
+                    .snapshotChanges()
+                    .pipe(
+                      finalize(() => {
+                        fileRef.getDownloadURL().subscribe((url) => {
+
+
+                        });
+                      })
+                    )
+                    .subscribe();
+                }
+              }, file.type);
+            } else {
+              console.error(
+                'Error: No se pudo obtener el contexto 2D del canvas.'
+              );
+            }
+          };
+
+          image.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+      }
+    });
+
+    input.click();
   }
   volver() {
     this.location.back();
