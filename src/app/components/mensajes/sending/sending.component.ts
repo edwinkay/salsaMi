@@ -39,6 +39,7 @@ export class SendingComponent implements OnInit {
   mensajeSeleccionado: any;
   optionDelete = false
   capture:any
+  capId:any
 
   constructor(
     private route: ActivatedRoute,
@@ -312,7 +313,8 @@ export class SendingComponent implements OnInit {
     this.optionDelete = false
   }
 
-  options(mensaje: any) {
+  options(mensaje: any, i:any) {
+    this.capId = i
     this.mensajeSeleccionado = mensaje;
     this.optionDelete = true
   }

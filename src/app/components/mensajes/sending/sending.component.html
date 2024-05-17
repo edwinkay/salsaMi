@@ -26,13 +26,14 @@
   <div class="mensajes-container">
     <div oncontextmenu="return false;" *ngIf="objetoMensaje">
       <div
-        *ngFor="let msj of objetoMensaje.mensaje"
+        *ngFor="let msj of objetoMensaje.mensaje; let i = index"
         [ngClass]="{
           'mensaje-saliente': msj.para === usuario.displayName,
-          'mensaje-entrante': msj.de === usuario.displayName
+          'mensaje-entrante': msj.de === usuario.displayName,
+          'mensaje-seleccionado': i === capId
         }"
       >
-        <div (mousedown)="options(msj)">
+        <div (mousedown)="options(msj, i)">
           <div>
             <span
               [ngClass]="{
@@ -58,14 +59,14 @@
     </div>
     <div oncontextmenu="return false;" *ngIf="objetoMensaje2">
       <div
-        *ngFor="let msj of objetoMensaje2.mensaje"
+        *ngFor="let msj of objetoMensaje2.mensaje; let i = index"
         [ngClass]="{
           'mensaje-saliente': msj.para === usuario.displayName,
           'mensaje-entrante': msj.de === usuario.displayName,
-          'mensaje-seleccionado': msj === mensajeSeleccionado
+          'mensaje-seleccionado': i === capId
         }"
       >
-        <div (mousedown)="options(msj)">
+        <div (mousedown)="options(msj,i)">
           <div>
             <span
               [ngClass]="{
