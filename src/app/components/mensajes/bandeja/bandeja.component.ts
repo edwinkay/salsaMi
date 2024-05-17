@@ -20,6 +20,9 @@ export class BandejaComponent implements OnInit {
   users2: any[] = [];
   usuario: any;
   usuarioActual: any;
+  optionDelete = false
+  deleteId:any
+  capIndex:any
 
   constructor(
     private location: Location,
@@ -78,5 +81,19 @@ export class BandejaComponent implements OnInit {
   }
   volver() {
     this.location.back();
+  }
+  abrirEliminar(id:any, i:any){
+    this.capIndex = i
+    this.optionDelete = true
+    this.deleteId = id
+  }
+  eliminar(){
+    this.optionDelete = false;
+    this._msj.delete(this.deleteId).then(()=>{
+      console.log('mensaje eliminado')
+    })
+  }
+  cerrar(){
+    this.optionDelete = false
   }
 }

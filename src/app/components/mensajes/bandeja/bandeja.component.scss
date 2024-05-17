@@ -41,3 +41,25 @@
   font-size: 16px;
   color: #333;
 }
+.cabecera{
+  margin-bottom: 20px;
+  width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.option {
+  gap: 18px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
+}
+
+.option.active {
+  opacity: 1;
+}
+.indicar{
+  background-color: #757e753b;
+}

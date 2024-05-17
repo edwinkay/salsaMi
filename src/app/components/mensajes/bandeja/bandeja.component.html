@@ -1,9 +1,26 @@
 <div class="inbox-container">
-  <div class="inbox-header">
-    <i class="fas fa-arrow-left" (click)="volver()"></i>
-    <h1>Mensajes</h1>
+  <div class="cabecera">
+    <div class="inbox-header">
+      <i class="fas fa-arrow-left" (click)="volver()"></i>
+      <h1>Mensajes</h1>
+    </div>
+    <div class="option" [ngClass]="{ 'active': optionDelete }">
+        <i (click)="eliminar()" class="fas fa-trash"></i>
+        <span style="color: brown; font-size: 31px" (click)="cerrar()"
+          >&times;</span
+        >
+      </div>
   </div>
-  <div style="gap: 1rem; display: flex; width: 100%; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;">
+  <div
+    style="
+      gap: 1rem;
+      display: flex;
+      width: 100%;
+      overflow-x: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    "
+  >
     <div style="text-align: center" *ngFor="let user of users2">
       <img
         (click)="abrirMensaje(user.idUser)"
@@ -21,9 +38,11 @@
     </div>
   </div>
   <div style="width: 100%" class="inbox-messages">
-    <div *ngFor="let message of mensajes" class="message">
+    <div *ngFor="let message of mensajes; let i = index" class="message" [ngClass]="{'indicar': i === capIndex}">
       <div>
-        <div>
+        <div style="display: flex;
+    align-items: center;
+    justify-content: space-between;">
           <span
             style="display: flex; gap: 1rem; align-items: center"
             (click)="abrirMensaje(message.idEmisor)"
@@ -39,6 +58,9 @@
               style="border-radius: 50%"
             /><strong>{{ message.para }}</strong></span
           >
+          <div>
+            <span (click)="abrirEliminar(message.id, i)" style="font-size: 26px;">&#8942;</span>
+          </div>
         </div>
       </div>
     </div>

@@ -6,7 +6,6 @@ import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
 import { UsersService } from 'src/app/services/users.service';
 import { UsuariosImgService } from 'src/app/services/usuarios-img.service';
-import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-perfil',
@@ -84,10 +83,6 @@ export class PerfilComponent implements OnInit {
       }
     });
     this.getUserImages();
-  }
-  generateUniqueId() {
-    const uniqueId = uuidv4();
-    this.idGenerado = uniqueId;
   }
   editarPerfil(){
     this.crearUsuario()
