@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, ElementRef, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -32,8 +32,13 @@ export class SendingComponent implements OnInit {
 
   showEmoticonSection: boolean = false;
 
-  zoomImg:any
-  abrirImg = false
+  zoomImg: any;
+  abrirImg = false;
+  timeoutId: any;
+
+  mensajeSeleccionado: any;
+  optionDelete = false
+  capture:any
 
   constructor(
     private route: ActivatedRoute,
@@ -45,7 +50,8 @@ export class SendingComponent implements OnInit {
     private router: Router,
     private _msj: ComunicationService,
     private el: ElementRef,
-    private storagex: AngularFireStorage
+    private storagex: AngularFireStorage,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -297,11 +303,36 @@ export class SendingComponent implements OnInit {
 
     return !!pattern.test(str);
   }
-  ampliar(img:any){
-    this.zoomImg = img
-    this.abrirImg = true
+  ampliar(img: any) {
+    this.zoomImg = img;
+    this.abrirImg = true;
   }
-  cerrar(){
-    this.abrirImg = false
+  cerrar() {
+    this.abrirImg = false;
+    this.optionDelete = false
   }
+
+  options(mensaje: any) {
+    this.mensajeSeleccionado = mensaje;
+    this.optionDelete = true
+  }
+  eliminar(){
+    if (this.objetoMensaje2 == undefined) {
+      this.capture = this.objetoMensaje
+    }else{this.capture = this.objetoMensaje2}
+    this.optionDelete = false
+    const index = this.capture?.mensaje.indexOf(this.mensajeSeleccionado);
+    if (index !== -1) {
+      this.capture.mensaje.splice(index, 1)
+
+      const id = this.capture?.id
+      const dato = {
+        mensaje: this.capture?.mensaje
+      }
+      this._msj.update(id, dato).then(()=>{
+        console.log('eliminado')
+      })
+    }
+  }
+
 }

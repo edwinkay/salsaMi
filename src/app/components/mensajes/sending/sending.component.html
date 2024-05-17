@@ -1,4 +1,4 @@
-<div class="contenedor">
+<div class="contenedor" >
   <div class="container-info">
     <div>
       <i (click)="volver()" class="fas fa-arrow-left"></i>
@@ -17,9 +17,14 @@
       />
       <div>{{ info?.usuario }}</div>
     </div>
+    <div *ngIf="optionDelete" class="delete">
+      <i (click)="eliminar()" class="fas fa-trash"></i>
+      <span style="color: brown;
+    font-size: 31px;" (click)="cerrar()">&times;</span>
+    </div>
   </div>
   <div class="mensajes-container">
-    <div *ngIf="objetoMensaje">
+    <div oncontextmenu="return false;" *ngIf="objetoMensaje">
       <div
         *ngFor="let msj of objetoMensaje.mensaje"
         [ngClass]="{
@@ -27,7 +32,7 @@
           'mensaje-entrante': msj.de === usuario.displayName
         }"
       >
-        <div>
+        <div (mousedown)="options(msj)">
           <div>
             <span
               [ngClass]="{
@@ -38,7 +43,12 @@
             </span>
           </div>
           <div *ngIf="isUrl(msj.mensaje)">
-            <img (click)="ampliar(msj.mensaje)" style="width: 100%;" [src]="msj.mensaje" alt="Imagen del mensaje" />
+            <img
+              (click)="ampliar(msj.mensaje)"
+              style="width: 100%"
+              [src]="msj.mensaje"
+              alt="Imagen del mensaje"
+            />
           </div>
           <div *ngIf="!isUrl(msj.mensaje)">
             {{ msj.mensaje }}
@@ -46,15 +56,16 @@
         </div>
       </div>
     </div>
-    <div *ngIf="objetoMensaje2">
+    <div oncontextmenu="return false;" *ngIf="objetoMensaje2">
       <div
         *ngFor="let msj of objetoMensaje2.mensaje"
         [ngClass]="{
           'mensaje-saliente': msj.para === usuario.displayName,
-          'mensaje-entrante': msj.de === usuario.displayName
+          'mensaje-entrante': msj.de === usuario.displayName,
+          'mensaje-seleccionado': msj === mensajeSeleccionado
         }"
       >
-        <div>
+        <div (mousedown)="options(msj)">
           <div>
             <span
               [ngClass]="{
@@ -65,10 +76,19 @@
             </span>
           </div>
           <div *ngIf="isUrl(msj.mensaje)">
-            <img (click)="ampliar(msj.mensaje)" style="width: 100%;" [src]="msj.mensaje" alt="Imagen del mensaje" />
+            <img
+              (click)="ampliar(msj.mensaje)"
+              style="width: 100%"
+              [src]="msj.mensaje"
+              alt="Imagen del mensaje"
+            />
           </div>
-          <div *ngIf="!isUrl(msj.mensaje)">
+          <div
+            *ngIf="!isUrl(msj.mensaje)"
+          >
+          <div>
             {{ msj.mensaje }}
+           </div>
           </div>
         </div>
       </div>
@@ -431,5 +451,5 @@
 </div>
 <div class="zoom" *ngIf="abrirImg">
   <span class="cerrar" (click)="cerrar()">&times;</span>
-  <img style="width: 87%;" [src]="zoomImg" alt="zoom">
+  <img style="width: 87%" [src]="zoomImg" alt="zoom" />
 </div>
