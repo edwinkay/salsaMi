@@ -90,7 +90,6 @@ export class BandejaComponent implements OnInit {
   eliminar(){
     this.optionDelete = false;
     this._msj.delete(this.deleteId).then(()=>{
-      console.log('mensaje eliminado')
     })
   }
   cerrar(){

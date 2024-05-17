@@ -4,12 +4,12 @@
       <i class="fas fa-arrow-left" (click)="volver()"></i>
       <h1>Mensajes</h1>
     </div>
-    <div class="option" [ngClass]="{ 'active': optionDelete }">
-        <i (click)="eliminar()" class="fas fa-trash"></i>
-        <span style="color: brown; font-size: 31px" (click)="cerrar()"
-          >&times;</span
-        >
-      </div>
+    <div class="option" [ngClass]="{ active: optionDelete }">
+      <i (click)="eliminar()" class="fas fa-trash"></i>
+      <span style="color: brown; font-size: 31px" (click)="cerrar()"
+        >&times;</span
+      >
+    </div>
   </div>
   <div
     style="
@@ -38,14 +38,26 @@
     </div>
   </div>
   <div style="width: 100%" class="inbox-messages">
-    <div *ngFor="let message of mensajes; let i = index" class="message" [ngClass]="{'indicar': i === capIndex}">
+    <div
+      *ngFor="let message of mensajes; let i = index"
+      class="message"
+      [ngClass]="{ indicar: i === capIndex }"
+    >
       <div>
         <div style="display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: space-between;">
-          <span
-            style="display: flex; gap: 1rem; align-items: center"
-            (click)="abrirMensaje(message.idEmisor)"
+">
+          <div
+          (click)="abrirMensaje(message.idEmisor)"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: -webkit-fill-available;
+          "
+        >
+          <span style="display: flex; gap: 1rem; align-items: center"
             ><img
               [src]="
                 message?.foto
@@ -58,8 +70,11 @@
               style="border-radius: 50%"
             /><strong>{{ message.para }}</strong></span
           >
+        </div>
           <div>
-            <span (click)="abrirEliminar(message.id, i)" style="font-size: 26px;">&#8942;</span>
+            <span (click)="abrirEliminar(message.id, i)" style="font-size: 26px"
+              >&#8942;</span
+            >
           </div>
         </div>
       </div>

@@ -1,26 +1,29 @@
-<div class="contenedor" >
+<div class="contenedor">
   <div class="container-info">
     <div>
       <i (click)="volver()" class="fas fa-arrow-left"></i>
     </div>
-    <div style="gap: 1rem; display: flex; align-items: center">
-      <img
-        [src]="
-          info?.foto
-            ? info.foto
-            : 'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg'
-        "
-        alt="Foto de perfil"
-        width="40"
-        height="40"
-        style="border-radius: 50%"
-      />
-      <div>{{ info?.usuario }}</div>
-    </div>
-    <div *ngIf="optionDelete" class="delete">
-      <i (click)="eliminar()" class="fas fa-trash"></i>
-      <span style="color: brown;
-    font-size: 31px;" (click)="cerrar()">&times;</span>
+    <div class="cabecera">
+      <div style="gap: 1rem; display: flex; align-items: center">
+        <img
+          [src]="
+            info?.foto
+              ? info.foto
+              : 'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg'
+          "
+          alt="Foto de perfil"
+          width="40"
+          height="40"
+          style="border-radius: 50%"
+        />
+        <div>{{ info?.usuario }}</div>
+      </div>
+      <div [ngClass]="{ 'active': optionDelete }" class="delete">
+        <i (click)="eliminar()" class="fas fa-trash"></i>
+        <span style="color: brown; font-size: 31px" (click)="cerrar()"
+          >&times;</span
+        >
+      </div>
     </div>
   </div>
   <div class="mensajes-container">
@@ -66,7 +69,7 @@
           'mensaje-seleccionado': i === capId
         }"
       >
-        <div (mousedown)="options(msj,i)">
+        <div (mousedown)="options(msj, i)">
           <div>
             <span
               [ngClass]="{
@@ -84,12 +87,10 @@
               alt="Imagen del mensaje"
             />
           </div>
-          <div
-            *ngIf="!isUrl(msj.mensaje)"
-          >
-          <div>
-            {{ msj.mensaje }}
-           </div>
+          <div *ngIf="!isUrl(msj.mensaje)">
+            <div>
+              {{ msj.mensaje }}
+            </div>
           </div>
         </div>
       </div>

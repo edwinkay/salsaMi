@@ -166,7 +166,6 @@ export class SendingComponent implements OnInit {
         mensaje: encapsular,
       };
       this._msj.addMessage(datos).then(() => {
-        console.log('creando un nuevo mensaje');
       });
     }
     // metodo para actualizar el mensaje
@@ -191,7 +190,6 @@ export class SendingComponent implements OnInit {
           mensaje: nuevoMensaje,
         };
         this._msj.update(this.idBody, datos).then(() => {
-          console.log('mensaje actualizado');
         });
       } else {
         const nuevoMensaje = this.objetoMensaje?.mensaje;
@@ -200,7 +198,6 @@ export class SendingComponent implements OnInit {
           mensaje: nuevoMensaje,
         };
         this._msj.update(this.idBody, datos).then(() => {
-          console.log('mensaje actualizado');
         });
       }
     }
@@ -332,7 +329,6 @@ export class SendingComponent implements OnInit {
         mensaje: this.capture?.mensaje
       }
       this._msj.update(id, dato).then(()=>{
-        console.log('eliminado')
       })
     }
   }

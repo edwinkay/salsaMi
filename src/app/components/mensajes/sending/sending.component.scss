@@ -103,8 +103,7 @@
     right: 6%;
 }
 .delete{
-  left: 37%;
-    position: relative;
+    opacity: 0;
     gap: 8px;
     display: flex;
     align-items: center;
@@ -112,4 +111,12 @@
 .mensaje-seleccionado{
   background-color: #8a2be2a6;
   color: white;
+}
+.cabecera{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.delete.active {
+  opacity: 1;
 }
