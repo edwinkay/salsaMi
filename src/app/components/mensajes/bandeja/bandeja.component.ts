@@ -23,6 +23,7 @@ export class BandejaComponent implements OnInit {
   optionDelete = false
   deleteId:any
   capIndex:any
+  close=false
 
   constructor(
     private location: Location,
@@ -94,5 +95,6 @@ export class BandejaComponent implements OnInit {
   }
   cerrar(){
     this.optionDelete = false
+    this.close = true
   }
 }

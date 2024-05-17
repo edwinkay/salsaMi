@@ -6,9 +6,7 @@
     </div>
     <div class="option" [ngClass]="{ active: optionDelete }">
       <i (click)="eliminar()" class="fas fa-trash"></i>
-      <span style="color: brown; font-size: 31px" (click)="cerrar()"
-        >&times;</span
-      >
+      <span class="close" [ngClass]="{ active: close }" (click)="cerrar()">&times;</span>
     </div>
   </div>
   <div
@@ -41,40 +39,36 @@
     <div
       *ngFor="let message of mensajes; let i = index"
       class="message"
-      [ngClass]="{ indicar: i === capIndex }"
+      [ngClass]="{ indicar: i === capIndex, active: i === capIndex && close }"
     >
       <div>
-        <div style="display: flex;
-    justify-content: space-between;
-    align-items: center;
-">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
           <div
-          (click)="abrirMensaje(message.idEmisor)"
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: -webkit-fill-available;
-          "
-        >
-          <span style="display: flex; gap: 1rem; align-items: center"
-            ><img
-              [src]="
-                message?.foto
-                  ? message.foto
-                  : 'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg'
-              "
-              alt="Foto de perfil"
-              width="40"
-              height="40"
-              style="border-radius: 50%"
-            /><strong>{{ message.para }}</strong></span
+            (click)="abrirMensaje(message.idEmisor)"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              width: -webkit-fill-available;
+            "
           >
-        </div>
+            <span style="display: flex; gap: 1rem; align-items: center">
+              <img
+                [src]="
+                  message?.foto
+                    ? message.foto
+                    : 'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg'
+                "
+                alt="Foto de perfil"
+                width="40"
+                height="40"
+                style="border-radius: 50%"
+              />
+              <strong>{{ message.para }}</strong>
+            </span>
+          </div>
           <div>
-            <span (click)="abrirEliminar(message.id, i)" style="font-size: 26px"
-              >&#8942;</span
-            >
+            <span (click)="abrirEliminar(message.id, i)" style="font-size: 26px">&#8942;</span>
           </div>
         </div>
       </div>
@@ -87,7 +81,8 @@
           <span
             style="display: flex; gap: 1rem; align-items: center"
             (click)="abrirMensaje(message.idReceptor)"
-            ><img
+          >
+            <img
               [src]="
                 message?.foto1
                   ? message.foto1
@@ -97,8 +92,9 @@
               width="40"
               height="40"
               style="border-radius: 50%"
-            /><strong>{{ message.de }}</strong></span
-          >
+            />
+            <strong>{{ message.de }}</strong>
+          </span>
         </div>
       </div>
     </div>
