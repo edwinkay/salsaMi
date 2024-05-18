@@ -94,7 +94,17 @@ nav {
   margin-bottom: 17px;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.21);
 }
+.activar {
+  display: none;
+}
 
+.activar:not(.active) {
+  display: none;
+}
+
+.activar.active {
+  display: flex;
+}
 
 
 @media screen and (max-width: 900px) {

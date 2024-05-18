@@ -28,6 +28,9 @@ export class VideosActivateComponent implements OnInit {
   filteredVideos: any[] = [];
   searchTerm: string = '';
 
+  option: boolean = false;
+  capIndex: any;
+
   constructor(
     private afAuth: AngularFireAuth,
     private _videosService: VideosActivateService,
@@ -293,5 +296,21 @@ export class VideosActivateComponent implements OnInit {
     this.filteredVideos = this.videos.filter((video) =>
       video.nombre.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
+  }
+  async opciones(i: any, comentario: any) {
+    const user = await this.afAuth.currentUser;
+
+    if (
+      user?.email === comentario.correo ||
+      user?.email == 'administrador.sistema@gmail.com' ||
+      user?.email == 'jeestrada377@gmail.com'
+    ) {
+      if (this.capIndex === i) {
+        this.option = !this.option; // Toggle option if the same item is clicked
+      } else {
+        this.capIndex = i;
+        this.option = true; // Show options for a new item
+      }
+    }
   }
 }
