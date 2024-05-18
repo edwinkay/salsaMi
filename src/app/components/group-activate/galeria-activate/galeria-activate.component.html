@@ -120,8 +120,8 @@
     <div class="comments-container">
       <div class="comments-list">
         <div
-          style="border-bottom: 1px solid #a1a197"
-          *ngFor="let comment of dataVideoId.commentsVideo"
+          style="border-bottom: 1px solid #a1a197; margin-top: 13px"
+          *ngFor="let comment of dataVideoId.commentsVideo; let i = index"
         >
           <div style="display: flex; flex-direction: column">
             <img
@@ -150,7 +150,7 @@
           >
             <p style="padding: 16px; width: 86%">{{ comment.comentario }}</p>
             <div style="display: flex; gap: 1rem">
-              <div>
+              <div style="display: flex; align-items: center">
                 <i
                   style="cursor: pointer"
                   class="far fa-thumbs-up"
@@ -162,16 +162,27 @@
                 ></i>
                 <span>{{ comment.likesCountComment }}</span>
               </div>
-              <i
-                (click)="abrirEditar(comment)"
-                style="cursor: pointer; color: blue"
-                class="fas fa-pencil-alt"
-              ></i>
-              <i
-                (click)="deleteModal(comment)"
-                style="cursor: pointer; color: red"
-                class="fas fa-trash"
-              ></i>
+              <div style="gap: 1rem; display: flex; align-items: center">
+                <div [ngClass]="{ activar: !(i === capIndex && option) }">
+                  <div style="gap: 1rem; display: flex">
+                    <i
+                      (click)="abrirEditar(comment)"
+                      style="cursor: pointer; color: blue"
+                      class="fas fa-pencil-alt"
+                    ></i>
+                    <i
+                      (click)="deleteModal(comment)"
+                      style="cursor: pointer; color: red"
+                      class="fas fa-trash"
+                    ></i>
+                  </div>
+                </div>
+                <div>
+                  <span (click)="opciones(i, comment)" style="font-size: 26px"
+                    >&#8942;</span
+                  >
+                </div>
+              </div>
             </div>
           </div>
         </div>

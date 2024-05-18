@@ -34,8 +34,10 @@ export class GaleriaActivateComponent implements OnInit {
   comentario: string = '';
   esteComentario: string = '';
   dataVideoId: any = [];
-  modalDeleteImage = false
-  idDelete:string = ''
+  modalDeleteImage = false;
+  idDelete: string = '';
+  option: boolean = false;
+  capIndex: any;
 
   constructor(
     private el: ElementRef,
@@ -435,5 +437,21 @@ export class GaleriaActivateComponent implements OnInit {
       this.modalDeleteImage = false;
       this.previewImage = false;
     });
+  }
+  async opciones(i: any, comentario:any) {
+    const user = await this.afAuth.currentUser;
+
+    if (
+      user?.email === comentario.correo ||
+      user?.email == 'administrador.sistema@gmail.com' ||
+      user?.email == 'jeestrada377@gmail.com'
+    ) {
+      if (this.capIndex === i) {
+        this.option = !this.option; // Toggle option if the same item is clicked
+      } else {
+        this.capIndex = i;
+        this.option = true; // Show options for a new item
+      }
+    }
   }
 }
