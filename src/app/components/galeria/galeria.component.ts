@@ -39,6 +39,8 @@ export class GaleriaComponent implements OnInit {
   comentario: string = '';
   esteComentario: string = '';
   dataVideoId: any = [];
+  option: boolean = false;
+  capIndex: any;
 
   constructor(
     private storage: Storage,
@@ -170,9 +172,7 @@ export class GaleriaComponent implements OnInit {
                           };
                           this._image.addImagenInfo(dato).then(() => {
                             console.log('actualizando');
-                            this.toastr.info(
-                              'Actualizando lista de Imagenes'
-                            );
+                            this.toastr.info('Actualizando lista de Imagenes');
                           });
                         });
                       })
@@ -422,6 +422,22 @@ export class GaleriaComponent implements OnInit {
       this.router.navigate(['/perfil']);
     } else {
       this.router.navigate(['/usuario/', id]);
+    }
+  }
+  async opciones(i: any, comentario: any) {
+    const user = await this.afAuth.currentUser;
+
+    if (
+      user?.email === comentario.correo ||
+      user?.email == 'administrador.sistema@gmail.com' ||
+      user?.email == 'jeestrada377@gmail.com'
+    ) {
+      if (this.capIndex === i) {
+        this.option = !this.option; // Toggle option if the same item is clicked
+      } else {
+        this.capIndex = i;
+        this.option = true; // Show options for a new item
+      }
     }
   }
 }
