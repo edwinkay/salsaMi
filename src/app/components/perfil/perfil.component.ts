@@ -53,6 +53,9 @@ export class PerfilComponent implements OnInit {
 
   objetoUsuario: any;
 
+  option: boolean = false;
+  capIndex: any;
+
   gr = true;
   im = false;
   vd = false;
@@ -807,4 +810,28 @@ export class PerfilComponent implements OnInit {
 
     return !!pattern.test(str);
   }
+  async opciones(i: any, comentario: any) {
+    console.log('clic',i , comentario)
+    const user = await this.afAuth.currentUser;
+
+    if (
+      user?.uid === comentario.uid ||
+      user?.email == 'administrador.sistema@gmail.com'
+    ) {
+      if (this.capIndex === i) {
+        this.option = !this.option; // Toggle option if the same item is clicked
+      } else {
+        this.capIndex = i;
+        this.option = true; // Show options for a new item
+      }
+    }
+  }
+  deletePost(p:any){
+    this._post.delete(p).then(()=>{
+      this.toastr.info(
+        'publicacion eliminada'
+      )
+    })
+  }
+
 }

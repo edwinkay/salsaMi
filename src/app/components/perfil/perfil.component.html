@@ -406,7 +406,7 @@
         </div>
         <div
           style="display: flex; justify-content: center"
-          *ngFor="let p of post"
+          *ngFor="let p of post; let i = index"
         >
           <div
             style="
@@ -417,21 +417,76 @@
               border: 1px solid #00000057;
               width: 93%;
               border-radius: 7px;
+              padding: 8px;
             "
           >
             <div *ngIf="isUrl(p.post)">
-              <div style="color: blue; padding: 8px; text-align: justify">
-                {{ p.usuario }}
+              <div>
+                <div style="display: flex; justify-content: space-between">
+                  <div style="text-align: justify; color: red">
+                    {{ p.usuario }}
+                  </div>
+                  <div
+                    style="text-align: end; width: 74%"
+                    [ngClass]="{ activar: !(i === capIndex && option) }"
+                  >
+                    <div>
+                      <i
+                        (click)="deletePost(p.id)"
+                        style="cursor: pointer; color: red"
+                        class="fas fa-trash"
+                      ></i>
+                    </div>
+                  </div>
+                  <div style="display: flex; justify-content: space-between">
+                    <span (click)="opciones(i, p)" style="font-size: 26px"
+                      >&#8942;</span
+                    >
+                  </div>
+                </div>
+                <div>
+                  <div>
+                  <img
+                    style="width: 93%"
+                    [src]="p.post"
+                    alt="Imagen del mensaje"
+                  />
+                </div>
+                </div>
               </div>
-              <img style="width: 93%" [src]="p.post" alt="Imagen del mensaje" />
             </div>
             <div
               style="margin-bottom: 5px; margin-top: 5px; width: 93%"
               *ngIf="!isUrl(p.post)"
             >
-              <div style="text-align: justify; color:red">{{ p.usuario }}</div>
               <div>
-                {{ p.post }}
+                <div style="display: flex; justify-content: space-between">
+                  <div style="text-align: justify; color: red">
+                    {{ p.usuario }}
+                  </div>
+                  <div
+                    style="text-align: end; width: 74%"
+                    [ngClass]="{ activar: !(i === capIndex && option) }"
+                  >
+                    <div>
+                      <i
+                        (click)="deletePost(p.id)"
+                        style="cursor: pointer; color: red"
+                        class="fas fa-trash"
+                      ></i>
+                    </div>
+                  </div>
+                  <div style="display: flex; justify-content: space-between">
+                    <span (click)="opciones(i, p)" style="font-size: 26px"
+                      >&#8942;</span
+                    >
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    {{ p.post }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -443,3 +498,6 @@
     <p>No se ha iniciado sesión.</p>
   </ng-container>
 </div>
+
+
+

@@ -28,7 +28,17 @@
   border-radius: 8px;
     padding: 6px;
 }
+.activar {
+  display: none;
+}
 
+.activar:not(.active) {
+  display: none;
+}
+
+.activar.active {
+  display: flex;
+}
 /* Asegúrate de que el estilo selected no tenga conflictos */
 .selected {
   background: linear-gradient(to bottom right, #242624, #91a7b8);
