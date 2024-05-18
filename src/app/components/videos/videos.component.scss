@@ -67,7 +67,17 @@ nav {
   justify-content: center;
   padding: 25px;
 }
+.activar {
+  display: none;
+}
 
+.activar:not(.active) {
+  display: none;
+}
+
+.activar.active {
+  display: flex;
+}
 .video {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

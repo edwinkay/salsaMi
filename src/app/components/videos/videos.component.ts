@@ -33,6 +33,8 @@ export class VideosComponent implements OnInit {
   dataVideoId: any = [];
   ocultarx = true;
   adm = false;
+  option: boolean = false;
+  capIndex: any;
 
   constructor(
     private storage: Storage,
@@ -283,7 +285,6 @@ export class VideosComponent implements OnInit {
           commentsVideo: this.dataVideoId.commentsVideo,
         };
         await this._videosService.updateVideo(videoId, videox);
-
       }
     } else {
       this.modal = true;
@@ -296,6 +297,22 @@ export class VideosComponent implements OnInit {
       this.router.navigate(['/perfil']);
     } else {
       this.router.navigate(['/usuario/', id]);
+    }
+  }
+  async opciones(i: any, comentario: any) {
+    const user = await this.afAuth.currentUser;
+
+    if (
+      user?.email === comentario.correo ||
+      user?.email == 'administrador.sistema@gmail.com' ||
+      user?.email == 'jeestrada377@gmail.com'
+    ) {
+      if (this.capIndex === i) {
+        this.option = !this.option; // Toggle option if the same item is clicked
+      } else {
+        this.capIndex = i;
+        this.option = true; // Show options for a new item
+      }
     }
   }
 }
