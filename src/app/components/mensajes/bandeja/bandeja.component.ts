@@ -20,10 +20,10 @@ export class BandejaComponent implements OnInit {
   users2: any[] = [];
   usuario: any;
   usuarioActual: any;
-  optionDelete = false
-  deleteId:any
-  capIndex:any
-  close=false
+  optionDelete = false;
+  deleteId: any;
+  capIndex: any;
+  close = false;
 
   constructor(
     private location: Location,
@@ -50,10 +50,22 @@ export class BandejaComponent implements OnInit {
           ...element.payload.doc.data(),
         });
       });
-      const nuevoArreglo = this.users.filter(
+
+      // Excluir al usuario actual
+      const usuariosSinUsuarioActual = this.users.filter(
         (obj) => obj.idUser !== this.usuarioActual
       );
-      this.users2 = nuevoArreglo
+
+      // ID del administrador
+      const adminId = 'QxwJYfG0c2MwfjnJR70AdmmKOIz2';
+
+      // Excluir al administrador
+      const usuariosSinAdmin = usuariosSinUsuarioActual.filter(
+        (obj) => obj.idUser !== adminId
+      );
+
+      // Asignar la lista filtrada a users2
+      this.users2 = usuariosSinAdmin;
     });
   }
 
@@ -83,18 +95,17 @@ export class BandejaComponent implements OnInit {
   volver() {
     this.location.back();
   }
-  abrirEliminar(id:any, i:any){
-    this.capIndex = i
-    this.optionDelete = true
-    this.deleteId = id
+  abrirEliminar(id: any, i: any) {
+    this.capIndex = i;
+    this.optionDelete = true;
+    this.deleteId = id;
   }
-  eliminar(){
+  eliminar() {
     this.optionDelete = false;
-    this._msj.delete(this.deleteId).then(()=>{
-    })
+    this._msj.delete(this.deleteId).then(() => {});
   }
-  cerrar(){
-    this.optionDelete = false
-    this.close = true
+  cerrar() {
+    this.optionDelete = false;
+    this.close = true;
   }
 }
