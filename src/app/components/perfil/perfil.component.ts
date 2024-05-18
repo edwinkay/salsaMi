@@ -4,6 +4,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
+import { PostService } from 'src/app/services/post.service';
 import { UsersService } from 'src/app/services/users.service';
 import { UsuariosImgService } from 'src/app/services/usuarios-img.service';
 
@@ -16,6 +17,7 @@ export class PerfilComponent implements OnInit {
   usuario: any | null;
   usuariosInfo: any[] = [];
   idInfo: any[] = [];
+  post: any[] = [];
   currentUser: any | null;
   adm = false;
   phoneNumberValue: any;
@@ -46,14 +48,17 @@ export class PerfilComponent implements OnInit {
   comentario: string = '';
   esteComentario: string = '';
   dataVideoId: any = [];
-  modalDeleteImage = false
-  idDelete:string = ''
+  modalDeleteImage = false;
+  idDelete: string = '';
 
   objetoUsuario: any;
 
   gr = true;
   im = false;
   vd = false;
+  selectedFeature: string = 'grupos';
+
+  infoText: string = '';
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -62,7 +67,8 @@ export class PerfilComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private _imageUser: UsuariosImgService,
-    private el: ElementRef
+    private el: ElementRef,
+    private _post: PostService
   ) {}
 
   ngOnInit(): void {
@@ -83,28 +89,26 @@ export class PerfilComponent implements OnInit {
       }
     });
     this.getUserImages();
+    this.obtPost();
   }
-  editarPerfil(){
-    this.crearUsuario()
+  editarPerfil() {
+    this.crearUsuario();
     this.router.navigate(['/perfil-editar']);
   }
-  crearUsuario(){
-    if(this.id == undefined){
-      this.afAuth.currentUser.then((user)=> {
+  crearUsuario() {
+    if (this.id == undefined) {
+      this.afAuth.currentUser.then((user) => {
         const datos = {
           idUser: user?.uid,
           usuario: user?.displayName,
           email: user?.email,
           foto: user?.photoURL,
         };
-        this._user.addIUserInfo(datos).then(()=>{
-          console.log('usuario actualizado')
-        })
-      })
-    }
-    else(
-      console.log('el usuario ya esta registrado')
-    )
+        this._user.addIUserInfo(datos).then(() => {
+          console.log('usuario actualizado');
+        });
+      });
+    } else console.log('el usuario ya esta registrado');
   }
 
   getUsers() {
@@ -221,11 +225,13 @@ export class PerfilComponent implements OnInit {
                                 })
                                 .then(() => {
                                   const dato = {
-                                    foto: url
-                                  }
-                                  this._user.updateUser(dato, this.id).then(()=>{
-                                    console.log('perfil actualizado')
-                                  })
+                                    foto: url,
+                                  };
+                                  this._user
+                                    .updateUser(dato, this.id)
+                                    .then(() => {
+                                      console.log('perfil actualizado');
+                                    });
                                   this.toastr.info('Foto de perfil cambiada');
                                 })
                                 .catch((error) => {
@@ -263,16 +269,21 @@ export class PerfilComponent implements OnInit {
   }
 
   grupos() {
+    this.selectedFeature = 'grupos';
     this.gr = true;
     this.im = false;
     this.vd = false;
   }
+
   imagenes() {
+    this.selectedFeature = 'imagenes';
     this.gr = false;
     this.im = true;
     this.vd = false;
   }
+
   videos() {
+    this.selectedFeature = 'videos';
     this.gr = false;
     this.im = false;
     this.vd = true;
@@ -501,7 +512,7 @@ export class PerfilComponent implements OnInit {
   onClosePreview() {
     this.previewImage = false;
     this.showMask = false;
-    this.modalDeleteImage = false
+    this.modalDeleteImage = false;
     document.body.style.overflow = '';
   }
   next(): void {
@@ -705,7 +716,7 @@ export class PerfilComponent implements OnInit {
     this.modalDelete = false;
     this.modalEditar = false;
     this.ocultarx = true;
-    this.modalDeleteImage = false
+    this.modalDeleteImage = false;
   }
   async ir(id: any) {
     const user = await this.afAuth.currentUser;
@@ -716,23 +727,50 @@ export class PerfilComponent implements OnInit {
       this.router.navigate(['/usuario/', id]);
     }
   }
-  deleteImgModal(id: string){
-    this.idDelete = id
-    this.modalDeleteImage = true
+  deleteImgModal(id: string) {
+    this.idDelete = id;
+    this.modalDeleteImage = true;
     this.ocultarx = true;
   }
-  eliminarImagen(){
-    this._imageUser.delete(this.idDelete).then(()=>{
+  eliminarImagen() {
+    this._imageUser.delete(this.idDelete).then(() => {
       this.imageX = this.imageX.filter((image) => image.id !== this.idDelete);
-      this.toastr.error(
-        'Imagen eliminida'
-      );
+      this.toastr.error('Imagen eliminida');
       this.modalDeleteImage = false;
-      this.previewImage = false
-    })
+      this.previewImage = false;
+    });
   }
-  abrirBandeja(){
+  abrirBandeja() {
     this.crearUsuario();
-    this.router.navigate(['/bandeja'])
+    this.router.navigate(['/bandeja']);
   }
+  async publicar() {
+    if (this.infoText && this.infoText.trim()) {
+      const user = await this.afAuth.currentUser;
+      const uid = user?.uid
+      const datos = {
+        post: this.infoText,
+        uid
+      }
+      this._post.addPost(datos).then(()=>{
+        this.infoText = ''
+        console.log('publicacion hecha')
+      })
+
+    } else {
+      console.log('El texto está vacío o solo contiene espacios en blanco.');
+    }
+  }
+  obtPost(){
+    this._post.getPost().subscribe((post)=>{
+      this.post = []
+      post.forEach((element:any)=>{
+        this.post.push({
+          id: element.payload.doc.data(),
+          ...element.payload.doc.data(),
+        });
+      })
+      console.log(this.post)
+    })
+    }
 }

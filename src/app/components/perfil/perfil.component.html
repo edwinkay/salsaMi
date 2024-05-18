@@ -60,12 +60,31 @@
       <!-- <a routerLink="/main">Regresar</a> -->
     </div>
     <div class="acciones">
-      <p style="cursor: pointer" (click)="grupos()">Grupos</p>
-      <p *ngIf="!esInvitado" style="cursor: pointer" (click)="imagenes()">
+      <p
+        *ngIf="!esInvitado"
+        class="btn"
+        (click)="videos()"
+        [ngClass]="{ selected: selectedFeature === 'videos' }"
+      >
+        Features
+      </p>
+      <p
+        class="btn"
+        (click)="grupos()"
+        [ngClass]="{ selected: selectedFeature === 'grupos' }"
+      >
+        Grupos
+      </p>
+      <p
+        *ngIf="!esInvitado"
+        class="btn"
+        (click)="imagenes()"
+        [ngClass]="{ selected: selectedFeature === 'imagenes' }"
+      >
         Mis fotos
       </p>
-      <!-- <p style="cursor: pointer" (click)="videos()">Videos</p> -->
     </div>
+
     <div
       *ngIf="gr"
       style="
@@ -375,6 +394,43 @@
         </div>
       </div>
       <p *ngIf="imageX.length == 0">No se han subido fotos aun..</p>
+    </div>
+    <div *ngIf="vd">
+      <div>
+        <div>
+          <form (ngSubmit)="publicar()">
+            <textarea
+              class="textarea"
+              placeholder="Publicar Nota..."
+              name="infoText"
+              cols="40"
+              rows="3"
+              [(ngModel)]="infoText"
+            ></textarea>
+            <div
+              style="
+                right: 8%;
+                position: relative;
+                display: flex;
+                justify-content: flex-end;
+              "
+            >
+              <button
+                class="btn2"
+                type="submit"
+                [disabled]="!infoText || !infoText.trim()"
+              >
+                Publicar
+              </button>
+            </div>
+          </form>
+        </div>
+        <div *ngFor="let p of post">
+          <div>
+            <span>{{p.post}}</span>
+          </div>
+        </div>
+      </div>
     </div>
   </ng-container>
   <ng-container *ngIf="!usuario">
