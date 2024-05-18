@@ -137,27 +137,6 @@
                   [src]="image?.url"
                   alt="imagen"
                 />
-                <!-- <div style="display: inline-flex; gap: 4rem">
-                  <div>
-                    <i
-                      style="cursor: pointer"
-                      class="far fa-comment"
-                      (click)="abrirCom(image)"
-                    ></i>
-                    <span>{{ image.commentsVideo.length }}</span>
-                  </div>
-                  <div>
-                    <i
-                      [class.liked]="
-                        image.likedByImage.includes(currentUser.uid)
-                      "
-                      (click)="likeImage(image)"
-                      style="cursor: pointer"
-                      class="far fa-thumbs-up"
-                    ></i>
-                    <span>{{ image.likesCountImage }}</span>
-                  </div>
-                </div> -->
               </div>
             </div>
             <div
@@ -393,7 +372,7 @@
           </div>
         </div>
       </div>
-      <p *ngIf="imageX.length == 0">No se han subido fotos aun..</p>
+      <p *ngIf="imageX.length == 0">No se han publicado fotos aun..</p>
     </div>
     <div *ngIf="vd">
       <div>
@@ -425,9 +404,36 @@
             </div>
           </form>
         </div>
-        <div *ngFor="let p of post">
-          <div>
-            <span>{{p.post}}</span>
+        <div
+          style="display: flex; justify-content: center"
+          *ngFor="let p of post"
+        >
+          <div
+            style="
+              display: flex;
+              margin-bottom: 5px;
+              margin-top: 5px;
+              justify-content: center;
+              border: 1px solid #00000057;
+              width: 93%;
+              border-radius: 7px;
+            "
+          >
+            <div *ngIf="isUrl(p.post)">
+              <div style="color: blue; padding: 8px; text-align: justify">
+                {{ p.usuario }}
+              </div>
+              <img style="width: 93%" [src]="p.post" alt="Imagen del mensaje" />
+            </div>
+            <div
+              style="margin-bottom: 5px; margin-top: 5px; width: 93%"
+              *ngIf="!isUrl(p.post)"
+            >
+              <div style="text-align: justify; color:red">{{ p.usuario }}</div>
+              <div>
+                {{ p.post }}
+              </div>
+            </div>
           </div>
         </div>
       </div>

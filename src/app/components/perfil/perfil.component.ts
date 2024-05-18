@@ -439,7 +439,22 @@ export class PerfilComponent implements OnInit {
                               idUser: idUser,
                             };
                             this._imageUser.addImagenUsuario(dato).then(() => {
-                              console.log('actualizando');
+                              let nombre =
+                                this.objetoUsuario?.usuario ??
+                                this.usuarioActual?.displayName;
+                              if (!nombre) {
+                                console.error(
+                                  'Nombre de usuario no disponible'
+                                );
+                                return;
+                              }
+                              const data = {
+                                usuario: nombre,
+                                post: url,
+                                uid: idUser,
+                                timestamp: new Date(),
+                              };
+                              this._post.addPost(data).then(() => {});
                               this.toastr.info(
                                 'Actualizando lista de Imagenes'
                               );
@@ -747,30 +762,49 @@ export class PerfilComponent implements OnInit {
   async publicar() {
     if (this.infoText && this.infoText.trim()) {
       const user = await this.afAuth.currentUser;
-      const uid = user?.uid
-      const datos = {
-        post: this.infoText,
-        uid
+      const uid = user?.uid;
+      let nombre = this.objetoUsuario?.usuario ?? user?.displayName;
+      if (!nombre) {
+        console.error('Nombre de usuario no disponible');
+        return;
       }
-      this._post.addPost(datos).then(()=>{
-        this.infoText = ''
-        console.log('publicacion hecha')
-      })
-
+      const datos = {
+        usuario: nombre,
+        post: this.infoText,
+        uid,
+        timestamp: new Date(),
+      };
+      this._post.addPost(datos).then(() => {
+        this.infoText = '';
+      });
     } else {
       console.log('El texto está vacío o solo contiene espacios en blanco.');
     }
   }
-  obtPost(){
-    this._post.getPost().subscribe((post)=>{
-      this.post = []
-      post.forEach((element:any)=>{
+  obtPost() {
+    this._post.getPost().subscribe((post) => {
+      this.post = [];
+      post.forEach((element: any) => {
         this.post.push({
-          id: element.payload.doc.data(),
+          id: element.payload.doc.id, // Ajusta para incluir el ID del documento
           ...element.payload.doc.data(),
         });
-      })
-      console.log(this.post)
-    })
-    }
+      });
+    });
+  }
+
+  isUrl(str: string): boolean {
+    // Expresión regular para verificar si la cadena es una URL
+    const pattern = new RegExp(
+      '^(https?:\\/\\/)?' + // Protocolo
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // Dominio
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // o dirección IP
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // Puerto y ruta
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // Parámetros de consulta
+        '(\\#[-a-z\\d_]*)?$',
+      'i'
+    ); // Fragmento
+
+    return !!pattern.test(str);
+  }
 }

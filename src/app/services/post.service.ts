@@ -9,7 +9,9 @@ export class PostService {
   constructor(private firestore: AngularFirestore) {}
 
   getPost(): Observable<any> {
-    return this.firestore.collection('publicar').snapshotChanges();
+    return this.firestore
+      .collection('publicar', (ref) => ref.orderBy('timestamp', 'desc'))
+      .snapshotChanges();
   }
   update(videoId: string, data: any) {
     return this.firestore.collection('publicar').doc(videoId).update(data);
