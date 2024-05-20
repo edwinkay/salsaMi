@@ -48,6 +48,7 @@ export class PerfilComponent implements OnInit {
   comentario: string = '';
   esteComentario: string = '';
   dataVideoId: any = [];
+  dataVideoId2: any = [];
   modalDeleteImage = false;
   idDelete: string = '';
 
@@ -442,6 +443,11 @@ export class PerfilComponent implements OnInit {
                               idUser: idUser,
                             };
                             this._imageUser.addImagenUsuario(dato).then(() => {
+                              let foto = this.objetoUsuario?.foto;
+                              if (foto == undefined) {
+                                foto =
+                                  'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg';
+                              }
                               let nombre =
                                 this.objetoUsuario?.usuario ??
                                 this.usuarioActual?.displayName;
@@ -452,6 +458,7 @@ export class PerfilComponent implements OnInit {
                                 return;
                               }
                               const data = {
+                                foto,
                                 usuario: nombre,
                                 post: url,
                                 uid: idUser,
@@ -516,6 +523,37 @@ export class PerfilComponent implements OnInit {
       await this._imageUser.updateImgUsuario(id, imagex);
     } else {
       this.modal = true;
+    }
+  }
+  async likeImage2(p:any){
+    const user = await this.afAuth.currentUser
+    if (user && !this.esInvitado) {
+      const userId = user.uid;
+
+      const usuario = user.displayName;
+      const correo = user.email;
+
+      const index = p.likedByImage.indexOf(userId);
+
+      if (index !== -1) {
+        p.likedByImage.splice(index, 1);
+        p.userImageLikes.splice(index, 1);
+        p.likesCountImage--;
+      } else {
+        p.likedByImage.push(userId);
+        p.likesCountImage++;
+        p.userImageLikes.push({ usuario, correo });
+      }
+
+      const id = p.id;
+      const imagex: any = {
+        likesCountImage: p.likesCountImage,
+        likedByImage: p.likedByImage,
+        userImageLikes: p.userImageLikes,
+      };
+      await this._post.update(id, imagex)
+    }else {
+      this.modal = true
     }
   }
   onPreviewImage(index: number): void {
@@ -600,11 +638,11 @@ export class PerfilComponent implements OnInit {
     if (user) {
       const image = this.dataVideoId;
       // Obtener el ID del video
-      const imageId = this.dataVideoId.id;
-      const usuario = user.displayName;
-      const correo = user.email;
-      const imagen = user.photoURL;
-      const idUser = user.uid;
+      const imageId = this.dataVideoId?.id;
+      const usuario = user?.displayName;
+      const correo = user?.email;
+      const imagen = user?.photoURL;
+      const idUser = user?.uid;
       // Crear el comentario
       image.commentsVideo.push({ usuario, correo, comentario, imagen, idUser });
 
@@ -616,8 +654,41 @@ export class PerfilComponent implements OnInit {
       this.comentario = '';
     }
   }
+  async addComment2(comentario: string) {
+    // Obtener el usuario actual
+    const user = await this.afAuth.currentUser;
+
+    if (user) {
+      const image = this.dataVideoId2;
+      // Obtener el ID del video
+      const imageId = this.dataVideoId2?.id;
+      const usuario = user?.displayName;
+      const correo = user?.email;
+      const imagen = user?.photoURL;
+      const idUser = user?.uid;
+      // Crear el comentario
+      image.commentsVideo.push({ usuario, correo, comentario, imagen, idUser });
+
+      const imagex: any = {
+        commentsVideo: image.commentsVideo,
+      };
+      // Actualizar los comentarios en Firestore
+      await this._post.update(imageId, imagex);
+      this.comentario = '';
+    }
+  }
   async abrirCom(image: any) {
     this.dataVideoId = image;
+    const user = await this.afAuth.currentUser;
+
+    if (user && !this.esInvitado) {
+      this.modalcom = true;
+    } else {
+      this.modal = true;
+    }
+  }
+  async abrirCom2(p: any) {
+    this.dataVideoId2 = p;
     const user = await this.afAuth.currentUser;
 
     if (user && !this.esInvitado) {
@@ -654,6 +725,33 @@ export class PerfilComponent implements OnInit {
       console.error('Índice de comentario no válido');
     }
   }
+  borrarComentario2() {
+    // Encuentra el índice del comentario en el array commentsVideo
+    const index = this.dataVideoId2.commentsVideo.indexOf(this.comentarioDel);
+
+    // Asegúrate de que el índice sea válido
+    if (index !== -1) {
+      // Elimina el comentario del array commentsVideo
+      this.dataVideoId2.commentsVideo.splice(index, 1);
+
+      // Actualiza los comentarios en Firestore
+      const videoId = this.dataVideoId2.id;
+      const videox: any = {
+        commentsVideo: this.dataVideoId2.commentsVideo,
+      };
+      this._post.update(videoId, videox)
+        .then(() => {
+          this.modalDelete = false;
+          this.ocultarx = true;
+          console.log('Comentario eliminado correctamente');
+        })
+        .catch((error) => {
+          console.error('Error al eliminar el comentario:', error);
+        });
+    } else {
+      console.error('Índice de comentario no válido');
+    }
+  }
   editarComentario() {
     // Obtén el comentario modificado desde el formulario
     const comentarioModificado = this.esteComentario;
@@ -673,6 +771,36 @@ export class PerfilComponent implements OnInit {
       };
       this._imageUser
         .updateImgUsuario(videoId, videox)
+        .then(() => {
+          this.modalEditar = false;
+          this.ocultarx = true;
+          console.log('Comentario editado correctamente');
+        })
+        .catch((error) => {
+          console.error('Error al editar el comentario:', error);
+        });
+    } else {
+      console.error('Índice de comentario no válido');
+    }
+  }
+  editarComentario2() {
+    // Obtén el comentario modificado desde el formulario
+    const comentarioModificado = this.esteComentario;
+
+    // Encuentra el índice del comentario en el array commentsVideo
+    const index = this.dataVideoId2.commentsVideo.indexOf(this.comentarioDel);
+
+    // Asegúrate de que el índice sea válido
+    if (index !== -1) {
+      // Actualiza el comentario en el array commentsVideo
+      this.dataVideoId2.commentsVideo[index].comentario = comentarioModificado;
+
+      // Actualiza los comentarios en Firestore
+      const videoId = this.dataVideoId2.id;
+      const videox: any = {
+        commentsVideo: this.dataVideoId2.commentsVideo,
+      };
+      this._post.update(videoId, videox)
         .then(() => {
           this.modalEditar = false;
           this.ocultarx = true;
@@ -730,6 +858,51 @@ export class PerfilComponent implements OnInit {
       this.modal = true;
     }
   }
+  async likeComment2(comment: any) {
+    const user = await this.afAuth.currentUser;
+    if (user && !this.esInvitado) {
+      // Verificar si el comentario está definido
+      if (!comment) {
+        console.error('El comentario no está definido');
+        return;
+      }
+
+      // Verificar si el comentario tiene la propiedad likedByComment
+      if (!comment.likedByComment) {
+        // Si no tiene la propiedad, crearla como un array vacío
+        comment.likedByComment = [];
+      }
+
+      // Verificar si el usuario ya ha dado like
+      const userId = user.uid;
+
+      const index = comment.likedByComment.indexOf(userId);
+
+      if (index !== -1) {
+        // Si ya ha dado like, quitar el like
+        comment.likedByComment.splice(index, 1);
+        comment.likesCountComment = Math.max(0, comment.likesCountComment - 1); // Decrementar el contador
+      } else {
+        // Si no ha dado like, agregar el like
+        comment.likedByComment.push(userId);
+        comment.likesCountComment = (comment.likesCountComment || 0) + 1; // Incrementar el contador
+      }
+
+      // Actualizar los likes del comentario en Firestore
+      const videoId = this.dataVideoId2.id;
+      const commentIndex = this.dataVideoId2.commentsVideo.findIndex(
+        (c: any) => c === comment
+      );
+      if (commentIndex !== -1) {
+        const videox: any = {
+          commentsVideo: this.dataVideoId2.commentsVideo,
+        };
+        await this._post.update(videoId, videox);
+      }
+    } else {
+      this.modal = true;
+    }
+  }
   closeDelete() {
     this.modalDelete = false;
     this.modalEditar = false;
@@ -766,12 +939,18 @@ export class PerfilComponent implements OnInit {
     if (this.infoText && this.infoText.trim()) {
       const user = await this.afAuth.currentUser;
       const uid = user?.uid;
+      let foto = this.objetoUsuario?.foto
+      if (foto == undefined) {
+        foto =
+          'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg';
+      }
       let nombre = this.objetoUsuario?.usuario ?? user?.displayName;
       if (!nombre) {
         console.error('Nombre de usuario no disponible');
         return;
       }
       const datos = {
+        foto,
         usuario: nombre,
         post: this.infoText,
         uid,
@@ -788,9 +967,14 @@ export class PerfilComponent implements OnInit {
     this._post.getPost().subscribe((post) => {
       this.post = [];
       post.forEach((element: any) => {
+        const postData = element.payload.doc.data()
         this.post.push({
-          id: element.payload.doc.id, // Ajusta para incluir el ID del documento
+          id: element.payload.doc.id,
           ...element.payload.doc.data(),
+          likesCountImage: postData.likesCountImage || 0,
+          likedByImage: postData.likedByImage || [],
+          userImageLikes: postData.userImageLikes || [],
+          commentsVideo: postData.commentsVideo || [],
         });
       });
     });
@@ -811,7 +995,7 @@ export class PerfilComponent implements OnInit {
     return !!pattern.test(str);
   }
   async opciones(i: any, comentario: any) {
-    console.log('clic',i , comentario)
+
     const user = await this.afAuth.currentUser;
 
     if (
@@ -823,6 +1007,22 @@ export class PerfilComponent implements OnInit {
       } else {
         this.capIndex = i;
         this.option = true; // Show options for a new item
+      }
+    }
+  }
+  async opciones2(i: any, p: any) {
+
+    const user = await this.afAuth.currentUser;
+
+    if (
+      user?.uid === p.idUser ||
+      user?.email == 'administrador.sistema@gmail.com'
+    ) {
+      if (this.capIndex === i) {
+        this.option = !this.option;
+      } else {
+        this.capIndex = i;
+        this.option = true;
       }
     }
   }
