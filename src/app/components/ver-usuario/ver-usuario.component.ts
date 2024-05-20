@@ -45,7 +45,11 @@ export class VerUsuarioComponent implements OnInit {
   idDelete: string = '';
   usuarioActual: any;
   esInvitado = false;
-  usx:any
+  usx: any;
+
+  option: boolean = false;
+  capIndex: any;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -80,8 +84,7 @@ export class VerUsuarioComponent implements OnInit {
           email: user?.email,
           foto: user?.photoURL,
         };
-        this._user.addIUserInfo(datos).then(() => {
-        });
+        this._user.addIUserInfo(datos).then(() => {});
       });
     } else console.log('el usuario ya esta registrado');
   }
@@ -97,8 +100,10 @@ export class VerUsuarioComponent implements OnInit {
         const buscarObjeto = this.usuariosInfo.find(
           (obj) => obj.idUser === this.id
         );
-        const dato = this.usuariosInfo.find(obj => obj.idUser === this.usuario?.uid)
-        this.usx = dato
+        const dato = this.usuariosInfo.find(
+          (obj) => obj.idUser === this.usuario?.uid
+        );
+        this.usx = dato;
         this.info = buscarObjeto;
         this.urlPortada = this.info?.portada;
       });
@@ -280,6 +285,7 @@ export class VerUsuarioComponent implements OnInit {
     }
   }
   async abrirCom(image: any) {
+    console.log(image)
     this.dataVideoId = image;
     const user = await this.afAuth.currentUser;
 
@@ -422,7 +428,36 @@ export class VerUsuarioComponent implements OnInit {
     });
   }
   enviarMensaje() {
-    this.crearUsuario()
+    this.crearUsuario();
     this.router.navigate(['/enviar-mensaje/', this.id]);
+  }
+  async verUsuario(id: any) {
+    console.log(id);
+    const adm = 'QxwJYfG0c2MwfjnJR70AdmmKOIz2';
+    if (id == adm) {
+    } else {
+      const user = await this.afAuth.currentUser;
+      const userId = user?.uid;
+      if (userId === id) {
+        this.router.navigate(['/perfil']);
+      } else {
+        this.router.navigate(['/usuario/', id]);
+      }
+    }
+  }
+  async opciones2(i: any, p: any) {
+    const user = await this.afAuth.currentUser;
+
+    if (
+      user?.uid === p.idUser ||
+      user?.email == 'administrador.sistema@gmail.com'
+    ) {
+      if (this.capIndex === i) {
+        this.option = !this.option;
+      } else {
+        this.capIndex = i;
+        this.option = true;
+      }
+    }
   }
 }

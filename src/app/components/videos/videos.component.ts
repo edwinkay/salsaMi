@@ -196,6 +196,7 @@ export class VideosComponent implements OnInit {
         .then(() => {
           this.modalDelete = false;
           this.ocultarx = true;
+          this.option = false;
           console.log('Comentario eliminado correctamente');
         })
         .catch((error) => {

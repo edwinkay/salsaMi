@@ -716,6 +716,7 @@ export class PerfilComponent implements OnInit {
         .then(() => {
           this.modalDelete = false;
           this.ocultarx = true;
+          this.option = false;
           console.log('Comentario eliminado correctamente');
         })
         .catch((error) => {
@@ -744,6 +745,7 @@ export class PerfilComponent implements OnInit {
         .then(() => {
           this.modalDelete = false;
           this.ocultarx = true;
+          this.option = false;
           console.log('Comentario eliminado correctamente');
         })
         .catch((error) => {
@@ -1035,6 +1037,7 @@ export class PerfilComponent implements OnInit {
   }
   deletePost(p: any) {
     this._post.delete(p).then(() => {
+      this.option = false
       this.toastr.info('publicacion eliminada');
     });
   }

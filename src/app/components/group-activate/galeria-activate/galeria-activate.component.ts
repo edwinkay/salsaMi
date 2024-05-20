@@ -323,6 +323,7 @@ export class GaleriaActivateComponent implements OnInit {
       this._image
         .updateImgAc(videoId, videox)
         .then(() => {
+          this.option = false;
           this.modalDelete = false;
           this.ocultarx = true;
           console.log('Comentario eliminado correctamente');
