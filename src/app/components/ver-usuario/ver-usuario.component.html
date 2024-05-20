@@ -66,7 +66,7 @@
       <p style="cursor: pointer" (click)="imagenes()">
         Fotos de {{ info?.usuario }}
       </p>
-      <p routerLink="/perfil" style="cursor: pointer">Volver</p>
+      <p (click)="goBack()" style="cursor: pointer">Volver</p>
     </div>
     <div
       *ngIf="gr"

@@ -525,8 +525,8 @@ export class PerfilComponent implements OnInit {
       this.modal = true;
     }
   }
-  async likeImage2(p:any){
-    const user = await this.afAuth.currentUser
+  async likeImage2(p: any) {
+    const user = await this.afAuth.currentUser;
     if (user && !this.esInvitado) {
       const userId = user.uid;
 
@@ -551,9 +551,9 @@ export class PerfilComponent implements OnInit {
         likedByImage: p.likedByImage,
         userImageLikes: p.userImageLikes,
       };
-      await this._post.update(id, imagex)
-    }else {
-      this.modal = true
+      await this._post.update(id, imagex);
+    } else {
+      this.modal = true;
     }
   }
   onPreviewImage(index: number): void {
@@ -739,7 +739,8 @@ export class PerfilComponent implements OnInit {
       const videox: any = {
         commentsVideo: this.dataVideoId2.commentsVideo,
       };
-      this._post.update(videoId, videox)
+      this._post
+        .update(videoId, videox)
         .then(() => {
           this.modalDelete = false;
           this.ocultarx = true;
@@ -800,7 +801,8 @@ export class PerfilComponent implements OnInit {
       const videox: any = {
         commentsVideo: this.dataVideoId2.commentsVideo,
       };
-      this._post.update(videoId, videox)
+      this._post
+        .update(videoId, videox)
         .then(() => {
           this.modalEditar = false;
           this.ocultarx = true;
@@ -909,15 +911,7 @@ export class PerfilComponent implements OnInit {
     this.ocultarx = true;
     this.modalDeleteImage = false;
   }
-  async ir(id: any) {
-    const user = await this.afAuth.currentUser;
-    const userId = user?.uid;
-    if (userId === id) {
-      this.router.navigate(['/perfil']);
-    } else {
-      this.router.navigate(['/usuario/', id]);
-    }
-  }
+
   deleteImgModal(id: string) {
     this.idDelete = id;
     this.modalDeleteImage = true;
@@ -939,7 +933,7 @@ export class PerfilComponent implements OnInit {
     if (this.infoText && this.infoText.trim()) {
       const user = await this.afAuth.currentUser;
       const uid = user?.uid;
-      let foto = this.objetoUsuario?.foto
+      let foto = this.objetoUsuario?.foto;
       if (foto == undefined) {
         foto =
           'https://forma-architecture.com/wp-content/uploads/2021/04/Foto-de-perfil-vacia-thegem-person.jpg';
@@ -967,7 +961,7 @@ export class PerfilComponent implements OnInit {
     this._post.getPost().subscribe((post) => {
       this.post = [];
       post.forEach((element: any) => {
-        const postData = element.payload.doc.data()
+        const postData = element.payload.doc.data();
         this.post.push({
           id: element.payload.doc.id,
           ...element.payload.doc.data(),
@@ -995,7 +989,6 @@ export class PerfilComponent implements OnInit {
     return !!pattern.test(str);
   }
   async opciones(i: any, comentario: any) {
-
     const user = await this.afAuth.currentUser;
 
     if (
@@ -1011,7 +1004,6 @@ export class PerfilComponent implements OnInit {
     }
   }
   async opciones2(i: any, p: any) {
-
     const user = await this.afAuth.currentUser;
 
     if (
@@ -1026,12 +1018,39 @@ export class PerfilComponent implements OnInit {
       }
     }
   }
-  deletePost(p:any){
-    this._post.delete(p).then(()=>{
-      this.toastr.info(
-        'publicacion eliminada'
-      )
-    })
-  }
+  async opciones3(i: any, p: any) {
+   const user = await this.afAuth.currentUser;
 
+   if (
+     user?.uid === p.idUser ||
+     user?.email == 'administrador.sistema@gmail.com'
+   ) {
+     if (this.capIndex === i) {
+       this.option = !this.option;
+     } else {
+       this.capIndex = i;
+       this.option = true;
+     }
+   }
+  }
+  deletePost(p: any) {
+    this._post.delete(p).then(() => {
+      this.toastr.info('publicacion eliminada');
+    });
+  }
+  async verUsuario(id: any) {
+    console.log(id)
+    const adm = 'QxwJYfG0c2MwfjnJR70AdmmKOIz2';
+    if (id == adm) {
+
+    }else{
+      const user = await this.afAuth.currentUser;
+      const userId = user?.uid;
+      if (userId === id) {
+        this.router.navigate(['/perfil']);
+      } else {
+        this.router.navigate(['/usuario/', id]);
+      }
+    }
+  }
 }

@@ -228,11 +228,11 @@
             <div class="comments-list">
               <div
                 style="border-bottom: 1px solid #a1a197"
-                *ngFor="let comment of dataVideoId.commentsVideo"
+                *ngFor="let comment of dataVideoId.commentsVideo; let i = index"
               >
                 <div style="display: flex; flex-direction: column">
                   <img
-                    (click)="ir(comment.idUser)"
+                    (click)="verUsuario(comment.idUser)"
                     style="cursor: pointer; border-radius: 50%"
                     [src]="
                       comment.imagen ||
@@ -258,7 +258,7 @@
                   <p style="padding: 16px; width: 86%">
                     {{ comment.comentario }}
                   </p>
-                  <div style="display: flex; gap: 1rem">
+                  <div style="display: flex; gap: 1rem; align-items: center;">
                     <div>
                       <i
                         style="cursor: pointer"
@@ -271,16 +271,29 @@
                       ></i>
                       <span>{{ comment.likesCountComment }}</span>
                     </div>
-                    <i
-                      (click)="abrirEditar(comment)"
-                      style="cursor: pointer; color: blue"
-                      class="fas fa-pencil-alt"
-                    ></i>
-                    <i
-                      (click)="deleteModal(comment)"
-                      style="cursor: pointer; color: red"
-                      class="fas fa-trash"
-                    ></i>
+                    <div style="gap: 1rem; display: flex; align-items: center">
+                      <div [ngClass]="{ activar: !(i === capIndex && option) }">
+                        <div style="gap: 1rem; display: flex">
+                          <i
+                            (click)="abrirEditar(comment)"
+                            style="cursor: pointer; color: blue"
+                            class="fas fa-pencil-alt"
+                          ></i>
+                          <i
+                            (click)="deleteModal(comment)"
+                            style="cursor: pointer; color: red"
+                            class="fas fa-trash"
+                          ></i>
+                        </div>
+                      </div>
+                      <div>
+                        <span
+                          (click)="opciones2(i, comment)"
+                          style="font-size: 26px; cursor: pointer;"
+                          >&#8942;</span
+                        >
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -418,11 +431,12 @@
               padding: 8px;
             "
           >
-            <div *ngIf="isUrl(p.post)">
+            <div style="width: 100%;" *ngIf="isUrl(p.post)">
               <div>
                 <div style="display: flex; justify-content: space-between">
                   <div style="display: flex; align-items: center; gap: 4px">
                     <img
+                    (click)="verUsuario(p.uid)"
                       style="border-radius: 50%; width: 40px; height: 40px"
                       [src]="p.foto"
                       alt="foto"
@@ -444,7 +458,7 @@
                     </div>
                   </div>
                   <div style="display: flex; justify-content: space-between">
-                    <span (click)="opciones(i, p)" style="font-size: 26px"
+                    <span (click)="opciones(i, p)" style="font-size: 26px; cursor: pointer;"
                       >&#8942;</span
                     >
                   </div>
@@ -498,6 +512,7 @@
                 <div style="display: flex; justify-content: space-between">
                   <div style="display: flex; align-items: center; gap: 4px">
                     <img
+                    (click)="verUsuario(p.uid)"
                       style="border-radius: 50%; width: 40px; height: 40px"
                       [src]="p.foto"
                       alt="foto"
@@ -519,7 +534,7 @@
                     </div>
                   </div>
                   <div style="display: flex; justify-content: space-between">
-                    <span (click)="opciones(i, p)" style="font-size: 26px"
+                    <span (click)="opciones(i, p)" style="font-size: 26px; cursor: pointer;"
                       >&#8942;</span
                     >
                   </div>
@@ -576,7 +591,7 @@
               >
                 <div style="display: flex; flex-direction: column">
                   <img
-                    (click)="ir(comment.uid)"
+                    (click)="verUsuario(comment.idUser)"
                     style="cursor: pointer; border-radius: 50%"
                     [src]="
                       comment.imagen ||
@@ -602,7 +617,7 @@
                   <p style="padding: 16px; width: 86%">
                     {{ comment.comentario }}
                   </p>
-                  <div style="display: flex; gap: 1rem">
+                  <div style="display: flex; gap: 1rem; align-items: center">
                     <div>
                       <i
                         style="cursor: pointer"
@@ -633,7 +648,7 @@
                       <div>
                         <span
                           (click)="opciones2(i, comment)"
-                          style="font-size: 26px"
+                          style="font-size: 26px; cursor: pointer;"
                           >&#8942;</span
                         >
                       </div>

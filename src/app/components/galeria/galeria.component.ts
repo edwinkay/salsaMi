@@ -416,12 +416,16 @@ export class GaleriaComponent implements OnInit {
     this.ocultarx = true;
   }
   async ir(id: any) {
-    const user = await this.afAuth.currentUser;
-    const userId = user?.uid;
-    if (userId === id) {
-      this.router.navigate(['/perfil']);
+    const adm = 'QxwJYfG0c2MwfjnJR70AdmmKOIz2';
+    if (id == adm) {
     } else {
-      this.router.navigate(['/usuario/', id]);
+      const user = await this.afAuth.currentUser;
+      const userId = user?.uid;
+      if (userId === id) {
+        this.router.navigate(['/perfil']);
+      } else {
+        this.router.navigate(['/usuario/', id]);
+      }
     }
   }
   async opciones(i: any, comentario: any) {
